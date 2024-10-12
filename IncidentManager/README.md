@@ -17,7 +17,7 @@ per tal de veure el seu estat.
 
 Els usuaris que accedeixen amb perfil tècnic creen incidències i assignen les contingudes a la base de dades
 a un tècnic en funció del seu perfil. Les incidències incorporen un valor de prioritat i un de tancament
-un cop ha estat resolta a més d'un vincle a altres incidències si és necesari.  
+un cop ha estat resolta a més d'un vincle a altres incidències si és necessari.  
 
 Els usuaris que accedeixin amb permisos d'Administrador podran crear altes i baixes de qualsevol perfil
 d'usuari, modificar els nivells dels usuaris tècnics, eliminar incidències i crear informes estadístics
@@ -27,7 +27,7 @@ L'aplicatiu és adient per a petites i microempreses.
 
 #### Primers passos
 
-És necessari tenir instal·lat la màquina virtual de Java (JVM)
+És necessària la instal·lació de la màquina virtual de Java (JVM)
 
 #### Dependències
 
