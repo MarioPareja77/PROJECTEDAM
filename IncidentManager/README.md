@@ -31,7 +31,9 @@ L'aplicatiu és adient per a petites i microempreses.
 
 #### Dependències
 
-
+ + JUnit 5
+     + junit-jupiter-api_5.9.1
+     + hamcrest-3.0
 
 #### Instal·lació
 
