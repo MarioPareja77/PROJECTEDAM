@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"main","c":"TestJavaDoc","l":"factorial(double)"},{"p":"main","c":"TestJavaDoc","l":"TestJavaDoc()","u":"%3Cinit%3E()"}];updateSearchResults();
