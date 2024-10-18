@@ -119,4 +119,9 @@ public class ServeiIncidencia {
         return incidencies;
     }
 
+	public static cat.enmarxa.incidentmanager.List<Incidencia> llistarIncidencies() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

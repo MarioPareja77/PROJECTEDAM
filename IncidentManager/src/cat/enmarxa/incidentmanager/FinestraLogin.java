@@ -1,7 +1,6 @@
 package cat.enmarxa.incidentmanager;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,11 +14,15 @@ public class FinestraLogin extends JFrame {
 
     public FinestraLogin() {
         // Configuració de la finestra
-        setTitle("Login");
-        setSize(300, 200);
+        setTitle("ENMARXA Incident Manager v1.0");
+        setSize(400, 300);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new GridLayout(4, 2));
+        //setLayout(new GridLayout(4, 2));
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        
 
         // Afegim els components
         JLabel emailLabel = new JLabel("Email:");
@@ -32,13 +35,22 @@ public class FinestraLogin extends JFrame {
         JButton altaButton = new JButton("Alta nou Usuari");
 
         // Afegim els components a la finestra
-        add(emailLabel);
-        add(emailField);
-        add(contrasenaLabel);
-        add(contrasenaField);
-        add(loginButton);
-        add(resetButton);
-        add(altaButton);
+        panel.add(emailLabel);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(emailField);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(contrasenaLabel);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(contrasenaField);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(loginButton);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(resetButton);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(altaButton);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        add(panel);
+        setVisible(true);
 
         // Accions dels botons
         loginButton.addActionListener(new ActionListener() {
@@ -67,7 +79,7 @@ public class FinestraLogin extends JFrame {
         // Connexió al servidor
         try {
             Socket socket = new Socket("localhost", 12345); // Connexió amb el servidor
-            serveiLogin = new ServeiLogin(null, socket); // Passar la connexió a la classe ServeiLogin
+            serveiLogin = new ServeiLogin(socket); // Passar la connexió a la classe ServeiLogin
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error en connectar amb el servidor: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             System.exit(1); // Tancar l'aplicació si no es pot connectar

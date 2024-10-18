@@ -1,16 +1,24 @@
 package cat.enmarxa.incidentmanager;
 
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.mail.*;
+import javax.mail.internet.*;
 import java.util.Properties;
 
 
 public class ServeiLogin {
 
-    // Mètode per gestionar el login d'un usuari
+    private Socket socket;
+
+	public ServeiLogin(Socket socket) {
+        this.socket = socket;
+	}
+    
+	// Mètode per gestionar el login d'un usuari
     public boolean iniciarSessio(String correu, String contrasenya) throws SQLException {
         String consulta = "SELECT contrasenya, intents_fallits FROM usuaris WHERE id_usuari = ?";
         String contrasenyaDesada = null;
@@ -38,9 +46,10 @@ public class ServeiLogin {
                     	incrementarIntentsFallits(correu);
                     	return false;
                     }
+                }
             }
+            return false;
         }
-        return false;
     }
 
     // Reiniciar els intents de login fallits (quan el login és exitós)
