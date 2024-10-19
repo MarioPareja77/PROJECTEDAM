@@ -41,16 +41,17 @@ public class FinestraCrearIncidencia extends JDialog {
         add(crearButton);
 
         setSize(300, 200);
+        setResizable(false);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     // Mètode per crear la incidència
     private void crearIncidencia() {
+    	String tipus = (String) tipusField.getSelectedItem();
         String descripcio = descripcioField.getText();
-        String tipus = (String) tipusField.getSelectedItem();
         String prioritat = (String) prioritatField.getSelectedItem();
-        String usuari = FinestraLogin.contrasenaField;
+        String usuari = FinestraLogin.contrasenyaField;
 
         // Validar que la descripció no estigui buida
         if (descripcio.isEmpty()) {
@@ -60,7 +61,7 @@ public class FinestraCrearIncidencia extends JDialog {
 
         // Enviar la incidència al servidor
     
-        boolean creacioExitosa = ServeiIncidencia.crearIncidencia(descripcio, tipus, prioritat, usuari);
+        boolean creacioExitosa = ServeiIncidencia.crearIncidencia(tipus, descripcio, prioritat, usuari);
         
         if (creacioExitosa) {
             JOptionPane.showMessageDialog(this, "Incidència creada amb èxit.");

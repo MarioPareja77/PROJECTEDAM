@@ -1,63 +1,74 @@
 package cat.enmarxa.incidentmanager;
 
-import java.io.*;
-import java.net.Socket;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class ServeiActius {
+public class ServeiActiu {
 
-    private Socket socket;
-    private ObjectOutputStream output;
-    private ObjectInputStream input;
+    private ActiuDAO actiuDAO; // Objeto DAO para gestionar la base de datos
 
-    public ServeiActius(String serverAddress, int serverPort) throws IOException {
-        socket = new Socket(serverAddress, serverPort);
-        output = new ObjectOutputStream(socket.getOutputStream());
-        input = new ObjectInputStream(socket.getInputStream());
-    }
-
-    // Mètode per llistar els actius
-    @SuppressWarnings("unchecked")
-    public List<Actiu> llistarActius() {
+    // Método Constructor
+    public ServeiActiu() {
         try {
-            // Enviar la sol·licitud per llistar els actius
-            output.writeObject("LLISTAR_ACTIUS");
-            output.flush();
-
-            // Esperar la resposta del servidor
-            List<Actiu> actius = (List<Actiu>) input.readObject();
-            return actius;
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return null; // Retornar null si hi ha cap error
+            this.actiuDAO = new ActiuDAO(); // Inicializamos el DAO
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejo de excepciones en la inicialización
         }
     }
 
-    // Mètode per crear un nou actiu
-    public boolean crearActiu(Actiu nouActiu) {
+    // Método para crear un nuevo activo
+    public boolean crearActiu(String nom, String tipus, String area, String marca, java.util.Date dataAlta, String descripcio) {
         try {
-            // Enviar la sol·licitud per crear un nou actiu al servidor
-            output.writeObject("CREAR_ACTIU");
-            output.writeObject(nouActiu); // Suposem que Actiu és un objecte que es pot serialitzar
-            output.flush();
+            // Delegar la operación al DAO
+        	int id = -1;
+            actiuDAO.crearActiu(id, nom, tipus, area, marca, dataAlta, descripcio);
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejar la excepción aquí
+            // Puedes agregar un mensaje de error personalizado si es necesario.
+        }
+        return false;
+    }
+    
 
-            // Esperar la resposta del servidor
-            String resposta = (String) input.readObject();
-            return resposta.equals("ACTIU_CREADO");
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return false; // Retornar false si hi ha un error
+    // Método para obtener el listado de todos los activos
+    public List<Actiu> obtenirTotsElsActius() {
+        try {
+            // Delegar la operación al DAO
+            return actiuDAO.obtenirTotsElsActius(); // Método que obtiene todos los activos de la base de datos
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejar la excepción aquí
+            return new ArrayList<>(); // Devolver una lista vacía en caso de error
         }
     }
 
-    // Mètode per tancar connexions
-    public void tancarConnexio() {
+    // Método para obtener un activo específico por su ID
+    public Actiu obtenirActiuPerId(int idActiu) {
         try {
-            if (input != null) input.close();
-            if (output != null) output.close();
-            if (socket != null) socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            return actiuDAO.obtenirActiuPerId(idActiu); // Obtener un activo por su ID
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejar la excepción aquí
+            return null; // Devolver null en caso de error
+        }
+    }
+
+ // Método para actualizar un activo
+    public void actualitzarActiu(int idActiu, String nom, String tipus, String area, String marca, Date dataAlta, String descripcio) {
+        try {
+            // Asegúrate de que el método 'actualitzarActiu' del DAO recibe los parámetros correctos
+            actiuDAO.actualitzarActiu(idActiu, nom, tipus, area, marca, dataAlta, descripcio); // Método para actualizar un activo
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejar la excepción aquí
+        }
+    }
+
+    // Método para eliminar un activo
+    public void eliminarActiu(int idActiu) {
+        try {
+            actiuDAO.eliminarActiu(idActiu); // Método para eliminar un activo de la base de datos
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejar la excepción aquí
         }
     }
 }

@@ -4,35 +4,55 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.net.Socket;
+import java.net.InetSocketAddress;
+import java.net.SocketTimeoutException;
+import java.io.*;
+import java.net.InetAddress;
 
 public class FinestraLogin extends JFrame {
-    public JTextField emailField;
-    JPasswordField contrasenaField;
-    private ServeiLogin serveiLogin; // Referencia al servei de login
+    private JTextField emailField;
+    private JPasswordField contrasenyaField;
+    private JTextField servidorField;
+    private JTextField portField;
+    private String idSessio;
+
+    private Socket socket = null;
+    private DataInputStream entrada, entrada2 = null;
+    private DataOutputStream sortida = null;
 
     public FinestraLogin() {
-        // Configuració de la finestra
-        setTitle("ENMARXA Incident Manager v1.0");
-        setSize(400, 300);
+    	  // Configuració de la finestra
+        setTitle("ENMARXA Incident Manager v1.0 (octubre 2024)");
+        setSize(450, 450); // Ajustar tamaño para incluir el nuevo campo
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        //setLayout(new GridLayout(4, 2));
+
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        
 
         // Afegim els components
         JLabel emailLabel = new JLabel("Email:");
-        emailField = new JTextField();
-        JLabel contrasenaLabel = new JLabel("Contrasenya:");
-        contrasenaField = new JPasswordField();
+        emailField = new JTextField(15);  // Establecemos el tamaño a 15 columnas
 
-        JButton loginButton = new JButton("Login");
+        JLabel contrasenaLabel = new JLabel("Contrasenya:");
+        contrasenyaField = new JPasswordField(15);  // Establecemos el tamaño a 15 columnas
+
+        JLabel servidorLabel = new JLabel("Adreça IP del servidor:");
+        servidorField = new JTextField(15); // Campo para la IP del servidor
+        servidorField.setText("127.0.0.1"); // Valor predeterminat per la IP
+
+        JLabel portLabel = new JLabel("Port del servidor:");
+        portField = new JTextField(5); // Camp per al port
+        portField.setText("12345"); // Valor predeterminat per el port
+
+        JButton loginButton = new JButton("Accedir");
         JButton resetButton = new JButton("Resetejar contrasenya");
         JButton altaButton = new JButton("Alta nou Usuari");
+        JButton sortirButton = new JButton("Sortir"); // Botó "Sortir"
 
         // Afegim els components a la finestra
         panel.add(emailLabel);
@@ -41,7 +61,14 @@ public class FinestraLogin extends JFrame {
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(contrasenaLabel);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
-        panel.add(contrasenaField);
+        panel.add(contrasenyaField);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(servidorLabel);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(servidorField);
+        panel.add(portLabel);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(portField);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(loginButton);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -49,143 +76,147 @@ public class FinestraLogin extends JFrame {
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
         panel.add(altaButton);
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(sortirButton); // Afegir el botó "Sortir"
         add(panel);
         setVisible(true);
 
-        // Accions dels botons
-        loginButton.addActionListener(new ActionListener() {
+
+        // Acción de los botones
+        loginButton.addActionListener(e -> intentarLogin());
+        resetButton.addActionListener(e -> resetejarContrasenya());
+        altaButton.addActionListener(e -> demanarAltaUsuari());
+        sortirButton.addActionListener(e -> sortirAplicacio());
+
+        // Añadir el KeyListener para los campos de entrada
+        KeyAdapter enterKeyListener = new KeyAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                intentarLogin();
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    intentarLogin(); // Llama a intentarLogin al presionar Enter
+                }
             }
-        });
+        };
 
-        // Funció per resetejar la contrasenya
-        resetButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                resetejarContrasenya();
-            }
-        });
-
-        // Funció per alta d'un nou usuari
-        altaButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                altaUsuari();
-            }
-        });
-
-        // Connexió al servidor
-        try {
-            Socket socket = new Socket("localhost", 12345); // Connexió amb el servidor
-            serveiLogin = new ServeiLogin(socket); // Passar la connexió a la classe ServeiLogin
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error en connectar amb el servidor: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            System.exit(1); // Tancar l'aplicació si no es pot connectar
-        }
-
-        setVisible(true);
+        emailField.addKeyListener(enterKeyListener);
+        contrasenyaField.addKeyListener(enterKeyListener);
+        servidorField.addKeyListener(enterKeyListener);
+        portField.addKeyListener(enterKeyListener);
     }
 
-    // Mètode per intentar fer login
+    private JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return label;
+    }
+
+    private JTextField createTextField(int columns) {
+        JTextField textField = new JTextField(columns);
+        textField.setMaximumSize(new Dimension(Integer.MAX_VALUE, textField.getPreferredSize().height));
+        textField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return textField;
+    }
+
     private void intentarLogin() {
-        String email = emailField.getText();
-        String contrasena = new String(contrasenaField.getPassword());
+        final int timeout = 5000; // Timeout de 5 segundos
 
-        if (serveiLogin.iniciarSessio(email, contrasena)) {
-            // Si el login és exitós, obrir la finestra principal de l'aplicació
-            new FinestraPrincipal(serveiLogin);
-            this.dispose(); // Tancar la finestra de login
-        } else {
-            JOptionPane.showMessageDialog(this, "Login fallit. Comproveu les credencials.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-// Mètode per resetejar la contrasenya
-private void resetejarContrasenya() {
-    String email = emailField.getText();
-
-    // Validar si el camp de l'email no està buit
-    if (email.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "El camp email no pot estar buit.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    // Enviar sol·licitud per resetejar la contrasenya
-    boolean enviamentExitosa = serveiLogin.enviarEmailReseteigContrasenya(email);
-
-    // Notificar l'usuari sobre l'estat de l'enviament
-    if (enviamentExitosa) {
-        JOptionPane.showMessageDialog(this, "Email per resetejar la contrasenya enviat a: " + email);
-    } else {
-        JOptionPane.showMessageDialog(this, "Error en enviar l'email per resetejar la contrasenya.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-}
-
-// Mètode per donar alta un nou usuari
-private void altaUsuari() {
-    String email = emailField.getText();
-    
-    // Validar si l'email no és buit
-    if (email.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "El camp de l'e-mail no pot estar buït.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    // Validar si l'email segueix un format correcte
-        if (!validarEmail(email)) {
-            JOptionPane.showMessageDialog(FinestraLogin.this, "El format introduït per a l'e-mail és incorrecte", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-        }
-
-    // Preguntar l'àrea
-    String area = JOptionPane.showInputDialog(this, "Introdueix l'àrea:");
-    
-    // Validar si l'àrea no és buida
-    if (area == null || area.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "L'àrea no pot estar buïda.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    // Validar l'àrea
-        if (!validarArea(area)) {
-            JOptionPane.showMessageDialog(this, "Àrea no vàlida. Àrees permeses: Vendes, Comptabilitat, Compres, Màrqueting, RRHH, Producció, IT", "Error" , JOptionPane.ERROR_MESSAGE);
+        String host = servidorField.getText().trim();
+        if (!isValidIP(host)) {
+            JOptionPane.showMessageDialog(this, "IP del servidor no vàlida. Si us plau, introdueix una adreça IP vàlida.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-    // Mètode per validar el format de l'email
-    private boolean validarEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        return pattern.matcher(email).matches();
-    }
-
-    // Mètode per validar l'àrea
-    private boolean validarArea(String area) {
-        String[] areasPermeses = {"Vendes", "Comptabilitat", "Compres", "Màrqueting", "RRHH", "Producció", "IT"};
-        for (String a : areasPermeses) {
-            if (a.equalsIgnoreCase(area)) {
-                return true;
+        String port = portField.getText().trim();
+        try {
+            int portNumber = Integer.parseInt(port);
+            if (portNumber < 0 || portNumber > 65535) {
+                JOptionPane.showMessageDialog(this, "El port ha de ser un número entre el 0 i el 65535", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
+
+            try {
+                // Conexión al servidor
+                socket = new Socket();
+                socket.connect(new InetSocketAddress(host, portNumber), timeout);
+                entrada = new DataInputStream(socket.getInputStream());
+                entrada2 = new DataInputStream(socket.getInputStream());
+                sortida = new DataOutputStream(socket.getOutputStream());
+
+                // Obtener usuario y contraseña
+                String usuari = emailField.getText();
+                String contrasenya = new String(contrasenyaField.getPassword());
+
+                // Enviar credenciales al servidor
+                sortida.writeUTF(usuari);
+                sortida.writeUTF(contrasenya);
+
+                // Leer la respuesta del servidor
+                String resposta = entrada.readUTF();
+
+                if (resposta.contains("Autenticació exitosa")) {
+                    idSessio = resposta.substring(resposta.indexOf(":") + 2);
+                    JOptionPane.showMessageDialog(this, "Login exitós. ID de sessió: " + idSessio);
+                    ServeiUsuari serveiUsuari = new ServeiUsuari(); 
+                    String rol = serveiUsuari.obtenirRolUsuari(usuari);
+                    this.dispose();
+                    FinestraPrincipal.iniciarFinestra(usuari, rol, idSessio);
+                } else {
+                	 // String resposta2 = entrada2.readUTF();
+                	  //  if (resposta2.contains("5")) {
+                	  // 	JOptionPane.showMessageDialog(this, "Compte bloquejat per màxim d'intents permesos. Bye!");
+                	  // 	sortirAplicacio();
+                	  // }
+                    JOptionPane.showMessageDialog(this, "Usuari o contrasenya incorrectes. Torna-ho a provar.");
+                }
+
+            } catch (SocketTimeoutException e) {
+                JOptionPane.showMessageDialog(this, "Error: Temps de connexió esgotat. No es connectar a la IP " + host, "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(this, "Error en connectar amb el servidor: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                closeResources();
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El port ha de ser un número vàlid.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        return false;
     }
 
-
-    // Enviar sol·licitud d'alta al cap de l'àrea a través del servei de login
-    boolean altaExitosa = serveiLogin.solicitarAltaUsuari(email, area);
-
-    // Notificar l'usuari sobre l'estat de la sol·licitud
-    if (altaExitosa) {
-        JOptionPane.showMessageDialog(this, "Sol·licitud d'alta enviada al responsable d'àrea de l'usuari, a l'adreça: " + email);
-    } else {
-        JOptionPane.showMessageDialog(this, "Error en enviar la sol·licitud d'alta.", "Error", JOptionPane.ERROR_MESSAGE);
+    private boolean isValidIP(String ip) {
+        try {
+            InetAddress address = InetAddress.getByName(ip);
+            return address.getHostAddress().equals(ip);
+        } catch (Exception e) {
+            return false;
+        }
     }
-}
 
+    private void resetejarContrasenya() {
+        // Implementa la lógica para resetear la contraseña
+        JOptionPane.showMessageDialog(this, "Funcionalitat de reset de contrasenya no implementada.");
+    }
+
+    private void demanarAltaUsuari() {
+        // Implementa la lógica para solicitar alta de un nuevo usuario
+        JOptionPane.showMessageDialog(this, "Funcionalitat d'alta d'usuari no implementada.");
+    }
+
+    private void sortirAplicacio() {
+        System.exit(0);
+    }
+
+    private void closeResources() {
+        try {
+            if (entrada != null) entrada.close();
+            if (sortida != null) sortida.close();
+            if (socket != null) socket.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(FinestraLogin::new);
+        SwingUtilities.invokeLater(() -> {
+            FinestraLogin finestraLogin = new FinestraLogin();
+            finestraLogin.setVisible(true);
+        });
     }
 }

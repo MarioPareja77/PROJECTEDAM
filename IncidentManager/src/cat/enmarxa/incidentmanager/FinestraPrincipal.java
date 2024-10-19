@@ -1,25 +1,30 @@
 package cat.enmarxa.incidentmanager;
 
 import javax.swing.*;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
 
 public class FinestraPrincipal extends JFrame {
 
     private JMenuBar barraMenu;
-    private JMenu menuIncidencies, menuActius, menuInformes, menuLogout;
-    private Connection connexioBD;
-    private ServeiLogin serveiLogin;
+    private JMenu menuIncidencies, menuActius, menuUsuaris, menuLogout, menuAjuda;
+    private ServeiIncidencia serveiIncidencia;
+    private ServeiUsuari serveiUsuari;
+    private ServeiActiu serveiActiu;
 
-    // Constructor de la finestra principal
-    public FinestraPrincipal() {
-        setTitle("Gestió d'Incidències TI");
+    // Constructor privat
+    private FinestraPrincipal(String usuari, String rol, String idSessio) {
+        setTitle("ENMARXA Incident Manager v1.0 (octubre 2024)");
         setSize(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Centrem la finestra
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setLocationRelativeTo(null); // Centrar la finestra
+
+        // Inicialitzar serveis
+        serveiIncidencia = new ServeiIncidencia();
+        serveiUsuari = new ServeiUsuari();
+        serveiActiu = new ServeiActiu();
 
         // Inicialització de la barra de menú
         barraMenu = new JMenuBar();
@@ -27,78 +32,53 @@ public class FinestraPrincipal extends JFrame {
         // Menú Incidències
         menuIncidencies = new JMenu("Incidències");
         JMenuItem crearIncidencia = new JMenuItem("Crear Incidència");
-        JMenuItem llistarIncidencies = new JMenuItem("Llistat d'Incidències");
+        JMenuItem llistarIncidencies = new JMenuItem("Llistat de totes les Incidències");
         menuIncidencies.add(crearIncidencia);
         menuIncidencies.add(llistarIncidencies);
 
-        // Accions dels submenús d'Incidències
-        crearIncidencia.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-		FinestraCrearIncidencia finestraCrearIncidencia = new FinestraCrearIncidencia(FinestraPrincipal.this);
-	        finestraCrearIncidencia.setVisible(true);
-            }
+        // Accions del menú Incidències
+        crearIncidencia.addActionListener(e -> {
+            FinestraCrearIncidencia finestraCrearIncidencia = new FinestraCrearIncidencia(this);
+            finestraCrearIncidencia.setVisible(true);
         });
 
-	llistarIncidencies.addActionListener(new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			List<Incidencia> incidencies = ServeiIncidencia.llistarIncidencies();
+        llistarIncidencies.addActionListener(e -> mostrarLlistatIncidencies());
 
-		        // Verificar si s'han trobat incidències
-		        if (incidencies.isEmpty()) {
-	 	        JOptionPane.showMessageDialog(FinestraPrincipal.this, "No s'han trobat incidències.", "Informació", JOptionPane.INFORMATION_MESSAGE);
-			return;
-       			 }
+        // Menú Actius (només si no és 'Usuari')
+        if (!rol.equals("Usuari")) {
+            menuActius = new JMenu("Actius");
+            JMenuItem crearActiu = new JMenuItem("Crear Actiu");
+            JMenuItem llistarActius = new JMenuItem("Llistat de tots els Actius");
+            menuActius.add(crearActiu);
+            menuActius.add(llistarActius);
 
-			// Crear un JTable per mostrar les incidències
-		        String[] columnNames = {"ID", "Descripció", "Tipus", "Prioritat"};
-		        Object[][] data = new Object[incidencies.size()][4];
+            // Accions del menú Actius
+            crearActiu.addActionListener(e -> {
+                FinestraCrearActiu finestraCrearActiu = new FinestraCrearActiu(this);
+                finestraCrearActiu.setVisible(true);
+            });
+            llistarActius.addActionListener(e -> mostrarLlistatActius());
+            barraMenu.add(menuActius);
+        }
 
-		        for (int i = 0; i < incidencies.size(); i++) {
-	   		        Incidencia incidencia = incidencies.get(i);
-		 	        data[i][0] = incidencia.getId(); // Asegúrate de que la clase Incidencia tenga el método getId()
-				data[i][1] = incidencia.getDescripcio(); // Métodos getters para cada campo
-				data[i][2] = incidencia.getTipus();
-				data[i][3] = incidencia.getPrioritat();
-			}
+        // Menú Usuaris (només si és 'Gestor' o 'Administrador')
+        if (rol.equals("Gestor") || rol.equals("Administrador")) {
+            menuUsuaris = new JMenu("Usuaris");
+            JMenuItem llistarUsuaris = new JMenuItem("Llistat de tots els Usuaris");
+            menuUsuaris.add(llistarUsuaris);
 
-			JTable table = new JTable(data, columnNames);
-			JScrollPane scrollPane = new JScrollPane(table);
-			scrollPane.setPreferredSize(new Dimension(400, 200)); // Ajustar el tamaño de la tabla
+            // Acció del menú Usuaris
+            llistarUsuaris.addActionListener(e -> mostrarLlistatUsuaris());
+            barraMenu.add(menuUsuaris); // Afegir el menú Usuaris si el rol és Gestor o Administrador
+        }
 
-			// Mostrar la tabla en un cuadro de diálogo
-			JOptionPane.showMessageDialog(FinestraPrincipal.this, scrollPane, "Llistat d'Incidències", JOptionPane.INFORMATION_MESSAGE);
-		}
-	});
+        // Menú Ajuda
+        menuAjuda = new JMenu("Ajuda");
+        JMenuItem infoUsuari = new JMenuItem("Informació de l'Usuari");
+        menuAjuda.add(infoUsuari);
 
-        // Menú Actius
-        menuActius = new JMenu("Actius");
-        JMenuItem llistarActius = new JMenuItem("Llistat d'Actius");
-        menuActius.add(llistarActius);
-
-        // Acció del menú Actius
-        llistarActius.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(FinestraPrincipal.this, "Funcionalitat per llistar actius.");
-                // Aquí s'hauria d'afegir la funcionalitat per llistar actius
-            }
-        });
-
-        // Menú Informes
-        menuInformes = new JMenu("Informes");
-        JMenuItem generarInforme = new JMenuItem("Generar Informe");
-        menuInformes.add(generarInforme);
-
-        // Acció del menú Informes
-        generarInforme.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(FinestraPrincipal.this, "Funcionalitat per generar informes.");
-                // Aquí s'hauria d'afegir la funcionalitat per generar informes
-            }
-        });
+        // Acció per mostrar informació de l'usuari
+        infoUsuari.addActionListener(e -> mostrarInfoUsuari(usuari, rol, idSessio));
 
         // Menú Logout
         menuLogout = new JMenu("Logout");
@@ -106,21 +86,127 @@ public class FinestraPrincipal extends JFrame {
         menuLogout.add(confirmarLogout);
 
         // Acció per confirmar el logout
-        confirmarLogout.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                confirmarSortida();
-            }
-        });
+        confirmarLogout.addActionListener(e -> confirmarSortida());
 
-        // Afegim els menús a la barra de menú
+        // Afegir els menús a la barra segons el rol
         barraMenu.add(menuIncidencies);
-        barraMenu.add(menuActius);
-        barraMenu.add(menuInformes);
+        barraMenu.add(menuAjuda);
         barraMenu.add(menuLogout);
 
-        // Afegim la barra de menú a la finestra
+        // Afegir la barra de menú a la finestra
         setJMenuBar(barraMenu);
+
+        // Listener per la acció de tancar la finestra (X)
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                confirmarSortida();  // Preguntar si es desitja tancar la sessió
+            }
+        });
+    }
+
+    // Mètode per mostrar informació de l'usuari
+    private void mostrarInfoUsuari(String usuari, String rol, String idSessio) {
+        String info = "Nom d'Usuari: " + usuari + "\nRol: " + rol + "\nID de Sessió: " + idSessio;
+        JOptionPane.showMessageDialog(this, info, "Informació de l'Usuari", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    // Mètode per mostrar el llistat d'incidències
+    private void mostrarLlistatIncidencies() {
+        // Usamos el servei per obtenir les incidències
+        List<Incidencia> incidencies = serveiIncidencia.obtenirTotesLesIncidencies();
+
+        // Verificar si s'han trobat incidències
+        if (incidencies.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No s'han trobat incidències.", "Informació", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Crear un JTable per mostrar les incidències
+        String[] columnNames = {"ID", "Descripció", "Tipus", "Prioritat", "Data de Creació"};
+        Object[][] data = new Object[incidencies.size()][5];
+
+        for (int i = 0; i < incidencies.size(); i++) {
+            Incidencia incidencia = incidencies.get(i);
+            data[i][0] = incidencia.getId(); // ID de la incidència
+            data[i][1] = incidencia.getDescripcio(); // Descripció de la incidència
+            data[i][2] = incidencia.getTipus(); // Tipus de la incidència
+            data[i][3] = incidencia.getPrioritat(); // Prioritat de la incidència
+            data[i][4] = incidencia.getDataCreacio(); // Data de creació
+        }
+
+        JTable table = new JTable(data, columnNames);
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(800, 500)); // Ajustar la mida de la taula
+
+        // Mostrar la taula en un quadre de diàleg
+        JOptionPane.showMessageDialog(this, scrollPane, "Llistat d'Incidències", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    // Mètode per mostrar el llistat d'usuaris
+    private void mostrarLlistatUsuaris() {
+        // Usamos el servei per obtenir els usuaris
+        List<Usuari> usuaris = serveiUsuari.obtenirTotsElsUsuaris();
+
+        // Verificar si s'han trobat usuaris
+        if (usuaris.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No s'han trobat usuaris.", "Informació", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Crear un JTable per mostrar els usuaris
+        String[] columnNames = {"E-mail", "Contrasenya", "Àrea", "Cap", "Rol", "Intents Fallits"};
+        Object[][] data = new Object[usuaris.size()][6]; // Modificat a 6 per incloure tots els camps
+
+        for (int i = 0; i < usuaris.size(); i++) {
+            Usuari usuari = usuaris.get(i);
+            data[i][0] = usuari.getEmail();
+            data[i][1] = usuari.getContrasenya();
+            data[i][2] = usuari.getArea();
+            data[i][3] = usuari.getCap();
+            data[i][4] = usuari.getRol();
+            data[i][5] = usuari.getIntentsFallits(); // Afegit per mostrar intents fallits
+        }
+
+        JTable table = new JTable(data, columnNames);
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(800, 500)); // Ajustar el tamany de la taula
+
+        // Mostrar la taula en un quadre de diàleg
+        JOptionPane.showMessageDialog(this, scrollPane, "Llistat d'Usuaris", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    // Mètode per mostrar el llistat d'actius
+    private void mostrarLlistatActius() {
+        // Usamos el servei per obtenir els actius
+        List<Actiu> actius = serveiActiu.obtenirTotsElsActius();
+
+        // Verificar si s'han trobat actius
+        if (actius.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No s'han trobat actius.", "Informació", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Crear un JTable per mostrar els actius
+        String[] columnNames = {"Nom", "Tipus", "Àrea", "Marca", "Data Alta", "Descripció"};
+        Object[][] data = new Object[actius.size()][6]; // Modificat a 6 per incloure tots els camps
+
+        for (int i = 0; i < actius.size(); i++) {
+            Actiu actiu = actius.get(i);
+            data[i][0] = actiu.getNom();
+            data[i][1] = actiu.getTipus(); 
+            data[i][2] = actiu.getArea();
+            data[i][3] = actiu.getMarca();
+            data[i][4] = actiu.getDataAlta();
+            data[i][5] = actiu.getDescripcio(); // Afegit per mostrar descripció
+        }
+
+        JTable table = new JTable(data, columnNames);
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(1000, 500)); // Ajustar el tamany de la taula
+
+        // Mostrar la taula en un quadre de diàleg
+        JOptionPane.showMessageDialog(this, scrollPane, "Llistat d'Actius", JOptionPane.INFORMATION_MESSAGE);
     }
 
     // Mètode per confirmar la sortida de l'aplicació
@@ -131,6 +217,7 @@ public class FinestraPrincipal extends JFrame {
             // Tanquem la connexió amb la base de dades i el servidor
             tancarConnexions();
             // Tanquem la finestra i sortim de l'aplicació
+            this.dispose(); // Aquest mètode tanca la finestra actual
             System.exit(0);
         }
     }
@@ -138,26 +225,16 @@ public class FinestraPrincipal extends JFrame {
     // Mètode per tancar la connexió amb la base de dades i el servidor
     private void tancarConnexions() {
         try {
-            if (connexioBD != null && !connexioBD.isClosed()) {
-                connexioBD.close();
-                System.out.println("Connexió amb la base de dades tancada.");
-            }
-            // Aquí s'hauria de tancar la connexió amb el servidor (si escau)
-            serveiLogin.tancarConnexioServidor(); // Tancar la connexió amb el servidor
+            Servidor.TancarConnexioServidor(); // Tancar la connexió amb el servidor
             System.out.println("Connexió amb el servidor tancada.");
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace(); // Maneig d'excepcions per assegurar que no es trenqui el programa
         }
     }
 
-    // Mètode principal per provar la finestra
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                FinestraPrincipal finestra = new FinestraPrincipal();
-                finestra.setVisible(true);
-            }
-        });
+    // Mètode estàtic per crear una instància de FinestraPrincipal
+    public static void iniciarFinestra(String usuari, String rol, String idSessio) {
+        FinestraPrincipal finestra = new FinestraPrincipal(usuari, rol, idSessio);
+        finestra.setVisible(true);
     }
 }
