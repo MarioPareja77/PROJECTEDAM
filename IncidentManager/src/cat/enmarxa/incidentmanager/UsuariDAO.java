@@ -48,7 +48,6 @@ public class UsuariDAO {
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-            	intentsFallits = rs.getInt("intents_fallits");
                 return rs.getInt("intents_fallits");
             }
         }

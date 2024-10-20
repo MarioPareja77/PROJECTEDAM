@@ -152,7 +152,7 @@ public class FinestraLogin extends JFrame {
                 // Leer la respuesta del servidor
                 String resposta = entrada.readUTF();
 
-                if (resposta.contains("Autenticació exitosa")) {
+                if (resposta.contains("exitosa")) {
                     idSessio = resposta.substring(resposta.indexOf(":") + 2);
                     JOptionPane.showMessageDialog(this, "Login exitós. ID de sessió: " + idSessio);
                     ServeiUsuari serveiUsuari = new ServeiUsuari(); 
@@ -160,12 +160,11 @@ public class FinestraLogin extends JFrame {
                     this.dispose();
                     FinestraPrincipal.iniciarFinestra(usuari, rol, idSessio);
                 } else {
-                	 // String resposta2 = entrada2.readUTF();
-                	  //  if (resposta2.contains("5")) {
-                	  // 	JOptionPane.showMessageDialog(this, "Compte bloquejat per màxim d'intents permesos. Bye!");
-                	  // 	sortirAplicacio();
-                	  // }
+                	if (resposta.contains("bloquejat")) {
+                		JOptionPane.showMessageDialog(this, "Compte bloquejat al sistema per màxim nombre d'intents permesos sobrepassat!");
+                    } else {
                     JOptionPane.showMessageDialog(this, "Usuari o contrasenya incorrectes. Torna-ho a provar.");
+                    }
                 }
 
             } catch (SocketTimeoutException e) {
@@ -176,7 +175,7 @@ public class FinestraLogin extends JFrame {
                 closeResources();
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "El port ha de ser un número vàlid.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "El port ha de ser un número vàlid entre 0 i 65535.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

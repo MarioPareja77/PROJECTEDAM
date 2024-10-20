@@ -83,7 +83,6 @@ public class Servidor {
             try (
                     DataInputStream entrada = new DataInputStream(socketClient.getInputStream());
                     DataOutputStream sortida = new DataOutputStream(socketClient.getOutputStream());
-            		DataOutputStream sortida2 = new DataOutputStream(socketClient.getOutputStream())
             ) {
 
                 // Llegir les credencials enviades pel client
@@ -99,21 +98,21 @@ public class Servidor {
                     sessionsActives.put(idSessio, email);
 
                     // Enviar resposta d'autenticació amb l'ID de sessió
+                    int comptadorIntents = serveiLogin.obtenirIntentsFallits(email);
+                	if (comptadorIntents >= 5) {
+                		System.out.println("El compte " + email + " està bloquejat per haver arribat al nombre màxim d'intents permesos. Bye!");
+                		logWriter.println("El compte " + email + " està bloquejat per haver arribat al nombre màxim d'intents permesos. Bye!");
+                		sortida.writeUTF("Compte bloquejat per haver arribat al nombre màxim d'intents");
+                 } else {
                     sortida.writeUTF("Autenticació exitosa. ID de sessió: " + idSessio);
                     System.out.println("Usuari autenticat: " + email + " | ID de sessió: " + idSessio);
                     logWriter.println("Usuari autenticat: " + email + " | ID de sessió: " + idSessio);
+                 }
                 } else {
                     // Enviar missatge d'autenticació fallida
                     sortida.writeUTF("Autenticació fallida. Usuari o contrasenya incorrectes.");
                     logWriter.println("Autenticació fallida. Usuari o contrasenya incorrectes per a: " + email);
                     serveiLogin.augmentarIntentsFallits(email);
-                    int comptadorIntents = serveiLogin.obtenirIntentsFallits(email);
-                    	if (comptadorIntents > 5) {
-                    		System.out.println("El compte" + email + "està bloquejat per haver arribat al nombre màxim d'intents permesos. Bye!");
-                    		logWriter.println("El compte" + email + "està bloquejat per haver arribat al nombre màxim d'intents permesos. Bye!");
-                    		String comptadorsIntentsText = Integer.toString(comptadorIntents);
-                    		sortida2.writeUTF(comptadorsIntentsText);
-                     }
                 }
 
             } catch (IOException e) {

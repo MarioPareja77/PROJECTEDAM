@@ -45,7 +45,7 @@ public class FinestraPrincipal extends JFrame {
         llistarIncidencies.addActionListener(e -> mostrarLlistatIncidencies());
 
         // Menú Actius (només si no és 'Usuari')
-        if (!rol.equals("Usuari")) {
+        if (!rol.equals("usuari")) {
             menuActius = new JMenu("Actius");
             JMenuItem crearActiu = new JMenuItem("Crear Actiu");
             JMenuItem llistarActius = new JMenuItem("Llistat de tots els Actius");
@@ -62,7 +62,7 @@ public class FinestraPrincipal extends JFrame {
         }
 
         // Menú Usuaris (només si és 'Gestor' o 'Administrador')
-        if (rol.equals("Gestor") || rol.equals("Administrador")) {
+        if (rol.equals("gestor") || rol.equals("administrador")) {
             menuUsuaris = new JMenu("Usuaris");
             JMenuItem llistarUsuaris = new JMenuItem("Llistat de tots els Usuaris");
             menuUsuaris.add(llistarUsuaris);
