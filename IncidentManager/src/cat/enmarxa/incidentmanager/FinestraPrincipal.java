@@ -1,17 +1,30 @@
 package cat.enmarxa.incidentmanager;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FinestraPrincipal extends JFrame {
 
     private JMenuBar barraMenu;
-    private JMenu menuIncidencies, menuActius, menuUsuaris, menuLogout, menuAjuda;
+    private JMenu menuIncidencies, menuActius, menuUsuaris, menuSessions, menuLogout, menuAjuda;
     private ServeiIncidencia serveiIncidencia;
     private ServeiUsuari serveiUsuari;
     private ServeiActiu serveiActiu;
+    private String usuari;
+    private Servidor servidor;
+    
+    private static Map<String, String> sessionsActives = new HashMap<>();
+  
+    public FinestraPrincipal (Servidor servidor) {
+    	this.servidor = servidor;
+    }
 
     // Constructor privat
     private FinestraPrincipal(String usuari, String rol, String idSessio) {
@@ -20,11 +33,14 @@ public class FinestraPrincipal extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLocationRelativeTo(null); // Centrar la finestra
+        
+        this.usuari = usuari;
 
         // Inicialitzar serveis
         serveiIncidencia = new ServeiIncidencia();
         serveiUsuari = new ServeiUsuari();
         serveiActiu = new ServeiActiu();
+        servidor = new Servidor();
 
         // Inicialització de la barra de menú
         barraMenu = new JMenuBar();
@@ -38,7 +54,7 @@ public class FinestraPrincipal extends JFrame {
 
         // Accions del menú Incidències
         crearIncidencia.addActionListener(e -> {
-            FinestraCrearIncidencia finestraCrearIncidencia = new FinestraCrearIncidencia(this);
+            FinestraCrearIncidencia finestraCrearIncidencia = new FinestraCrearIncidencia(this, usuari);
             finestraCrearIncidencia.setVisible(true);
         });
 
@@ -60,7 +76,7 @@ public class FinestraPrincipal extends JFrame {
             llistarActius.addActionListener(e -> mostrarLlistatActius());
             barraMenu.add(menuActius);
         }
-
+        
         // Menú Usuaris (només si és 'Gestor' o 'Administrador')
         if (rol.equals("gestor") || rol.equals("administrador")) {
             menuUsuaris = new JMenu("Usuaris");
@@ -71,6 +87,7 @@ public class FinestraPrincipal extends JFrame {
             llistarUsuaris.addActionListener(e -> mostrarLlistatUsuaris());
             barraMenu.add(menuUsuaris); // Afegir el menú Usuaris si el rol és Gestor o Administrador
         }
+        
 
         // Menú Ajuda
         menuAjuda = new JMenu("Ajuda");
@@ -90,6 +107,17 @@ public class FinestraPrincipal extends JFrame {
 
         // Afegir els menús a la barra segons el rol
         barraMenu.add(menuIncidencies);
+        
+        // Menú Sessions (només si és 'Administrador')
+        if (rol.equals("administrador")) {
+            menuSessions = new JMenu("Sessions");
+            JMenuItem llistarSessions = new JMenuItem("Llistat de totes les sessions obertes");
+            menuSessions.add(llistarSessions);
+
+            // Acció del menú Sessions
+            llistarSessions.addActionListener(e -> mostrarLlistatSessions());
+            barraMenu.add(menuSessions); // Afegir el menú Usuaris si el rol és Gestor o Administrador
+        }
         barraMenu.add(menuAjuda);
         barraMenu.add(menuLogout);
 
@@ -143,6 +171,10 @@ public class FinestraPrincipal extends JFrame {
         JOptionPane.showMessageDialog(this, scrollPane, "Llistat d'Incidències", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    public void mostrarSessions() {
+        System.out.println(servidor.obtenirSessionsActives());
+    }
+    
     // Mètode per mostrar el llistat d'usuaris
     private void mostrarLlistatUsuaris() {
         // Usamos el servei per obtenir els usuaris
@@ -155,8 +187,8 @@ public class FinestraPrincipal extends JFrame {
         }
 
         // Crear un JTable per mostrar els usuaris
-        String[] columnNames = {"E-mail", "Contrasenya", "Àrea", "Cap", "Rol", "Intents Fallits"};
-        Object[][] data = new Object[usuaris.size()][6]; // Modificat a 6 per incloure tots els camps
+        String[] columnNames = {"E-mail", "Contrasenya", "Àrea", "Cap", "Rol"};
+        Object[][] data = new Object[usuaris.size()][5]; // Modificat a 6 per incloure tots els camps
 
         for (int i = 0; i < usuaris.size(); i++) {
             Usuari usuari = usuaris.get(i);
@@ -165,7 +197,7 @@ public class FinestraPrincipal extends JFrame {
             data[i][2] = usuari.getArea();
             data[i][3] = usuari.getCap();
             data[i][4] = usuari.getRol();
-            data[i][5] = usuari.getIntentsFallits(); // Afegit per mostrar intents fallits
+           
         }
 
         JTable table = new JTable(data, columnNames);
@@ -175,7 +207,40 @@ public class FinestraPrincipal extends JFrame {
         // Mostrar la taula en un quadre de diàleg
         JOptionPane.showMessageDialog(this, scrollPane, "Llistat d'Usuaris", JOptionPane.INFORMATION_MESSAGE);
     }
+    
 
+    // Mètode per mostrar el llistat de sessions
+    private void mostrarLlistatSessions() {
+    	Servidor servidor = new Servidor();
+    	FinestraPrincipal finestraPrincipal = new FinestraPrincipal(servidor);
+    	finestraPrincipal.mostrarSessions();
+    	servidor.obtenirSessionsActives();
+    	
+        // Crear el model de la taula
+        DefaultTableModel modelTaula = new DefaultTableModel();
+        modelTaula.addColumn("ID de sessió");
+        modelTaula.addColumn("Usuari (e-mail)");
+        
+        // Crear la tabla amb el model
+        JTable taulaSessions = new JTable(modelTaula);
+        JScrollPane scrollPane = new JScrollPane(taulaSessions);
+
+        // Afegir les sessions actives a la taula
+        for (Map.Entry<String, String> entrada : sessionsActives.entrySet()) {
+            String idSessio = entrada.getKey();
+            String email = entrada.getValue();
+            modelTaula.addRow(new Object[]{idSessio, email});
+        }
+
+        // Mostrar la taula en un quadre de diàleg
+        JOptionPane.showMessageDialog(this, scrollPane, "Llistat de sessions", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    // Mètode que retorna l'usuari actual
+    public String getUsuari() {
+        return usuari;
+    }
+    
     // Mètode per mostrar el llistat d'actius
     private void mostrarLlistatActius() {
         // Usamos el servei per obtenir els actius
@@ -238,3 +303,4 @@ public class FinestraPrincipal extends JFrame {
         finestra.setVisible(true);
     }
 }
+

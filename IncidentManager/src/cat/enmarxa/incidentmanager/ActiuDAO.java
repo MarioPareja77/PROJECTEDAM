@@ -1,6 +1,10 @@
 package cat.enmarxa.incidentmanager;
 
 import java.sql.Connection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,6 +30,45 @@ public class ActiuDAO {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             throw new SQLException("Controlador JDBC no trobat.");
+        }
+    }
+    
+    public List<String> obtenirNomTotsElsActius() {
+        String consulta = "SELECT nom FROM actius";
+        
+        List<String> actius = new ArrayList<>();
+
+        try (PreparedStatement sentencia = connexio.prepareStatement(consulta);
+             ResultSet resultats = sentencia.executeQuery()) {
+
+            // Recorremos los resultados y añadimos los nombres a la lista
+            while (resultats.next()) {
+                String actiu = resultats.getString("nom"); // Obtener el nombre del activo
+                actius.add(actiu); // Añadir a la lista
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejar la excepción adecuadamente
+        }
+
+        return actius; // Retornar la llista d'actius
+    }
+    
+   // Mètode per crear la taula 'Actius' (únicament si no existia encara)
+    public void crearTaulaActius() {
+        String consulta = "CREATE TABLE IF NOT EXISTS actius ("
+                + "id_actiu INT AUTO_INCREMENT PRIMARY KEY, "
+                + "nom VARCHAR(25) NOT NULL, "
+                + "tipus ENUM('servidor', 'PC', 'pantalla', 'portàtil', 'switch', 'router', 'cablejat', 'ratolí', 'teclat', 'rack', 'software') NOT NULL, "
+                + "area VARCHAR(20) NOT NULL, "
+                + "marca VARCHAR(25) NOT NULL, "
+                + "data_alta DATE NOT NULL, "
+                + "descripcio VARCHAR(255) NOT NULL"
+                + ");";  // Cierre de la consulta con el paréntesis y el punto y coma
+        // Ús de try-with-resources per preparar i executar la consulta
+        try (PreparedStatement sentencia = connexio.prepareStatement(consulta)) {
+            // Executar la consulta
+            sentencia.executeUpdate();
+        } catch (SQLException e) {
         }
     }
 

@@ -1,6 +1,7 @@
 package cat.enmarxa.incidentmanager;
 
 import java.sql.Connection;
+import org.mindrot.jbcrypt.BCrypt;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +13,7 @@ import java.util.List;
 public class UsuariDAO {
     private Connection connexio;
     int intentsFallits;
+ 
 
     // Constructor que estableix la connexió a la base de dades
     public UsuariDAO() throws SQLException {
@@ -32,13 +34,23 @@ public class UsuariDAO {
 
     // Comprovar si l'usuari i contrasenya introduïts són correctes
     public boolean autenticar(String email, String contrasenya) throws SQLException {
-        String query = "SELECT * FROM Usuaris WHERE email = ? AND contrasenya = ?";
+        String query = "SELECT contrasenya FROM Usuaris WHERE email = ?";
+        String contrasenyaHasheadaDB = null;
         try (PreparedStatement stmt = connexio.prepareStatement(query)) {
             stmt.setString(1, email);
-            stmt.setString(2, contrasenya);
             ResultSet rs = stmt.executeQuery();
-            return rs.next(); // Retorna true si es troba un registre
+            if (rs.next()) {
+            	contrasenyaHasheadaDB = rs.getString("contrasenya");
+            } else {
+            	System.out.println("Usuari no trobat.");
+             	return false;
+            }
+            } catch (SQLException e) {
+                e.printStackTrace(); // Manejo de excepciones
+                return false; // Retornamos false si hay un error en la consulta
         }
+         // Verificar si la contrasenya introduïda coincideix amb el hash emmagatzemat
+        return BCrypt.checkpw(contrasenya, contrasenyaHasheadaDB);
     }
 
     // Obtenir el nombre d'intents fallits de l'usuari
@@ -56,8 +68,19 @@ public class UsuariDAO {
 
     // Augmentar el nombre d'intents fallits de l'usuari
     public void augmentarIntentsFallits(String email) throws SQLException {
-    	obtenirIntentsFallits (email);
+    	int intentsFallits = obtenirIntentsFallits (email);
     	intentsFallits = intentsFallits + 1;
+        String query = "UPDATE Usuaris SET intents_fallits = ? WHERE email = ?";
+            try (PreparedStatement stmt = connexio.prepareStatement(query)) {
+                stmt.setInt(1, intentsFallits);
+                stmt.setString(2, email);
+                stmt.executeUpdate();  
+        }
+    }
+    
+    // Restablir el nombre d'intents fallits de l'usuari a 0 (després de login exitós)
+    public void restablirIntentsFallits(String email) throws SQLException {
+    	intentsFallits = 0;
         String query = "UPDATE Usuaris SET intents_fallits = ? WHERE email = ?";
             try (PreparedStatement stmt = connexio.prepareStatement(query)) {
                 stmt.setInt(1, intentsFallits);
@@ -68,10 +91,12 @@ public class UsuariDAO {
     
     // Método per crear un nou usuari
     public void crearUsuari(String email, String contrasenya, String area, String cap, String rol) throws SQLException {
+    	// Hashear la contrasenya i “saltejar-la”
+    	String contrasenyaHasheada = BCrypt.hashpw(contrasenya, BCrypt.gensalt());
         String consulta = "INSERT INTO usuaris (email, contrasenya, area, cap, rol) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement sentencia = connexio.prepareStatement(consulta)) {
             sentencia.setString(1, email);
-            sentencia.setString(2, contrasenya);
+            sentencia.setString(2, contrasenyaHasheada);
             sentencia.setString(3, area);
             sentencia.setString(4, cap);
             sentencia.setString(5, rol);
@@ -133,9 +158,11 @@ public class UsuariDAO {
 
     // Método per actualitzar un usuari
     public void actualitzarUsuari(String email, String contrasenya, String area, String cap, String rol) throws SQLException {
+    	/ Hashear la contrasenya i “saltejar-la”
+    	String contrasenyaHasheada = BCrypt.hashpw(contrasenya, BCrypt.gensalt());
         String consulta = "UPDATE usuaris SET contrasenya = ?, area = ?, cap = ?, rol = ? WHERE email = ?";
         try (PreparedStatement sentencia = connexio.prepareStatement(consulta)) {
-            sentencia.setString(1, contrasenya);
+            sentencia.setString(1, contrasenyaHasheada);
             sentencia.setString(2, area);
             sentencia.setString(3, cap);
             sentencia.setString(4, rol);
@@ -152,6 +179,17 @@ public class UsuariDAO {
             sentencia.executeUpdate(); // Executa l'eliminació
         }
     }
+    
+    // Método per bloquejar un usuari (augment intentsFallits a 5)
+    public void bloquejarUsuari(String email) throws SQLException {
+    	int intentsFallits = 5;
+    		String query = "UPDATE Usuaris SET intents_fallits = ? WHERE email = ?";
+    		try (PreparedStatement stmt = connexio.prepareStatement(query)) {
+    			stmt.setInt(1, intentsFallits);
+    			stmt.setString(2, email);
+    			stmt.executeUpdate();  
+    	        }
+    	    }
 
     // Método per tancar la connexió
     public void tancarConnexio() {

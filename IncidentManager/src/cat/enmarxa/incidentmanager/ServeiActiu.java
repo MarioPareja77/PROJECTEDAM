@@ -42,6 +42,12 @@ public class ServeiActiu {
             return new ArrayList<>(); // Devolver una lista vacía en caso de error
         }
     }
+    
+    // Método para obtener el listado de todos los activos (solo el nombre)
+    public List<String> obtenirNomTotsElsActius() {
+        // Delegar la operación al DAO
+		return actiuDAO.obtenirNomTotsElsActius(); // Método que obtiene todos los activos de la base de datos
+    }
 
     // Método para obtener un activo específico por su ID
     public Actiu obtenirActiuPerId(int idActiu) {
