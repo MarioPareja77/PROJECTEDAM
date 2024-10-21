@@ -28,31 +28,44 @@ public class IncidenciaDAO {
             throw new SQLException("Controlador JDBC no trobat.");
         }
     }
+    
+    // Mètode per crear la taula 'Incidencies' (únicament si no existia encara)
+    public void crearTaulaIncidencies() {
+    	 String consulta = "CREATE TABLE IF NOT EXISTS incidencies ("
+                 + "id_incidencia INT AUTO_INCREMENT PRIMARY KEY, "
+                 + "tipus ENUM('Incidència', 'Petició', 'Problema', 'Canvi') NOT NULL, "
+                 + "prioritat ENUM('Baixa', 'Normal', 'Alta', 'Crítica', 'Urgent') NOT NULL, "
+                 + "descripcio TEXT NOT NULL, "
+                 + "email_creador VARCHAR(50), "
+                 + "data_creacio DATE NOT NULL, "
+                 + "CONSTRAINT fk_usuari_incidencia FOREIGN KEY (email_creador) REFERENCES usuaris(email) ON DELETE CASCADE"
+                 + ");";  // Cierre de la consulta con el paréntesis y el punto y coma
 
+         // Uso de try-with-resources para preparar y ejecutar la consulta
+         try (PreparedStatement sentencia = connexio.prepareStatement(consulta)) {
+             // Ejecutar la consulta
+             sentencia.executeUpdate();
+         } catch (SQLException e) {
+             // Manejo de la excepción SQL
+         }
+     }
+    
     // Mètode per crear una nova incidència
-    public int crearIncidencia(String tipus, String prioritat, String descripcio, String idUsuari) throws SQLException {
-        String consulta = "INSERT INTO incidencies (tipus, prioritat, descripcio, id_usuari, data_creacio) VALUES (?, ?, ?, ?, NOW())";
-        int idIncidencia = -1;
-
+    public void crearIncidencia(String tipus, String prioritat, String descripcio, String usuari) throws SQLException {
+    	
+        String consulta = "INSERT INTO incidencies (tipus, prioritat, descripcio, email_creador, data_creacio) VALUES (?, ?, ?, ?, NOW())";
         try (PreparedStatement sentencia = connexio.prepareStatement(consulta, PreparedStatement.RETURN_GENERATED_KEYS)) {
             // Assignem els valors als paràmetres de la consulta
             sentencia.setString(1, tipus);
             sentencia.setString(2, prioritat);
             sentencia.setString(3, descripcio);
-            sentencia.setString(4, idUsuari);
+            sentencia.setString(4, usuari);
 
             // Executem la consulta per inserir la nova incidència
             sentencia.executeUpdate();
+          }
+      }
 
-            // Obtenim l'ID de la nova incidència creada
-            ResultSet clausGenerades = sentencia.getGeneratedKeys();
-            if (clausGenerades.next()) {
-                idIncidencia = clausGenerades.getInt(1);
-            }
-        }
-
-        return idIncidencia; // Retornar l'ID de la nova incidència
-    }
 
     // Mètode per associar actius a una incidència
     public void associarActius(int idIncidencia, List<Integer> actius) throws SQLException {

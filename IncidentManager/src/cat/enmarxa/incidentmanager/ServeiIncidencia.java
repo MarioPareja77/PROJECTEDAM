@@ -12,21 +12,23 @@ public class ServeiIncidencia {
     public ServeiIncidencia() {
         try {
 			this.incidenciaDAO = new IncidenciaDAO();
+			incidenciaDAO.crearTaulaIncidencies();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} // Inicialitzem el DAO
     }
 
     // Mètode per crear una nova incidència
-    public void crearIncidencia(String tipus, String prioritat, String descripcio, String usuari) {
+    public boolean crearIncidencia(String tipus, String prioritat, String descripcio, String usuari) {
         try {
             // Delegar la operación al DAO
-            int idIncidencia = incidenciaDAO.crearIncidencia(tipus, prioritat, descripcio, "dummy"); // Obtener el ID de la incidencia creada
-            associarActius(idIncidencia, actius); // Asociar los activos a la incidencia
+            incidenciaDAO.crearIncidencia(tipus, prioritat, descripcio, usuari); // Obtener el ID de la incidencia creada
+            return true;
         } catch (SQLException e) {
             e.printStackTrace(); // Manejar la excepción aquí
             // Aquí puedes agregar un mensaje de error personalizado si es necesario.
         }
+        return false ;
     }
 
     // Mètode per associar actius a una incidència

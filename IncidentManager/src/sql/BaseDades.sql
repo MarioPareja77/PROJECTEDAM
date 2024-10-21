@@ -5,7 +5,7 @@ USE gestio_incidencies;
 -- Crear taula 'Usuaris'
 CREATE TABLE usuaris (
     email VARCHAR(50) PRIMARY KEY,  -- Correu electrònic dew l'usuari
-    contrasenya VARCHAR(20) NOT NULL,
+    contrasenya VARCHAR(100) NOT NULL,
     data_alta DATE NOT NULL,
     intents_fallits INT DEFAULT 0,
     area VARCHAR(20) NOT NULL,
