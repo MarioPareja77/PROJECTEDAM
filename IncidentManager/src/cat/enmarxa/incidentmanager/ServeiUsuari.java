@@ -6,74 +6,77 @@ import java.util.List;
 
 public class ServeiUsuari {
 
-    private UsuariDAO usuariDAO; // Objeto DAO para gestionar la base de datos
+    private UsuariDAO usuariDAO; // Objecte DAO per gestionar la base de dades
 
-    // Método Constructor
+    // Constructor que inicialitza el DAO
     public ServeiUsuari() {
         try {
-            this.usuariDAO = new UsuariDAO(); // Inicializamos el DAO
+            this.usuariDAO = new UsuariDAO(); // Inicialitzem l'objecte DAO
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejo de excepciones en la inicialización
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error durant la inicialització
         }
     }
 
-    // Método para crear un nuevo usuario
+    // Mètode per crear un nou usuari
     public void crearUsuari(String email, String contrasenya, String area, String cap, String rol) {
         try {
-            // Delegar la operación al DAO
+            // Delegar l'operació al DAO per crear un nou usuari
             usuariDAO.crearUsuari(email, contrasenya, area, cap, rol);
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción aquí
-            // Puedes agregar un mensaje de error personalizado si es necesario.
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error durant la creació de l'usuari
         }
     }
 
-    // Método para obtener el listado de todos los usuarios
+    // Mètode per obtenir el llistat de tots els usuaris
     public List<Usuari> obtenirTotsElsUsuaris() {
         try {
-            // Delegar la operación al DAO
-            return usuariDAO.obtenirTotsElsUsuaris(); // Método que obtiene todos los usuarios de la base de datos
+            // Delegar l'operació al DAO per obtenir tots els usuaris de la base de dades
+            return usuariDAO.obtenirTotsElsUsuaris();
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción aquí
-            return new ArrayList<>(); // Devolver una lista vacía en caso de error
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error
+            return new ArrayList<>(); // Retornar una llista buida en cas d'error
         }
     }
 
-    // Método para obtener un usuario específico por su email
+    // Mètode per obtenir un usuari específic mitjançant el seu correu electrònic
     public Usuari obtenirUsuariPerEmail(String email) {
         try {
-            return usuariDAO.obtenirUsuariPerEmail(email); // Obtener un usuario por su email
+            // Delegar l'operació al DAO per obtenir l'usuari per email
+            return usuariDAO.obtenirUsuariPerEmail(email);
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción aquí
-            return null; // Devolver null en caso de error
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error
+            return null; // Retornar null en cas d'error
         }
     }
 
-    // Método para actualizar un usuario
+    // Mètode per actualitzar un usuari existent
     public void actualitzarUsuari(String email, String contrasenya, String area, String cap, String rol) {
         try {
-            usuariDAO.actualitzarUsuari(email, contrasenya, area, cap, rol); // Método para actualizar un usuario
+            // Delegar l'operació al DAO per actualitzar l'usuari
+            usuariDAO.actualitzarUsuari(email, contrasenya, area, cap, rol);
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción aquí
-        }
-    }
-    
-    // Método per obtenir el rol d'un usuari
-    public String obtenirRolUsuari(String email) {
-        try {
-            return usuariDAO.obtenirRolUsuari(email); 
-        } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción aquí
-            return null;
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error durant l'actualització
         }
     }
 
-    // Método para eliminar un usuario
+    // Mètode per obtenir el rol d'un usuari específic mitjançant el seu correu electrònic
+    public String obtenirRolUsuari(String email) {
+        try {
+            // Delegar l'operació al DAO per obtenir el rol de l'usuari
+            return usuariDAO.obtenirRolUsuari(email);
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error
+            return null; // Retornar null en cas d'error
+        }
+    }
+
+    // Mètode per eliminar un usuari existent
     public void eliminarUsuari(String email) {
         try {
-            usuariDAO.eliminarUsuari(email); // Método para eliminar un usuario de la base de datos
+            // Delegar l'operació al DAO per eliminar l'usuari de la base de dades
+            usuariDAO.eliminarUsuari(email);
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción aquí
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error durant l'eliminació
         }
     }
 }

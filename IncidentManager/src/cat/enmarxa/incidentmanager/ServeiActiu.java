@@ -7,74 +7,75 @@ import java.util.List;
 
 public class ServeiActiu {
 
-    private ActiuDAO actiuDAO; // Objeto DAO para gestionar la base de datos
+    private ActiuDAO actiuDAO; // Objecte DAO per gestionar la base de dades
 
-    // Método Constructor
+    // Constructor de la classe
     public ServeiActiu() {
         try {
-            this.actiuDAO = new ActiuDAO(); // Inicializamos el DAO
+            this.actiuDAO = new ActiuDAO(); // Inicialitzem el DAO
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejo de excepciones en la inicialización
+            e.printStackTrace(); // Gestió d'excepcions en la inicialització
         }
     }
 
-    // Método para crear un nuevo activo
+    // Mètode per crear un nou actiu
     public boolean crearActiu(String nom, String tipus, String area, String marca, java.util.Date dataAlta, String descripcio) {
         try {
-            // Delegar la operación al DAO
-        	int id = -1;
-            actiuDAO.crearActiu(id, nom, tipus, area, marca, dataAlta, descripcio);
+            // Deleguem l'operació al DAO
+            int id = -1; // Inicialitzem l'ID com a -1, potser es genera automàticament
+            actiuDAO.crearActiu(id, nom, tipus, area, marca, dataAlta, descripcio); // Creem el nou actiu
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción aquí
-            // Puedes agregar un mensaje de error personalizado si es necesario.
+            e.printStackTrace(); // Gestionem l'excepció
+            // Es pot afegir un missatge d'error personalitzat si és necessari
         }
-        return false;
+        return false; // Es pot modificar el retorn depenent de la implementació
     }
-    
 
-    // Método para obtener el listado de todos los activos
+    // Mètode per obtenir el llistat de tots els actius
     public List<Actiu> obtenirTotsElsActius() {
         try {
-            // Delegar la operación al DAO
-            return actiuDAO.obtenirTotsElsActius(); // Método que obtiene todos los activos de la base de datos
+            // Deleguem l'operació al DAO
+            return actiuDAO.obtenirTotsElsActius(); // Obtenim tots els actius de la base de dades
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción aquí
-            return new ArrayList<>(); // Devolver una lista vacía en caso de error
+            e.printStackTrace(); // Gestionem l'excepció
+            return new ArrayList<>(); // Retornem una llista buida en cas d'error
         }
     }
-    
-    // Método para obtener el listado de todos los activos (solo el nombre)
+
+    // Mètode per obtenir el llistat de tots els actius (només els noms)
     public List<String> obtenirNomTotsElsActius() {
-        // Delegar la operación al DAO
-		return actiuDAO.obtenirNomTotsElsActius(); // Método que obtiene todos los activos de la base de datos
+        // Deleguem l'operació al DAO
+        return actiuDAO.obtenirNomTotsElsActius(); // Obtenim tots els noms dels actius de la base de dades
     }
 
-    // Método para obtener un activo específico por su ID
+    // Mètode per obtenir un actiu específic pel seu ID
     public Actiu obtenirActiuPerId(int idActiu) {
         try {
-            return actiuDAO.obtenirActiuPerId(idActiu); // Obtener un activo por su ID
+            // Deleguem l'operació al DAO
+            return actiuDAO.obtenirActiuPerId(idActiu); // Obtenim l'actiu pel seu ID
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción aquí
-            return null; // Devolver null en caso de error
+            e.printStackTrace(); // Gestionem l'excepció
+            return null; // Retornem null en cas d'error
         }
     }
 
- // Método para actualizar un activo
+    // Mètode per actualitzar un actiu
     public void actualitzarActiu(int idActiu, String nom, String tipus, String area, String marca, Date dataAlta, String descripcio) {
         try {
-            // Asegúrate de que el método 'actualitzarActiu' del DAO recibe los parámetros correctos
-            actiuDAO.actualitzarActiu(idActiu, nom, tipus, area, marca, dataAlta, descripcio); // Método para actualizar un activo
+            // Deleguem l'operació al DAO per actualitzar l'actiu amb els nous valors
+            actiuDAO.actualitzarActiu(idActiu, nom, tipus, area, marca, dataAlta, descripcio); // Actualitzem l'actiu
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción aquí
+            e.printStackTrace(); // Gestionem l'excepció
         }
     }
 
-    // Método para eliminar un activo
+    // Mètode per eliminar un actiu
     public void eliminarActiu(int idActiu) {
         try {
-            actiuDAO.eliminarActiu(idActiu); // Método para eliminar un activo de la base de datos
+            // Deleguem l'operació al DAO per eliminar l'actiu de la base de dades
+            actiuDAO.eliminarActiu(idActiu); // Eliminem l'actiu pel seu ID
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción aquí
+            e.printStackTrace(); // Gestionem l'excepció
         }
     }
 }

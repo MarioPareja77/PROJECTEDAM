@@ -3,11 +3,11 @@ package cat.enmarxa.incidentmanager;
 import java.sql.SQLException;
 
 public class ServeiLogin {
-    private UsuariDAO usuariDAO;
+    private UsuariDAO usuariDAO; // Objecte DAO per gestionar la base de dades dels usuaris
 
     // Constructor que inicialitza UsuariDAO, que és la classe que contacta amb la BD
     public ServeiLogin() throws SQLException {
-        this.usuariDAO = new UsuariDAO(); 
+        this.usuariDAO = new UsuariDAO(); // Inicialitzem l'objecte DAO
     }
 
     // Mètode per autenticar l'usuari
@@ -16,7 +16,7 @@ public class ServeiLogin {
             // Comprovar si l'usuari i la contrasenya són correctes
             return usuariDAO.autenticar(email, contrasenya);
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error
             return false; // Retornar false en cas d'error
         }
     }
@@ -24,46 +24,47 @@ public class ServeiLogin {
     // Mètode per obtenir els intents fallits d'un usuari
     public int obtenirIntentsFallits(String email) {
         try {
-            return usuariDAO.obtenirIntentsFallits(email); // Retornar el nombre d'intents fallits
+            // Obtenir el nombre d'intents fallits per a un usuari
+            return usuariDAO.obtenirIntentsFallits(email);
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error
             return 0; // Retornar 0 en cas d'error
         }
     }
 
-    // Mètode per actualitzar el nombre d'intents fallits d'un usuari
+    // Mètode per augmentar el nombre d'intents fallits d'un usuari
     public void augmentarIntentsFallits(String email) {
         try {
-            usuariDAO.augmentarIntentsFallits(email); // Actualitzar intents fallits
+            // Actualitzar el comptador d'intents fallits per a un usuari
+            usuariDAO.augmentarIntentsFallits(email);
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error
         }
     }
 
-    // Mètode per bloquejar un usuari
+    // Mètode per bloquejar un usuari després d'intents fallits consecutius
     public void bloquejarUsuari(String email) {
         try {
-            usuariDAO.bloquejarUsuari(email); // Bloquejar l'usuari
+            // Bloquejar l'usuari després d'intents fallits
+            usuariDAO.bloquejarUsuari(email);
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error
         }
     }
 
     // Mètode per restablir els intents fallits d'un usuari després d'un login exitós
     public void restablirIntentsFallits(String email) {
         try {
-            usuariDAO.restablirIntentsFallits(email); // Restablir intents fallits
+            // Reiniciar el comptador d'intents fallits a zero
+            usuariDAO.restablirIntentsFallits(email);
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error
         }
     }
 
-    // Mètode per tancar la connexió a la BD
-    public void close() {
-        try {
-            usuariDAO.close(); // Tancar la connexió
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    // Mètode per tancar la connexió amb la base de dades
+    public void close() throws SQLException {
+        // Tancar la connexió a la base de dades
+		usuariDAO.tancarConnexio();
     }
 }
