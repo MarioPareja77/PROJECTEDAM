@@ -4,85 +4,131 @@ import java.util.Date;
 
 public class Incidencia {
 
-	private int id;           // Identificador de l'ncidència
-	private String tipus;        	   // Tipus d'incidència
-    private String prioritat;       // Prioritat de l'incidència
-    private String descripcio;      // Descripció de l'incidència
-    private String emailCreador;    // Correu electrònic del creador de l'incidència
-    private Date dataCreacio;       // Data de creació de l'incidència
+    private int id;               // Identificador de l'incidència
+    private String tipus;         // Tipus d'incidència
+    private String prioritat;     // Prioritat de l'incidència
+    private String descripcio;    // Descripció de l'incidència
+    private String estat;		// Estat de l'incidència
+    private String actiu1;    // Actiu1 associat a l'incidència
+    private String actiu2;    // Actiu2 associat a l'incidència
+    private String emailCreador;  // Correu electrònic del creador de l'incidència
+    private String tecnicAssignat;  //Tècnic assignat a l'incidència
+    private Date dataCreacio;     // Data de creació de l'incidència
 
     // Constructor per defecte
     public Incidencia() {
     }
 
     // Constructor amb tots els camps
-    public Incidencia(int id, String tipus, String prioritat, String descripcio, String emailCreador, Date dataCreacio) {
-    	this.id = id;
-    	this.tipus = tipus;
-        this.prioritat = prioritat;
-        this.descripcio = descripcio;
-        this.emailCreador = emailCreador;
-        this.dataCreacio = dataCreacio;
+    public Incidencia(int id, String tipus, String prioritat, String estat, String descripcio, String emailCreador, Date dataCreacio, String actiu1, String actiu2, String tecnicAssignat) {
+        this.id = id;                // Inicialitzar l'ID de l'incidència
+        this.tipus = tipus;          // Inicialitzar el tipus d'incidència
+        this.prioritat = prioritat;  // Inicialitzar la prioritat de l'incidència
+        this.descripcio = descripcio; // Inicialitzar la descripció de l'incidència
+        this.emailCreador = emailCreador; // Inicialitzar el correu del creador
+        this.estat = estat;	// Inicialitzar estat de l'incidència
+        this.actiu1 = actiu1; // Inicialitzar l'actiu1 relacionat amb la incidencia
+        this.actiu2 = actiu2; // Inicialitzar l'actiu1 relacionat amb la incidencia
+        this.dataCreacio = dataCreacio; // Inicialitzar la data de creació
+        this.tecnicAssignat = tecnicAssignat; // Inicialitzar el tècnic assignat;
     }
 
-    // Getters i setters
+    // Getters i setters per a cada atribut
     
     public int getId() {
-        return id;
+        return id; // Retornar l'ID de l'incidència
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id = id; // Assignar un nou ID a l'incidència
     }
     
     public String getTipus() {
-        return tipus;
+        return tipus; // Retornar el tipus d'incidència
     }
 
     public void setTipus(String tipus) {
-        this.tipus = tipus;
+        this.tipus = tipus; // Assignar un nou tipus d'incidència
     }
 
     public String getPrioritat() {
-        return prioritat;
+        return prioritat; // Retornar la prioritat de l'incidència
     }
 
     public void setPrioritat(String prioritat) {
-        this.prioritat = prioritat;
+        this.prioritat = prioritat; // Assignar una nova prioritat a l'incidència
+    }
+    
+    public String getEstat() {
+        return estat; // Retornar l'estat de l'incidència
+    }
+
+    public void setEstat(String estat) {
+        this.estat = estat; // Assignar un nou estat a l'incidència
     }
 
     public String getDescripcio() {
-        return descripcio;
+        return descripcio; // Retornar la descripció de l'incidència
     }
 
     public void setDescripcio(String descripcio) {
-        this.descripcio = descripcio;
+        this.descripcio = descripcio; // Assignar una nova descripció a l'incidència
     }
 
     public String getEmailCreador() {
-        return emailCreador;
+        return emailCreador; // Retornar el correu del creador de l'incidència
     }
 
     public void setEmailCreador(String emailCreador) {
-        this.emailCreador = emailCreador;
+        this.emailCreador = emailCreador; // Assignar un nou correu al creador
     }
 
     public Date getDataCreacio() {
-        return dataCreacio;
+        return dataCreacio; // Retornar la data de creació de l'incidència
     }
 
     public void setDataCreacio(Date dataCreacio) {
-        this.dataCreacio = dataCreacio;
+        this.dataCreacio = dataCreacio; // Assignar una nova data de creació a l'incidència
+    }
+    
+    public String getActiu1() {
+        return actiu1; // Retornar l'actiu1 de l'incidència
+    }
+
+    public void setActiu1(String actiu1) {
+        this.actiu1 = actiu1; // Assignar un nou actiu1 a l'incidència
+    }
+    
+    public String getActiu2() {
+        return actiu2; // Retornar l'actiu1 de l'incidència
+    }
+
+    public void setActiu2(String actiu2) {
+        this.actiu2 = actiu2; // Assignar un nou actiu1 a l'incidència
+    }
+    
+    public String getTecnicAssignat() {
+        return tecnicAssignat; // Retornar el tècnic assignat a l'incidència
+    }
+
+    public void setTecnicAssignat(String tecnicAssignat) {
+        this.tecnicAssignat = tecnicAssignat; // Assignar un tècnic assignat a l'incidència
     }
 
     @Override
     public String toString() {
+        // Retornar una representació en forma de cadena de l'objecte Incidencia
         return "Incidencia{" +
+        		"id='" + id + '\'' +
                 "tipus='" + tipus + '\'' +
-                ", prioritat='" + prioritat + '\'' +
-                ", descripcio='" + descripcio + '\'' +
-                ", emailCreador='" + emailCreador + '\'' +
-                ", dataCreacio=" + dataCreacio +
+                "prioritat='" + prioritat + '\'' +
+                "estat='" + estat + '\'' +
+                "actiu1=" + actiu1 + '\'' +
+                "actiu2=" + actiu2 + '\'' +
+                "descripcio='" + descripcio + '\'' +
+                "dataCreacio='" + dataCreacio + + '\'' +
+                "emailCreador='" + emailCreador + '\'' +
+                "tecnicAssignat='" + tecnicAssignat + + '\'' +
                 '}';
     }
 }

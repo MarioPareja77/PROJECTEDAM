@@ -7,71 +7,105 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class FinestraCrearActiu extends JDialog {
     private JTextField nomField;
-    private JTextField marcaField;
+    private JComboBox<String> marcaField;
     private JComboBox<String> tipusField;
     private JComboBox<String> areaField;
     private JTextField descripcioField;
-    private JTextField altaField;
+    private JComboBox<String> altaField;
     private JButton crearButton;
     private ServeiActiu serveiActiu;
+    
 
     public FinestraCrearActiu(Frame parent) {
         super(parent, "Crear Actiu", true);
-        // Inicialitzar serveis
         serveiActiu = new ServeiActiu();
+
+        // Establece el layout GridBagLayout para más control
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Etiqueta y campo de texto para el nombre
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        add(new JLabel("Nom:"), gbc);
         
-        // Establir el layout vertical
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        
-        // Panel per a cada fila
-        JPanel panelNom = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPanel panelMarca = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPanel panelTipus = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPanel panelArea = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPanel panelDescripcio = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPanel panelDataAlta = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPanel panelBotons = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        
-        // Camps per al nom
-        panelNom.add(new JLabel("Nom:"));
+        gbc.gridx = 1;
         nomField = new JTextField(20);
-        panelNom.add(nomField);
-        add(panelNom);  // Afegir el panel al dialog
+        add(nomField, gbc);
+
+        // Etiqueta y campo de texto para la marca
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        add(new JLabel("Marca:"), gbc);
         
-        // Camps per a la marca
-        panelMarca.add(new JLabel("Marca:"));
-        marcaField = new JTextField(20);
-        panelMarca.add(marcaField);
-        add(panelMarca);
+        gbc.gridx = 1;
+        marcaField = new JComboBox<>(new String[]{"Microsoft", "Red Hat", "Ubuntu", "Oracle", "Dell", "HP", "IBM", "Lenovo", "Logitech", "MSI", "Salesforce", "Odoo", "Samsung", "Cisco", "TP-Link", "D-Link", "Acer", "Altres"});
+        add(marcaField, gbc);
+
+        // Etiqueta y comboBox para el tipo de activo
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        add(new JLabel("Tipus:"), gbc);
         
-        // Camp per tipus d'actiu
-        panelTipus.add(new JLabel("Tipus:"));
+        gbc.gridx = 1;
         tipusField = new JComboBox<>(new String[]{"servidor", "PC", "pantalla", "portàtil", "switch", "router", "cablejat", "ratolí", "teclat", "rack", "software"});
-        panelTipus.add(tipusField);
-        add(panelTipus);
+        add(tipusField, gbc);
+
+        // Etiqueta y comboBox para el área
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        add(new JLabel("Àrea:"), gbc);
         
-        // Camps per a l'àrea
-        panelArea.add(new JLabel("Àrea:"));
+        gbc.gridx = 1;
         areaField = new JComboBox<>(new String[]{"RRHH", "Vendes", "Màrqueting", "IT", "Compres", "Producció", "Comptabilitat"});
-        panelArea.add(areaField);
-        add(panelArea);
+        add(areaField, gbc);
+
+        // Etiqueta y campo de texto para la descripción
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        add(new JLabel("Descripció:"), gbc);
         
-        // Camps per la descripció
-        panelDescripcio.add(new JLabel("Descripció:"));
+        gbc.gridx = 1;
         descripcioField = new JTextField(20);
-        panelDescripcio.add(descripcioField);
-        add(panelDescripcio);
+        add(descripcioField, gbc);
         
-        // Camps per a la data d'alta
-        panelDataAlta.add(new JLabel("Data d'alta (dd/mm/yyyy):"));
-        altaField = new JTextField(10);
-        panelDataAlta.add(altaField);
-        add(panelDataAlta);
+        // Formato para mostrar las fechas en formato dd/MM/yyyy
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         
-        // Botó per crear l'actiu
+        // Crear una llista de dates
+        ArrayList<String> dates = new ArrayList<>();
+        
+        // Afegim dates al voltant de la data actual (per exemple, 30 dies abans i 30 dies després)
+        LocalDate today = LocalDate.now();
+        for (int i = -30; i <= 30; i++) {
+            LocalDate date = today.plusDays(i);
+            dates.add(date.format(formatter));
+        }
+
+        // Etiqueta y campo de texto para la fecha de alta
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        add(new JLabel("Data d'alta (dd/mm/yyyy):"), gbc);
+        
+        gbc.gridx = 1;
+        altaField = new JComboBox<>(dates.toArray(new String[0]));
+        // Afegim la data d'avui com a predeterminada (pre-poblada)
+        altaField.setSelectedItem(today.format(formatter));
+        add(altaField, gbc);
+
+        // Botón para crear el activo
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
         crearButton = new JButton("Crear Actiu");
         crearButton.addActionListener(new ActionListener() {
             @Override
@@ -79,49 +113,50 @@ public class FinestraCrearActiu extends JDialog {
                 crearActiu();
             }
         });
-        panelBotons.add(crearButton);
-        add(panelBotons);
-        
-        // Configuració de la finestra
-        setSize(400, 300);
+        add(crearButton, gbc);
+
+        // Establecer el botón "Crear Actiu" como predeterminado para la tecla Enter
+        getRootPane().setDefaultButton(crearButton);
+
+        // Configuración de la ventana
+        setSize(400, 400);
         setResizable(false);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
-    // Mètode per crear l'actiu
     private void crearActiu() {
-        // Obtenir dades dels camps
         String nom = nomField.getText();
-        String marca = marcaField.getText();
+        String marca =  (String) marcaField.getSelectedItem();
         String tipus = (String) tipusField.getSelectedItem();
         String area = (String) areaField.getSelectedItem();
         String descripcio = descripcioField.getText();
-        String dataAltaText = altaField.getText();
+        String dataAltaText = (String) altaField.getSelectedItem();
+        
 
-        // Validar que els camps necessaris no estiguin buits
-        if (nom.isEmpty() || marca.isEmpty() || descripcio.isEmpty() || dataAltaText.isEmpty()) {
+        if (nom.isEmpty() || marca.isEmpty() || tipus.isEmpty() || descripcio.isEmpty() || dataAltaText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Tots els camps han d'estar omplerts.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        // Convertir la data d'alta de String a Date
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date dataAlta = null;
         
         try {
-        	dataAlta = dateFormat.parse(dataAltaText);  // Intentar parsear la data
+            dataAlta = dateFormat.parse(dataAltaText);
         } catch (ParseException e) {
             JOptionPane.showMessageDialog(this, "El format de la data d'alta no és vàlid. Usa el format dd/MM/yyyy.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Enviar l'actiu al servei (suponem que el mètode `crearActiu` existeix en el servei corresponent)
-        if (serveiActiu.crearActiu(nom, tipus, area, marca, dataAlta, descripcio)) {
+        boolean creacioExitosa = serveiActiu.crearActiu(nom, tipus, area, marca, descripcio, dataAlta);
+
+        if (creacioExitosa) {
             JOptionPane.showMessageDialog(this, "Actiu creat amb èxit.");
-            dispose(); // Tancar la finestra
+            dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Error al crear l'actiu.", "Error", JOptionPane.ERROR_MESSAGE);
+            dispose();
         }
     }
 }

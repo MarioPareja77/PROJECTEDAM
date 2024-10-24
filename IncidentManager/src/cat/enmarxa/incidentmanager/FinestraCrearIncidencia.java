@@ -1,53 +1,87 @@
 package cat.enmarxa.incidentmanager;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import javax.swing.*; 
+import java.awt.*; 
+import java.awt.event.ActionEvent; 
+import java.awt.event.ActionListener; 
+import java.util.ArrayList; 
 
 public class FinestraCrearIncidencia extends JDialog {
-    private JTextField descripcioField;
-    private JComboBox<String> tipusField;
-    private JComboBox<String> prioritatField;
-    private JButton crearButton;
-	private String usuari;
-	private ServeiIncidencia serveiIncidencia;
+    private JTextField descripcioField; 
+    private JComboBox<String> tipusField; 
+    private JComboBox<String> prioritatField; 
+    private JComboBox<String> actiu1Field; 
+    private JComboBox<String> actiu2Field; 
+    private JButton crearButton; 
+    private String usuari; 
+    private ServeiIncidencia serveiIncidencia; 
+    private ServeiIncidencia serveiActiu; 
 
     public FinestraCrearIncidencia(Frame parent, String usuari) {
-        super(parent, "Crear Incidència", true);
-        this.usuari = usuari;
-        setLayout(new GridLayout(5, 2));
-        
-        // Inicialitzar serveis
+        super(parent, "Crear Incidència", true); 
+        this.usuari = usuari; 
+
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10); 
+        gbc.fill = GridBagConstraints.HORIZONTAL; 
+
         serveiIncidencia = new ServeiIncidencia();
 
-        // Camps per a la descripció
-        add(new JLabel("Descripció:"));
-        descripcioField = new JTextField(250);
-        add(descripcioField);
-
-        // Camp per al tipus d'incidència
-        add(new JLabel("Tipus:"));
-        tipusField = new JComboBox<>(new String[]{"Incidència", "Petició", "Problema", "Canvi"});
-        add(tipusField);
-
-        // Camp per a la prioritat
-        add(new JLabel("Prioritat:"));
-        prioritatField = new JComboBox<>(new String[]{"Baixa", "Normal", "Alta", "Crítica", "Urgent"});
-        add(prioritatField);
+        // Campo Descripció
+        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.weightx = 0.5; 
+        add(new JLabel("Descripció:"), gbc);
         
-        // Camp per al actiu
-        add(new JLabel("Actiu relacionat:"));
-        JComboBox<String> comboActius = new JComboBox<>();
-        ServeiActiu serveiActiu = new ServeiActiu();
-        ArrayList<String> llistaActius = (ArrayList<String>) serveiActiu.obtenirNomTotsElsActius();
-        for (String actiu : llistaActius) {
-        	comboActius.addItem(actiu); 
-        }
-        add(comboActius);
+        gbc.gridx = 1;
+        descripcioField = new JTextField(20); 
+        add(descripcioField, gbc);
 
-        // Botó per crear la incidència
+        // Campo Tipus
+        gbc.gridx = 0; gbc.gridy = 1;
+        add(new JLabel("Tipus:"), gbc);
+        
+        gbc.gridx = 1;
+        tipusField = new JComboBox<>(new String[]{"Incidència", "Petició", "Problema", "Canvi"}); 
+        add(tipusField, gbc);
+
+        // Campo Prioritat
+        gbc.gridx = 0; gbc.gridy = 2;
+        add(new JLabel("Prioritat:"), gbc);
+        
+        gbc.gridx = 1;
+        prioritatField = new JComboBox<>(new String[]{"Baixa", "Normal", "Alta", "Crítica", "Urgent"}); 
+        add(prioritatField, gbc);
+
+        // Campo Actiu1 relacionat
+        gbc.gridx = 0; gbc.gridy = 4;
+        add(new JLabel("Actiu relacionat #1:"), gbc);
+        
+        gbc.gridx = 1;
+        actiu1Field = new JComboBox<>();
+        ServeiActiu serveiActiu1 = new ServeiActiu();
+        ArrayList<String> llistaActius1 = (ArrayList<String>) serveiActiu1.getLlistaActius();
+        for (String actiu1 : llistaActius1) {
+            actiu1Field.addItem(actiu1); 
+        }
+        add(actiu1Field, gbc);
+
+        // Campo Actiu2 relacionat
+        gbc.gridx = 0; gbc.gridy = 5;
+        add(new JLabel("Actiu relacionat #2:"), gbc);
+        
+        gbc.gridx = 1;
+        actiu2Field = new JComboBox<>();
+        ServeiActiu serveiActiu2 = new ServeiActiu();
+        ArrayList<String> llistaActius2 = (ArrayList<String>) serveiActiu2.getLlistaActius();
+        for (String actiu2 : llistaActius2) {
+            actiu2Field.addItem(actiu2); 
+        }
+        add(actiu2Field, gbc);
+
+        // Botó Crear Incidència
+        gbc.gridx = 0; gbc.gridy = 6;
+        gbc.gridwidth = 2; 
         crearButton = new JButton("Crear Incidència");
         crearButton.addActionListener(new ActionListener() {
             @Override
@@ -55,37 +89,39 @@ public class FinestraCrearIncidencia extends JDialog {
                 crearIncidencia();
             }
         });
-        add(crearButton);
+        add(crearButton, gbc);
 
-        setSize(400, 400);
-        setResizable(false);
-        setLocationRelativeTo(parent);
+        // Asigna el botón "Crear Incidència" como acción predeterminada cuando se presione Enter
+        getRootPane().setDefaultButton(crearButton);
+
+        // Configuración de la ventana
+        setSize(400, 400); 
+        setResizable(false); 
+        setLocationRelativeTo(parent); 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
-    // Mètode per crear la incidència
     private void crearIncidencia() {
-    	String tipus = (String) tipusField.getSelectedItem();
-        String descripcio = descripcioField.getText();
-        String prioritat = (String) prioritatField.getSelectedItem();
-        String usuari = this.usuari;
+        String tipus = (String) tipusField.getSelectedItem(); 
+        String descripcio = descripcioField.getText(); 
+        String prioritat = (String) prioritatField.getSelectedItem(); 
+        String usuari = this.usuari; 
+        String actiu1 = (String) actiu1Field.getSelectedItem(); 
+        String actiu2 = (String) actiu2Field.getSelectedItem();
 
-        // Validar que la descripció no estigui buida
         if (descripcio.isEmpty()) {
             JOptionPane.showMessageDialog(this, "La descripció no pot estar buida.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return; 
         }
 
-        // Enviar la incidència al servidor
-    
-        boolean creacioExitosa = serveiIncidencia.crearIncidencia(tipus, prioritat, descripcio, usuari);
+        boolean creacioExitosa = serveiIncidencia.crearIncidencia(tipus, prioritat, "oberta", descripcio, usuari, actiu1, actiu2);
         
         if (creacioExitosa) {
             JOptionPane.showMessageDialog(this, "Incidència creada amb èxit.");
-            dispose(); // Tancar la finestra
+            dispose(); 
         } else {
             JOptionPane.showMessageDialog(this, "Error al crear la incidència.", "Error", JOptionPane.ERROR_MESSAGE);
-            dispose(); // Tancar la finestra
+            dispose(); 
         }
     }
 }

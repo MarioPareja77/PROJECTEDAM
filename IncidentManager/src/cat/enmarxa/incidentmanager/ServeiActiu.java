@@ -7,74 +7,112 @@ import java.util.List;
 
 public class ServeiActiu {
 
-    private ActiuDAO actiuDAO; // Objeto DAO para gestionar la base de datos
+    private ActiuDAO actiuDAO; // Objecte DAO per gestionar la base de dades
 
-    // Método Constructor
+    // Constructor de la classe
     public ServeiActiu() {
         try {
-            this.actiuDAO = new ActiuDAO(); // Inicializamos el DAO
+            this.actiuDAO = new ActiuDAO(); // Inicialitzem el DAO
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejo de excepciones en la inicialización
+            e.printStackTrace(); // Gestió d'excepcions en la inicialització
         }
     }
 
-    // Método para crear un nuevo activo
-    public boolean crearActiu(String nom, String tipus, String area, String marca, java.util.Date dataAlta, String descripcio) {
+    // Mètode per crear un nou actiu
+    public boolean crearActiu(String nom, String tipus, String area, String marca, String descripcio, Date dataAlta) {
         try {
-            // Delegar la operación al DAO
-        	int id = -1;
-            actiuDAO.crearActiu(id, nom, tipus, area, marca, dataAlta, descripcio);
+            // Deleguem l'operació al DAO
+            actiuDAO.crearActiu(nom, tipus, area, marca, descripcio, dataAlta); // Creem el nou actiu
+            return true;
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción aquí
-            // Puedes agregar un mensaje de error personalizado si es necesario.
+            e.printStackTrace(); // Gestionem l'excepció
+        }
+        return false; // Retorna false si la creació de l'actiu ha donat cap error
+    }
+
+    // Mètode per obtenir el llistat de tots els actius
+    public List<Actiu> llistarActius() {
+        try {
+            // Deleguem l'operació al DAO
+            return actiuDAO.llistarActius(); // Obtenim tots els actius de la base de dades
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gestionem l'excepció
+            return new ArrayList<>(); // Retornem una llista buida en cas d'error
+        }
+    }
+
+    // Mètode per obtenir el llistat del nom de tots els actius
+    public List<String> getLlistaActius() {
+        // Deleguem l'operació al DAO
+        return actiuDAO.getLlistaActius(); // Obtenim tots els noms dels actius de la base de dades
+    }
+
+    // Mètode per llistar actius per nom
+    public Actiu obtenirActiuPerNom(String nom) {
+        try {
+            // Deleguem l'operació al DAO
+            return actiuDAO.obtenirActiuPerNom(nom); 
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gestionem l'excepció
+            return null; // Retornem null en cas d'error
+        }
+    }
+
+    // Mètode per obtenir el llistat de tots els actius d'un àrea determinada
+    public List<Actiu> obtenirActiusArea(String area) {
+        try {
+            // Delegar l'operació al DAO per obtenir els actius de la base de dades
+            return actiuDAO.obtenirActiusArea(area);
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error
+            return new ArrayList<>(); // Retornar una llista buida en cas d'error
+        }
+    }
+ 
+    // Mètode per obtenir el llistat de tots els actius d'una marca determinada
+    public List<Actiu> obtenirActiusMarca(String marca) {
+        try {
+            // Delegar l'operació al DAO per obtenir els actius de la base de dades
+            return actiuDAO.obtenirActiusMarca(marca); 
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error
+            return new ArrayList<>(); // Retornar una llista buida en cas d'error
+        }
+    }
+
+    // Mètode per obtenir el llistat de tots els actius d'un tipus determinat
+    public List<Actiu> obtenirActiusTipus(String tipus) {
+        try {
+            // Delegar l'operació al DAO per obtenir els actius de la base de dades
+            return actiuDAO.obtenirActiusTipus(tipus); 
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error
+            return new ArrayList<>(); // Retornar una llista buida en cas d'error
+        }
+    }
+
+    // Mètode per modificar un actiu
+    public boolean modificarActiu(String nom, String tipus, String area, String marca, String descripcio) {
+        try {
+            // Deleguem l'operació al DAO per actualitzar l'actiu amb els nous valors
+            actiuDAO.modificarActiu(nom, tipus, area, marca, descripcio); // Actualitzem l'actiu
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gestionem l'excepció
         }
         return false;
     }
-    
 
-    // Método para obtener el listado de todos los activos
-    public List<Actiu> obtenirTotsElsActius() {
+    // Mètode per eliminar un actiu basant-se en el seu nom
+    public boolean eliminarActiu(String nom) {
         try {
-            // Delegar la operación al DAO
-            return actiuDAO.obtenirTotsElsActius(); // Método que obtiene todos los activos de la base de datos
+            // Deleguem l'operació al DAO per eliminar l'actiu de la base de dades
+            actiuDAO.eliminarActiu(nom); // Eliminem l'actiu pel seu nom
+            return true;
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción aquí
-            return new ArrayList<>(); // Devolver una lista vacía en caso de error
+            e.printStackTrace(); // Gestionem l'excepció
         }
-    }
-    
-    // Método para obtener el listado de todos los activos (solo el nombre)
-    public List<String> obtenirNomTotsElsActius() {
-        // Delegar la operación al DAO
-		return actiuDAO.obtenirNomTotsElsActius(); // Método que obtiene todos los activos de la base de datos
-    }
-
-    // Método para obtener un activo específico por su ID
-    public Actiu obtenirActiuPerId(int idActiu) {
-        try {
-            return actiuDAO.obtenirActiuPerId(idActiu); // Obtener un activo por su ID
-        } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción aquí
-            return null; // Devolver null en caso de error
-        }
-    }
-
- // Método para actualizar un activo
-    public void actualitzarActiu(int idActiu, String nom, String tipus, String area, String marca, Date dataAlta, String descripcio) {
-        try {
-            // Asegúrate de que el método 'actualitzarActiu' del DAO recibe los parámetros correctos
-            actiuDAO.actualitzarActiu(idActiu, nom, tipus, area, marca, dataAlta, descripcio); // Método para actualizar un activo
-        } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción aquí
-        }
-    }
-
-    // Método para eliminar un activo
-    public void eliminarActiu(int idActiu) {
-        try {
-            actiuDAO.eliminarActiu(idActiu); // Método para eliminar un activo de la base de datos
-        } catch (SQLException e) {
-            e.printStackTrace(); // Manejar la excepción aquí
-        }
+        return false;
+        
     }
 }
