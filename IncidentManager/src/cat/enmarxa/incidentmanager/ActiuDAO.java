@@ -21,7 +21,7 @@ public class ActiuDAO {
 
             // Establir la connexió
             String url = "jdbc:mysql://localhost:3306/gestio_incidencies"; // Canvia el nom de la base de dades si és necessari
-            String user = "root";
+            String user = "Admin";
             String password = "enmarxa";
             this.connexio = DriverManager.getConnection(url, user, password); // Estableix la connexió amb la base de dades
         } catch (ClassNotFoundException e) {

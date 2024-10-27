@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,20 +70,20 @@ public class Servidor {
     }
 
     // Classe interna que gestiona les connexions dels clients en un fil independent
-    static class FilClient implements Runnable {
+    public static class FilClient implements Runnable {
         private Socket socketClient;
         private PrintWriter logWriter;
         private ServeiLogin serveiLogin;
- 
+
         // Constructor del FilClient, inicialitza el socket del client i el servei de login
         public FilClient(Socket socketClient, PrintWriter logWriter) {
             this.socketClient = socketClient;
             this.logWriter = logWriter;
-           
+
             // Inicialitzar el ServeiLogin per gestionar l'autenticació
             try {
-                this.serveiLogin = new ServeiLogin();            
-            } catch (SQLException e) {           	
+                this.serveiLogin = new ServeiLogin();
+            } catch (SQLException e) {
                 System.err.println("Error al inicialitzar ServeiLogin: " + e.getMessage());
                 e.printStackTrace();
             }
