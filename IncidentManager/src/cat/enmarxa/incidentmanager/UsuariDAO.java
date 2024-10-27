@@ -23,7 +23,7 @@ public class UsuariDAO {
 
             // Establir la connexió amb la base de dades
             String url = "jdbc:mysql://localhost:3306/gestio_incidencies";
-            String user = "root";
+            String user = "Admin";
             String password = "enmarxa";
             this.connexio = DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException e) {
