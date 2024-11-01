@@ -2,6 +2,9 @@ package cat.enmarxa.incidentmanager;
 
 import java.util.Date;
 
+/**
+ * La classe Incidencia representa un objecte de tipus 'Incidencia' en l'aplicació de gestió d'incidències i es trucada des de FinestraPrincipal. Aquesta classe pertany a la capa 'Controlador' dins del patró MVC.
+ */
 public class Incidencia {
 
     private int id;               // Identificador de l'incidència

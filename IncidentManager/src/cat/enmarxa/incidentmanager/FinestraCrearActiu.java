@@ -11,6 +11,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * La classe FinestraCrearActiu és l'encarregada de crear la finestra (interfície gràfica) quan l'usuari selecciona l'opció de "Crear un nou actiu". Aquesta classe pertany a la part client de l'aplicació o 'Vista' dels del patró de disseny MVC.
+ */
 public class FinestraCrearActiu extends JDialog {
     private JTextField nomField;
     private JComboBox<String> marcaField;

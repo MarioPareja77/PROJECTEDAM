@@ -10,6 +10,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La classe UsuariDAO és un DAO (Data Access Object) encarregat de contactar directament amb la taula 'usuaris' de la BD (MySQL) i es trucada des de ServeiUsuari. Aquesta classe pertany a la capa de persistència o 'Model' dins del patró MVC.
+ */
 public class UsuariDAO {
     private Connection connexio; // Objecte per gestionar la connexió a la base de dades
     int intentsFallits; // Variable per comptar els intents fallits de login

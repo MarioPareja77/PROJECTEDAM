@@ -2,6 +2,9 @@ package cat.enmarxa.incidentmanager;
 
 import java.util.Date; // Importa la classe Date per al nou camp data_alta
 
+/**
+ * La classe Actiu representa un objecte de tipus 'Actiu' en l'aplicació de gestió d'incidències i es trucada des de FinestraPrincipal. Aquesta classe pertany a la capa 'Controlador' dins del patró de disseny MVC.
+ */
 public class Actiu {
 
     private int id;       	 // Identificador únic de l'actiu
@@ -12,11 +15,23 @@ public class Actiu {
     private Date dataAlta;    // Data d'alta de l'actiu
     private String descripcio; // Descripció de l'actiu
 
-    // Constructor per defecte
+    /**
+     * Constructor per defecte per crear un nou objecte Actiu.
+     */
     public Actiu() {
     }
 
-    // Constructor amb tots els camps per inicialitzar un nou objecte Actiu
+    /**
+     * Constructor amb tots els camps per inicialitzar un nou objecte Actiu.
+     *
+     * @param id        l'identificador únic de l'actiu
+     * @param nom       el nom de l'actiu
+     * @param tipus     el tipus d'actiu
+     * @param area      l'àrea on es troba l'actiu
+     * @param marca     la marca de l'actiu
+     * @param dataAlta  la data d'alta de l'actiu
+     * @param descripcio la descripció de l'actiu
+     */
     public Actiu(int id, String nom, String tipus, String area, String marca, Date dataAlta, String descripcio) {
         this.id = id;              // Assigna l'identificador únic
         this.nom = nom;            // Assigna el nom de l'actiu
@@ -85,7 +100,11 @@ public class Actiu {
         this.descripcio = descripcio; // Estableix la descripció de l'actiu
     }
 
-    // Mètode per a representar l'objecte Actiu com a cadena
+    /**
+     * Mètode per a representar l'objecte Actiu com a cadena.
+     *
+     * @return una cadena que representa l'objecte Actiu
+     */
     @Override
     public String toString() {
         return "Actiu{" +

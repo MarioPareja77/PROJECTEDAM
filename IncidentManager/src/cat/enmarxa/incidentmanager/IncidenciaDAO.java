@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La classe IncidenciaDAO és un DAO (Data Access Object) encarregat de contactar directament amb la taula 'incidencies' de la BD (MySQL) i es trucada des de ServeiIncidencia. Aquesta classe pertany a la capa de persistència o 'Model' dins del patró MVC.
+ */
 public class IncidenciaDAO {
 
     private Connection connexio; // Connexió a la base de dades
@@ -112,6 +115,9 @@ public class IncidenciaDAO {
                 incidencia.setId(resultats.getInt("id_incidencia"));
                 incidencia.setTipus(resultats.getString("tipus"));
                 incidencia.setPrioritat(resultats.getString("prioritat"));
+                incidencia.setEstat(resultats.getString("estat"));
+                incidencia.setActiu1(resultats.getString("actiu1"));
+                incidencia.setActiu2(resultats.getString("actiu2"));
                 incidencia.setDescripcio(resultats.getString("descripcio"));
                 incidencia.setDataCreacio(resultats.getDate("data_creacio"));
                 incidencia.setTecnicAssignat(resultats.getString("tecnic_assignat"));
@@ -138,6 +144,9 @@ public class IncidenciaDAO {
                 incidencia.setId(resultats.getInt("id_incidencia"));
                 incidencia.setTipus(resultats.getString("tipus"));
                 incidencia.setPrioritat(resultats.getString("prioritat"));
+                incidencia.setEstat(resultats.getString("estat"));
+                incidencia.setActiu1(resultats.getString("actiu1"));
+                incidencia.setActiu2(resultats.getString("actiu2"));
                 incidencia.setDescripcio(resultats.getString("descripcio"));
                 incidencia.setDataCreacio(resultats.getDate("data_creacio"));
                 incidencia.setEmailCreador(resultats.getString("email_creador"));
@@ -165,6 +174,9 @@ public class IncidenciaDAO {
                 incidencia.setId(resultats.getInt("id_incidencia"));
                 incidencia.setTipus(resultats.getString("tipus"));
                 incidencia.setPrioritat(resultats.getString("prioritat"));
+                incidencia.setEstat(resultats.getString("estat"));
+                incidencia.setActiu1(resultats.getString("actiu1"));
+                incidencia.setActiu2(resultats.getString("actiu2"));
                 incidencia.setDescripcio(resultats.getString("descripcio"));
                 incidencia.setDataCreacio(resultats.getDate("data_creacio"));
                 incidencia.setEmailCreador(resultats.getString("email_creador"));
@@ -192,6 +204,9 @@ public class IncidenciaDAO {
                 incidencia.setId(resultats.getInt("id_incidencia"));
                 incidencia.setTipus(resultats.getString("tipus"));
                 incidencia.setPrioritat(resultats.getString("prioritat"));
+                incidencia.setEstat(resultats.getString("estat"));
+                incidencia.setActiu1(resultats.getString("actiu1"));
+                incidencia.setActiu2(resultats.getString("actiu2"));
                 incidencia.setDescripcio(resultats.getString("descripcio"));
                 incidencia.setDataCreacio(resultats.getDate("data_creacio"));
                 incidencia.setEmailCreador(resultats.getString("email_creador"));

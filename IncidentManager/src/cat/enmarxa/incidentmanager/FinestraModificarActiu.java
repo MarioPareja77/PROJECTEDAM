@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/**
+ * La classe FinestraModificarActiu és l'encarregada de crear la finestra (interfície gràfica) quan l'usuari selecciona l'opció de "Modificar un actiu" des de la FinestraPrincipal de l'aplicació. Aquesta classe pertany a la part client de l'aplicació o 'Vista' dels del patró de disseny MVC.
+ */
 public class FinestraModificarActiu extends JDialog {
     private ServeiActiu serveiActiu; // Instància del servei d'actius
     private JComboBox<String> nomField; // Camp per seleccionar el nom de l'actiu

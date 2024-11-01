@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * La classe FinestraModificarIncidencia és l'encarregada de crear la finestra (interfície gràfica) quan l'usuari selecciona l'opció de "Modificar una incidència" des de la FinestraPrincipal de l'aplicació. Aquesta classe pertany a la part client de l'aplicació o 'Vista' dels del patró de disseny MVC.
+ */
 public class FinestraModificarIncidencia extends JDialog {
     private ServeiIncidencia serveiIncidencia; // Instància del servei d'incidències
     private ServeiActiu serveiActiu; // Instància del servei d'actius

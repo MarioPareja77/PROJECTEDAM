@@ -9,6 +9,9 @@ package cat.enmarxa.incidentmanager;
 //import javax.mail.internet.InternetAddress;
 //import javax.mail.internet.MimeMessage;
 
+/**
+ * La classe ServeiCorreu conté les operacions (mètodes) que s'han de portar a terme per enviar un correu electrònic quan un usuari demana donar-se d'alta a l'aplicació i es cridada des de FinestraLogin. Aquesta classe pertany a la capa 'Controlador' dins del patró MVC.
+ */
 public class ServeiCorreu {
 
     // Envia un correu electrònic per restablir la contrasenya d'un usuari

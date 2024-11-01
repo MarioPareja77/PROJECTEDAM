@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * La classe ServeiActiu conté les operacions (mètodes) que es podan portar a terme contra un actiu i es trucada per FinestraPrincipal o bé altres finestres que la necessitin. Aquesta classe pertany a la capa 'Controlador' dins del patró MVC.
+ */
 public class ServeiActiu {
 
     private ActiuDAO actiuDAO; // Objecte DAO per gestionar la base de dades

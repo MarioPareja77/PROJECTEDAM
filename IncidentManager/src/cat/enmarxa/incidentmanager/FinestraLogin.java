@@ -19,6 +19,9 @@ import java.security.KeyStoreException;  // Para gestionar errores del KeyStore
 import java.io.FileInputStream;  // Para leer archivos como el truststore
 
 
+/**
+ * La classe FinestraLogin és l'encarregada de crear la finestra (interfície gràfica) quan l'usuari arrenca l'aplicació client; crida a ServeiUsuari i FinestraPrincipal i es connecta per SSL al servidor. Aquesta classe pertany a la part client de l'aplicació o 'Vista' dels del patró de disseny MVC.
+ */
 public class FinestraLogin extends JFrame {
     private JTextField emailField; // Camp de text per introduir l'email
     private JPasswordField contrasenyaField; // Camp de text per introduir la contrasenya
@@ -34,7 +37,7 @@ public class FinestraLogin extends JFrame {
     public FinestraLogin() {
         // Configuració de la finestra
         setTitle("ENMARXA Incident Manager v1.0 (novembre 2024)");
-        setSize(450, 450); // Ajustar la mida de la finestra
+        setSize(500, 450); // Ajustar la mida de la finestra
         setResizable(false); // Desactivar la redimensionabilitat
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Tancar l'aplicació en tancar la finestra
         setLocationRelativeTo(null); // Centrar la finestra a la pantalla
@@ -62,7 +65,7 @@ public class FinestraLogin extends JFrame {
         JButton altaButton = new JButton("Alta nou Usuari"); // Botó d'alta d'usuari
         JButton sortirButton = new JButton("Sortir"); // Botó de sortida
 
-        // Afegir els components al panell
+        // Afegir els components al panel
         panel.add(emailLabel);
         panel.add(Box.createRigidArea(new Dimension(0, 10))); // Espai entre components
         panel.add(emailField);
@@ -84,7 +87,7 @@ public class FinestraLogin extends JFrame {
         panel.add(Box.createRigidArea(new Dimension(0, 10))); 
         panel.add(sortirButton);
 
-        add(panel); // Afegir el panell a la finestra
+        add(panel); // Afegir el panel a la finestra
         setVisible(true); // Fer visible la finestra
 
         // Accions dels botons
@@ -97,7 +100,7 @@ public class FinestraLogin extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    intentarLogin(); // Cridar a intentarLogin al pressionar Enter
+                    intentarLogin(); // Cridar a intentarLogin al prémer Enter
                 }
             }
         };

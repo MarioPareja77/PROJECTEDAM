@@ -3,6 +3,9 @@ package cat.enmarxa.incidentmanager;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * La classe FinestraResetContrasenya és l'encarregada de crear la finestra (interfície gràfica) quan l'usuari selecciona l'opció de "Canviar la contrasenya" des de la FinestraPrincipal de l'aplicació. Aquesta classe pertany a la part client de l'aplicació o 'Vista' dels del patró de disseny MVC.
+ */
 public class FinestraResetContrasenya extends JDialog {
     private JTextField emailField;
     private JPasswordField newPasswordField;

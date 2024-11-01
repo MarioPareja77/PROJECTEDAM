@@ -6,6 +6,9 @@ import java.util.List;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * La classe FinestraLlistarUsuarisRol és l'encarregada de crear la finestra (interfície gràfica) quan l'usuari selecciona l'opció de "Llistar usuaris segons el seu rol" des de la FinestraPrincipal de l'aplicació. Aquesta classe pertany a la part client de l'aplicació o 'Vista' dels del patró de disseny MVC.
+ */
 public class FinestraLlistarUsuarisRol extends JDialog {
     private JComboBox<String> rolField; // Desplegable per seleccionar el rol
     private ServeiUsuari serveiUsuari; // Instància del servei d'usuaris

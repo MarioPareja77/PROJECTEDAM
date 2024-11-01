@@ -41,6 +41,13 @@ CREATE TABLE actius (
     tipus ENUM('servidor', 'PC', 'pantalla', 'portàtil', 'switch', 'router', 'cablejat', 'ratolí', 'teclat', 'rack', 'software') NOT NULL
 );
 
+CREATE TABLE Missatges (
+    ID_missatge INT PRIMARY KEY AUTO_INCREMENT,
+    email_de VARCHAR(50) NOT NULL,
+    email_per VARCHAR(50) NOT NULL,
+    data_creacio DATE,
+    missatge TEXT
+);
 
 
 INSERT INTO actius (area, data_alta, descripcio, marca, nom, tipus) VALUES
@@ -86,5 +93,53 @@ INSERT INTO incidencies (tipus, prioritat, descripcio, email_creador, actiu1, ac
 ('Petició', 'Normal', 'Demanar informació sobre el servei', 'usuari18@acme.cat', 'actiu3', NULL, '2024-10-18', 'Treballant', 'tecnic6'),
 ('Problema', 'Urgent', 'Fallida del sistema de còpies de seguretat', 'usuari19@acme.cat', 'actiu4', NULL, '2024-10-19', 'Escalada', 'tecnic1'),
 ('Canvi', 'Crítica', 'Canvi de la política de seguretat', 'usuari20@acme.cat', 'actiu5', NULL, '2024-10-20', 'Resolta', 'tecnic2');
+
+INSERT INTO missatges (email_de, email_per, data_creacio, missatge) VALUES
+('usuari1@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 101: L’ordinador no respon. Necessitem que un tècnic el revisi.'),
+('usuari2@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 102: Problema de connexió a la xarxa en l’àrea administrativa. Si us plau, reviseu la configuració.'),
+('usuari3@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 103: Error de programari en el servidor principal. Cal una revisió urgent.'),
+('usuari4@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 104: La impressora no imprimeix. Pot ser que falti tinta o tingui un problema tècnic.'),
+('usuari5@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 105: L’usuari no pot accedir al seu compte. Necessitem un reset de contrasenya.'),
+('usuari6@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 106: Problema amb les actualitzacions automàtiques. L’ordinador es reinicia sense avís.'),
+('usuari7@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 107: Sol·licitud de nova configuració de correu per a un nou dispositiu.'),
+('usuari8@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 108: No es pot accedir a la unitat de xarxa compartida. Cal revisar els permisos.'),
+('usuari9@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 109: El programari antivirus mostra alertes freqüents. Es necessita una revisió.'),
+('usuari10@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 110: Sol·licitud de configuració d’accés remot per a un nou usuari.'),
+('usuari11@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 111: Error de còpia de seguretat en el servidor de dades. Es necessita una revisió immediata.'),
+('usuari12@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 112: Problemes de lentitud amb el sistema. L’usuari demana una optimització.'),
+('usuari13@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 113: Problema amb la configuració de la VPN. L’usuari no pot connectar-se.'),
+('usuari14@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 114: Fallada de disc en un dels equips. Es necessita substitució urgent.'),
+('usuari15@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 115: Problema amb les credencials de xarxa. L’usuari no pot accedir als recursos compartits.'),
+('usuari16@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 116: Sol·licitud de reinstal·lació de sistema operatiu per a un nou ús del dispositiu.'),
+('usuari17@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 117: El sistema de correu electrònic no sincronitza correctament.'),
+('usuari18@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 118: La connexió Wi-Fi és intermitent. Es necessita una revisió de la xarxa.'),
+('usuari19@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 119: Problema amb l’autenticació multifactor. L’usuari no pot completar el procés.'),
+('usuari20@acme.cat', CONCAT('tecnic', FLOOR(1 + RAND() * 10), '@acme.cat'), CURDATE(), 'Incidència 120: Error en la configuració de seguretat del dispositiu mòbil de l’usuari.');
+
+USE gestio_incidencies;
+
+INSERT INTO usuaris (email, contrasenya, data_alta, intents_fallits, area, cap, rol, comentaris, es_cap) VALUES
+('pere.marti@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-01', 0, 'RRHH', NULL, 'Usuari', NULL, 'N'),
+('jordi.perez@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-02', 0, 'IT', 'pere.marti@acme.cat', 'Tècnic', NULL, 'N'),
+('marta.garcia@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-03', 0, 'Vendes', 'jordi.perez@acme.cat', 'Usuari', NULL, 'N'),
+('anna.rodriguez@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-04', 0, 'Comptabilitat', 'marta.garcia@acme.cat', 'Usuari', NULL, 'N'),
+('joan.lopez@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-05', 0, 'Màrqueting', 'anna.rodriguez@acme.cat', 'Usuari', NULL, 'N'),
+('clara.ribes@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-06', 0, 'Compres', 'joan.lopez@acme.cat', 'Tècnic', NULL, 'N'),
+('miquel.sanchez@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-07', 0, 'Producció', 'clara.ribes@acme.cat', 'Usuari', NULL, 'N'),
+('nuria.serra@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-08', 0, 'RRHH', 'miquel.sanchez@acme.cat', 'Usuari', NULL, 'N'),
+('jaume.costa@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-09', 0, 'IT', 'nuria.serra@acme.cat', 'Tècnic', NULL, 'N'),
+('montse.alba@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-10', 0, 'Vendes', 'jaume.costa@acme.cat', 'Usuari', NULL, 'N'),
+('laura.sol@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-11', 0, 'Comptabilitat', 'montse.alba@acme.cat', 'Usuari', NULL, 'N'),
+('roger.castell@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-12', 0, 'Màrqueting', 'laura.sol@acme.cat', 'Usuari', NULL, 'N'),
+('emma.pujol@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-13', 0, 'Compres', 'roger.castell@acme.cat', 'Usuari', NULL, 'N'),
+('xavi.planas@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-14', 0, 'Producció', 'emma.pujol@acme.cat', 'Usuari', NULL, 'N'),
+('mireia.feliu@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-15', 0, 'RRHH', 'xavi.planas@acme.cat', 'Tècnic', NULL, 'N'),
+('carles.bonet@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-16', 0, 'IT', 'mireia.feliu@acme.cat', 'Usuari', NULL, 'N'),
+('gemma.font@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-17', 0, 'Vendes', 'carles.bonet@acme.cat', 'Usuari', NULL, 'N'),
+('pol.ferrer@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-18', 0, 'Comptabilitat', 'gemma.font@acme.cat', 'Usuari', NULL, 'N'),
+('isabel.vidal@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-19', 0, 'Màrqueting', 'pol.ferrer@acme.cat', 'Usuari', NULL, 'N'),
+('toni.arnau@acme.cat', '$2a$10$VSw0j7.kR6Cfd.N6i8alWeIDoN6zPlyHYZ1c91iZh7U7VdIYoZ2fG', '2023-01-20', 0, 'Compres', 'isabel.vidal@acme.cat', 'Usuari', NULL, 'N');
+
+
 
 

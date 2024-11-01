@@ -2,18 +2,26 @@ package cat.enmarxa.incidentmanager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import java.text.SimpleDateFormat;
 
+/**
+ * La classe FinestraLlistarActiusArea és l'encarregada de crear la finestra (interfície gràfica) quan l'usuari selecciona l'opció de "Llistar actius segons la seva àrea" des de la FinestraPrincipal de l'aplicació. Aquesta classe pertany a la part client de l'aplicació o 'Vista' dels del patró de disseny MVC.
+ */
 public class FinestraLlistarActiusArea extends JDialog {
     private JComboBox<String> areaField; // Desplegable per seleccionar l'àrea
     private ServeiActiu serveiActiu; // Instància del servei d'actius
+    
+    // Mostrar dates en format europeu (a la BD es desen en format americà)
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public FinestraLlistarActiusArea(Frame parent) {
         super(parent, "Llistar actius per Àrea", true);
         serveiActiu = new ServeiActiu();
-
+        
         // Configuración inicial de la ventana
         setLayout(new BorderLayout());
         setSize(400, 250);
@@ -68,7 +76,7 @@ public class FinestraLlistarActiusArea extends JDialog {
             data[i][0] = actiu.getNom();
             data[i][1] = actiu.getTipus();
             data[i][2] = actiu.getMarca();
-            data[i][3] = actiu.getDataAlta();
+            data[i][3] = dateFormat.format(actiu.getDataAlta()); // Data d'alta en format europeu
             data[i][4] = actiu.getDescripcio();
         }
 

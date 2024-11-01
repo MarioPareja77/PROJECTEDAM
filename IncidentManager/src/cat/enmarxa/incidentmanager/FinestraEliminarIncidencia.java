@@ -5,6 +5,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * La classe FinestraEliminarIncidencia és l'encarregada de crear la finestra (interfície gràfica) quan l'usuari selecciona l'opció de "Eliminar una incidència" des de la FinestraPrincipal de l'aplicació. Aquesta classe pertany a la part client de l'aplicació o 'Vista' dels del patró de disseny MVC.
+ */
 public class FinestraEliminarIncidencia extends JDialog {
     private ServeiIncidencia serveiIncidencia; // Instància del servei d'incidències
     private JTextField idField; // Camp de text per introduir l'ID de la incidència

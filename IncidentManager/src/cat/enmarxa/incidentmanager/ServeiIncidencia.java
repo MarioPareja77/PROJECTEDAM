@@ -4,6 +4,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La classe ServeiIncidencia conté les operacions (mètodes) que es podan portar a terme contra una incidència i es trucada per FinestraPrincipal o bé altres finestres que la necessitin. Aquesta classe pertany a la capa 'Controlador' dins del patró MVC.
+ */
 public class ServeiIncidencia {
 
     private IncidenciaDAO incidenciaDAO; // Objecte DAO per gestionar la base de dades

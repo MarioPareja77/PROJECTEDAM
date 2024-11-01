@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener; 
 import java.util.ArrayList; 
 
+/**
+ * La classe FinestraCrearIncidencia és l'encarregada de crear la finestra (interfície gràfica) quan l'usuari selecciona l'opció de "Crear una nova incidència"  des de la FinestraPrincipal de l'aplicació. Aquesta classe pertany a la part client de l'aplicació o 'Vista' dels del patró de disseny MVC.
+ */
 public class FinestraCrearIncidencia extends JDialog {
     private JTextField descripcioField; 
     private JComboBox<String> tipusField; 
@@ -15,7 +18,7 @@ public class FinestraCrearIncidencia extends JDialog {
     private JButton crearButton; 
     private String usuari; 
     private ServeiIncidencia serveiIncidencia; 
-    private ServeiIncidencia serveiActiu; 
+
 
     public FinestraCrearIncidencia(Frame parent, String usuari) {
         super(parent, "Crear Incidència", true); 

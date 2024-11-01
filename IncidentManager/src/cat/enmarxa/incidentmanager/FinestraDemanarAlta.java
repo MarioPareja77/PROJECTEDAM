@@ -11,6 +11,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * La classe FinestraDemanarAlta és l'encarregada de crear la finestra (interfície gràfica) quan l'usuari selecciona l'opció de "Demanar un nou alta d'usuari" des de FinestraLogin. Aquesta classe pertany a la part client de l'aplicació o 'Vista' dels del patró de disseny MVC.
+ */
 public class FinestraDemanarAlta extends JDialog {
     private JTextField emailField;
     private JTextField bossEmailField;
@@ -38,6 +41,9 @@ public class FinestraDemanarAlta extends JDialog {
 
         emailField = new JTextField();
         emailField.setFont(new Font("Arial", Font.PLAIN, 14));
+        emailField.setEditable(true);
+        emailField.setEnabled(true);
+        emailField.setPreferredSize(new Dimension(200, 30)); // Tamaño preferido adecuado
         gbc.gridx = 1;
         gbc.gridy = 0;
         mainPanel.add(emailField, gbc);
@@ -50,6 +56,9 @@ public class FinestraDemanarAlta extends JDialog {
 
         bossEmailField = new JTextField();
         bossEmailField.setFont(new Font("Arial", Font.PLAIN, 14));
+        bossEmailField.setEditable(true);
+        bossEmailField.setEnabled(true);
+        bossEmailField.setPreferredSize(new Dimension(200, 30)); // Tamaño preferido adecuado
         gbc.gridx = 1;
         gbc.gridy = 1;
         mainPanel.add(bossEmailField, gbc);
@@ -104,7 +113,7 @@ public class FinestraDemanarAlta extends JDialog {
             message.setFrom(new InternetAddress("enmarxaincidentmanager@gmail.com"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(bossEmail));
             message.setSubject("Sol·licitud d'alta d'usuari a aplicació ENMARXA Incident Manager");
-            message.setText("L'usuari " + userEmail + " ha sol·licitat l'alta com a usuari a l'aplicació ENMARXA Incident Manager amb data " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " i hora " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")) + " \n \nRecorda que has de tenir el rol apropiat dins d l'aplicació per poder donar-lo d'alta.");
+            message.setText("L'usuari " + userEmail + " ha sol·licitat l'alta com a usuari a l'aplicació ENMARXA Incident Manager amb data " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " i hora " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")) + " \n \nRecorda que has de tenir el rol apropiat dins de l'aplicació per poder donar-lo d'alta.");
 
             // Enviar el correu
             Transport.send(message);

@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * La classe Servidor és l'encarregada d'obrir el port 12345/tcp al servidor (tot i que es podria canviar per un altre port) i escoltar peticions dels clients. Les connexions estaran xifrades per SSL. Aquesta classe crida a ServeiLogin. Aquesta classe pertany al 'Controlador' dels del patró de disseny MVC.
+ */
 public class Servidor {
 
     // Mapa per emmagatzemar l'ID de la sessió i el correu electrònic de l'usuari

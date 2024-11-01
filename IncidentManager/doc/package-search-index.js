@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"cat.enmarxa.incidentmanager"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"cat.enmarxa.incidentmanager"},{"l":"org.mindrot.jbcrypt"}];updateSearchResults();

@@ -13,18 +13,24 @@ import java.util.Map; // Importa la interfície Map per a mapes
 import java.util.Locale;
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+
 import javax.imageio.ImageIO;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+/**
+ * La classe FinestraPrincipal és l'encarregada de crear la finestra (interfície gràfica) principal de l'aplicació i s'hi arriba des de FinestraLogin, quan un usuari ja està logat a l'aplicació". Aquesta classe pertany a la part client de l'aplicació o 'Vista' dels del patró de disseny MVC.
+ */
 public class FinestraPrincipal extends JFrame {
 
     // Declarem els components de la interfície
     private JMenuBar barraMenu; // Barra de menú principal
-    private JMenu menuIncidencies, menuActius, menuUsuaris, menuSessions, menuLogout, menuAjuda, menuContrasenya; // Menús
+    private JMenu menuIncidencies, menuActius, menuUsuaris, menuMissatges, menuSessions, menuLogout, menuAjuda, menuContrasenya; // Menús
     private ServeiIncidencia serveiIncidencia; // Servei per Modificar incidències
-    private ServeiUsuari serveiUsuari; // Servei per Modificar usuaris
-    private ServeiActiu serveiActiu; // Servei per Modificar actius
+    private ServeiUsuari serveiUsuari; 
+    private ServeiActiu serveiActiu; 
+    private ServeiMissatge serveiMissatge; 
     private String usuari; // Nom d'usuari
     private Servidor servidor; // Instància del servidor
     private Image fonsPantalla;
@@ -34,6 +40,9 @@ public class FinestraPrincipal extends JFrame {
     // Mapa per emmagatzemar sessions actives
     private static Map<String, String> sessionsActives = new HashMap<>();
     
+    // Mostrar dates en format europeu (a la BD es desen en format americà)
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    
   
     // Constructor que inicialitza el servidor
     public FinestraPrincipal(Servidor servidor) {
@@ -42,7 +51,7 @@ public class FinestraPrincipal extends JFrame {
 
     // Constructor privat per inicialitzar la finestra principal
     private FinestraPrincipal(String usuari, String rol, String idSessio) {
-        setTitle("ENMARXA Incident Manager v1.0 (octubre 2024)"); // Títol de la finestra
+        setTitle("ENMARXA Incident Manager v1.0 (novembre 2024)"); // Títol de la finestra
         setSize(600, 400); // Mida de la finestra
         setResizable(false); // No permetre redimensionament
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // No tancar al fer clic a la X
@@ -63,6 +72,7 @@ public class FinestraPrincipal extends JFrame {
         serveiIncidencia = new ServeiIncidencia(); // Inicialitzar servei d'incidència
         serveiUsuari = new ServeiUsuari(); // Inicialitzar servei d'usuari
         serveiActiu = new ServeiActiu(); // Inicialitzar servei d'actiu
+        serveiMissatge = new ServeiMissatge(); // Inicialitzar servei de missatges
         servidor = new Servidor(); // Inicialitzar servidor
         
         panelFons = new PanelFons(fonsPantalla);
@@ -252,6 +262,43 @@ public class FinestraPrincipal extends JFrame {
             barraMenu.add(menuUsuaris); // Afegir menú d'usuaris a la barra
         }
         
+        // Menú Missatges
+        JMenu menuMissatges = new JMenu("Missatgeria");
+        
+        // Submenú "Veure missatges rebuts" per a tots els perfils
+        JMenuItem veureMissatgesRebuts = new JMenuItem("Veure missatges rebuts");
+        veureMissatgesRebuts.addActionListener(e -> obtenirMissatgesEmailDe());
+        menuMissatges.add(veureMissatgesRebuts);
+        carregarFons();
+
+        // Submenú "Veure missatges enviats" per a tots els perfils
+        JMenuItem veureMissatgesEnviats = new JMenuItem("Veure missatges enviats");
+        veureMissatgesEnviats.addActionListener(e -> obtenirMissatgesEmailPer());
+        menuMissatges.add(veureMissatgesEnviats);
+        carregarFons();
+
+        // Submenú "Nou missatge" per a tots els perfils
+        JMenuItem nouMissatge = new JMenuItem("Nou missatge");
+        nouMissatge.addActionListener(e ->crearMissatge());
+        menuMissatges.add(nouMissatge);
+        carregarFons();
+
+        // Submenú "Veure tots els missatges" només per als rols "administrador" i "gestor"
+        if (rol.equals("Administrador") || rol.equals("Gestor")) {
+            JMenuItem veureTotsElsMissatges = new JMenuItem("Veure tots els missatges");
+            veureTotsElsMissatges.addActionListener(e -> mostrarLlistatMissatges());
+            menuMissatges.add(veureTotsElsMissatges);
+            carregarFons();
+        }
+
+        // Submenú "Eliminar missatge" només per al rol "administrador"
+        if (rol.equals("Administrador")) {
+            JMenuItem eliminarMissatge = new JMenuItem("Eliminar missatge");
+            eliminarMissatge.addActionListener(e -> eliminarMissatge());
+            menuMissatges.add(eliminarMissatge);
+            carregarFons();
+        }
+        
         
         // Menú Ajuda
         menuAjuda = new JMenu("Ajuda"); // Crear menú d'ajuda
@@ -284,8 +331,9 @@ public class FinestraPrincipal extends JFrame {
         });
         
 
-        // Afegir els menús a la barra segons el rol
-        barraMenu.add(menuIncidencies); // Afegir menú d'incidències a la barra
+        barraMenu.add(menuIncidencies); // Afegim el menú d'Incidències a la barra de menú principal
+        
+        barraMenu.add(menuMissatges); // Afegir el menú de Missatges a la barra de menú principal
         
         // Menú Sessions (només si és 'Administrador')
         if (rol.equals("administrador")) {
@@ -344,7 +392,7 @@ public class FinestraPrincipal extends JFrame {
             data[i][4] = incidencia.getActiu1(); // Actiu1 relacionat amb la incidència
             data[i][5] = incidencia.getActiu2(); // Actiu2 relacion amb la incidència
             data[i][6] = incidencia.getDescripcio(); // Data de creació
-            data[i][7] = incidencia.getDataCreacio(); // Descripció de la incidència
+            data[i][7] = dateFormat.format(incidencia.getDataCreacio()); // Data d'alta en format europeu
             data[i][8] = incidencia.getEmailCreador(); // Descripció de la incidència
             data[i][9] = incidencia.getTecnicAssignat(); // Descripció de la incidència
         }
@@ -414,6 +462,50 @@ public class FinestraPrincipal extends JFrame {
         JOptionPane.showMessageDialog(this, scrollPane, "Llistat d'Usuaris", JOptionPane.INFORMATION_MESSAGE);
     }
     
+ // Mètode per mostrar el llistat de missatges
+    private void mostrarLlistatMissatges() {
+        // Fem  el servei per obtenir els missatges
+        List<Missatge> missatges = serveiMissatge.llistarMissatges(); // Obtenir tots els usuaris
+
+        // Verificar si s'han trobat usuaris
+        if (missatges.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No s'han trobat missatges.", "Informació", JOptionPane.INFORMATION_MESSAGE); // Mostrar missatge si no hi ha usuaris
+            return; // Sortir del mètode
+        }
+
+        // Crear un JTable per mostrar els missatges
+        String[] columnNames = {"ID", "Remitent", "Destinatari", "Data", "Contingut"}; // Noms de les columnes
+        Object[][] data = new Object[missatges.size()][5]; // Matriu per emmagatzemar les dades
+
+        // Iterar a través dels missatges per omplir la matriu de dades
+        for (int i = 0; i < missatges.size(); i++) {
+            Missatge missatge = missatges.get(i);
+            data[i][0] = missatge.getId(); // ID del missatge
+            data[i][1] = missatge.getEmailDe(); // E-mail del remitent
+            data[i][2] = missatge.getEmailPer(); // E-mail del destinatari
+            data[i][3] = dateFormat.format(missatge.getDataCreacio()); // Data de creació del del missatge
+            data[i][4] = missatge.getContingut(); // Contingut del missatge
+
+        }
+
+        // Crear taula i mostrar dades
+        JTable table = new JTable(data, columnNames); // Crear taula amb dades
+        JScrollPane scrollPane = new JScrollPane(table); // Crear un JScrollPane per la taula
+        scrollPane.setPreferredSize(new Dimension(1500, 500)); // Ajustar la mida de la taula
+        
+        // Centrar el contingut de les cel·les de les taules
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        // Mostrar la taula en un quadre de diàleg
+        JOptionPane.showMessageDialog(this, scrollPane, "Llistat de missatges", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    
     // Mètode per mostrar el llistat de sessions
     private void mostrarLlistatSessions() {
         // Crear el model de la taula
@@ -463,7 +555,7 @@ public class FinestraPrincipal extends JFrame {
             data[i][1] = actiu.getTipus(); // Tipus de l'actiu
             data[i][2] = actiu.getArea(); // Àrea de l'actiu
             data[i][3] = actiu.getMarca(); // Marca de l'actiu
-            data[i][4] = actiu.getDataAlta(); // Data d'alta de l'actiu
+            data[i][4] = dateFormat.format(actiu.getDataAlta()); // Data d'alta en format europeu
             data[i][5] = actiu.getDescripcio(); // Descripció de l'actiu
         }
 
@@ -630,6 +722,105 @@ private void llistarUsuarisArea() {
 private void llistarUsuarisRol() {
 	FinestraLlistarUsuarisRol finestraLlistarUsuarisRol = new FinestraLlistarUsuarisRol(this);
 	finestraLlistarUsuarisRol.setVisible(true);
+}
+
+//Metode per crear un missatge
+private void crearMissatge() {
+	FinestraCrearMissatge finestraCrearMissatge = new FinestraCrearMissatge(this, usuari);
+	finestraCrearMissatge.setVisible(true);
+
+}
+
+//Metode per llistar tots els missatges enviats
+private void obtenirMissatgesEmailPer() {
+	
+    List<Missatge> missatges = serveiMissatge.obtenirMissatgesEmailPer(usuari); // Obtenir tots els usuaris
+
+    // Verificar si s'han trobat usuaris
+    if (missatges.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No s'han trobat missatges.", "Informació", JOptionPane.INFORMATION_MESSAGE); // Mostrar missatge si no hi ha usuaris
+        return; // Sortir del mètode
+    }
+
+    // Crear un JTable per mostrar els missatges enviats
+    String[] columnNames = {"ID","Destinatari", "Data", "Contingut"}; // Noms de les columnes
+    Object[][] data = new Object[missatges.size()][4]; // Matriu per emmagatzemar les dades
+
+    // Iterar a través dels missatges per omplir la matriu de dades
+    for (int i = 0; i < missatges.size(); i++) {
+        Missatge missatge = missatges.get(i);
+        data[i][0] = missatge.getId(); // ID del missatge
+        data[i][1] = missatge.getEmailPer(); // E-mail del destinatari
+        data[i][2] = dateFormat.format(missatge.getDataCreacio()); // Data de creació del del missatge
+        data[i][3] = missatge.getContingut(); // Contingut del missatge
+    }
+
+    // Crear taula i mostrar dades
+    JTable table = new JTable(data, columnNames); // Crear taula amb dades
+    JScrollPane scrollPane = new JScrollPane(table); // Crear un JScrollPane per la taula
+    scrollPane.setPreferredSize(new Dimension(1500, 500)); // Ajustar la mida de la taula
+    
+    // Centrar el contingut de les cel·les de les taules
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+    
+    for (int i = 0; i < table.getColumnCount(); i++) {
+        table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    }
+
+    // Mostrar la taula en un quadre de diàleg
+    JOptionPane.showMessageDialog(this, scrollPane, "Llistat de missatges enviats", JOptionPane.INFORMATION_MESSAGE);
+
+}
+
+//Metode per llistar tots els missatges rebuts
+private void obtenirMissatgesEmailDe() {
+	
+	List<Missatge> missatges = serveiMissatge.obtenirMissatgesEmailDe(usuari); // Obtenir tots els usuaris
+
+    // Verificar si s'han trobat usuaris
+    if (missatges.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "No s'han trobat missatges.", "Informació", JOptionPane.INFORMATION_MESSAGE); // Mostrar missatge si no hi ha usuaris
+        return; // Sortir del mètode
+    }
+
+    // Crear un JTable per mostrar els missatges rebuts
+    String[] columnNames = {"ID","Remitent", "Data", "Contingut"}; // Noms de les columnes
+    Object[][] data = new Object[missatges.size()][4]; // Matriu per emmagatzemar les dades
+
+    // Iterar a través dels missatges per omplir la matriu de dades
+    for (int i = 0; i < missatges.size(); i++) {
+        Missatge missatge = missatges.get(i);
+        data[i][0] = missatge.getId(); // ID del missatge
+        data[i][1] = missatge.getEmailDe(); // E-mail del destinatari
+        data[i][2] = dateFormat.format(missatge.getDataCreacio()); // Data de creació del del missatge
+        data[i][3] = missatge.getContingut(); // Contingut del missatge
+    }
+
+    // Crear taula i mostrar dades
+    JTable table = new JTable(data, columnNames); // Crear taula amb dades
+    JScrollPane scrollPane = new JScrollPane(table); // Crear un JScrollPane per la taula
+    scrollPane.setPreferredSize(new Dimension(1500, 500)); // Ajustar la mida de la taula
+    
+    // Centrar el contingut de les cel·les de les taules
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+    
+    for (int i = 0; i < table.getColumnCount(); i++) {
+        table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+    }
+
+    // Mostrar la taula en un quadre de diàleg
+    JOptionPane.showMessageDialog(this, scrollPane, "Llistat de missatges rebuts", JOptionPane.INFORMATION_MESSAGE);
+
+	
+}
+
+//Metode per eliminar un missatge
+private void eliminarMissatge() {
+	FinestraEliminarMissatge finestraEliminarMissatge = new FinestraEliminarMissatge(this);
+	finestraEliminarMissatge.setVisible(true);
+
 }
 
 // MNetode per canviar la contrasenya

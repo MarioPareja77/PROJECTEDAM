@@ -6,6 +6,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * La classe FinestraLlistarUsuarisArea és l'encarregada de crear la finestra (interfície gràfica) quan l'usuari selecciona l'opció de "Llistar usuaris segons el seu àrea" des de la FinestraPrincipal de l'aplicació. Aquesta classe pertany a la part client de l'aplicació o 'Vista' dels del patró de disseny MVC.
+ */
 public class FinestraLlistarUsuarisArea extends JDialog {
     private JComboBox<String> areaField; // Desplegable per seleccionar l'àrea
     private ServeiUsuari serveiUsuari; // Instància del servei d'usuaris

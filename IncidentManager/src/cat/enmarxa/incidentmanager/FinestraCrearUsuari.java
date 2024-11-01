@@ -8,6 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date; 
 
+/**
+ * La classe FinestraCrearActiu és l'encarregada de crear la finestra (interfície gràfica) quan l'usuari selecciona l'opció de "Crear un nou usuari" des de la FinestraPrincipal de l'aplicació. Aquesta classe pertany a la part client de l'aplicació o 'Vista' dels del patró de disseny MVC.
+ */
 public class FinestraCrearUsuari extends JDialog {
     private JTextField emailField; 
     private JTextField contrasenyaField; 

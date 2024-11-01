@@ -2,6 +2,9 @@ package cat.enmarxa.incidentmanager;
 
 import java.sql.SQLException;
 
+/**
+ * La classe ServeLogin és l'encarregada d'efectuar l'autenticació dels usuaris que es volen logar a l'aplicació i altres mètodes relacionats amb el login. La classe és trucada per Servidor i al seu voltant truca a UsuariDAO. Aquesta classe pertany al 'Controlador' dels del patró de disseny MVC.
+ */
 public class ServeiLogin {
     private UsuariDAO usuariDAO; // Objecte DAO per gestionar la base de dades dels usuaris
 

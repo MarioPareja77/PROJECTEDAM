@@ -5,6 +5,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * La classe FinestraEliminarActiu és l'encarregada de crear la finestra (interfície gràfica) quan l'usuari selecciona l'opció de "Eliminar un actiu" des de la FinestraPrincipal de l'aplicació. Aquesta classe pertany a la part client de l'aplicació o 'Vista' dels del patró de disseny MVC.
+ */
 public class FinestraEliminarActiu extends JDialog {
     private ServeiActiu serveiActiu; // Instància del servei d'actius
     private JTextField nomActiuField; // Camp de text per introduir el nom de l'actiu

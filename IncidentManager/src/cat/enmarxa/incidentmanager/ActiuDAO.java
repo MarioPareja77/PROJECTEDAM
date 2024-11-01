@@ -8,6 +8,9 @@ import java.sql.DriverManager; // Importa DriverManager per establir connexions 
 import java.util.ArrayList; // Importa ArrayList per utilitzar una llista dinàmica
 import java.util.List; // Importa List per utilitzar tipus de dades de llista
 
+/**
+ * La classe ActiuDAO és un DAO (Data Access Object) encarregat de contactar directament amb la taula 'actius' de la BD (MySQL) i es trucada des de ServeiActiu. Aquesta classe pertany a la capa de persistència o 'Model' dins del patró de disseny MVC.
+ */
 public class ActiuDAO {
 
     private Connection connexio; // Connexió a la base de dades

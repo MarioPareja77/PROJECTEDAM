@@ -4,11 +4,19 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.text.SimpleDateFormat;
 
+/**
+ * La classe FinestraLlistarIncidenciesTipus és l'encarregada de crear la finestra (interfície gràfica) quan l'usuari selecciona l'opció de "Llistar incidències segons el seu tipus" des de la FinestraPrincipal de l'aplicació. Aquesta classe pertany a la part client de l'aplicació o 'Vista' dels del patró de disseny MVC.
+ */
 public class FinestraLlistarIncidenciesTipus extends JDialog {
     private ServeiIncidencia serveiIncidencia; // Instància del servei d'incidències
     private JComboBox<String> tipusField; // Camp per introduir el tipus d'incidència
+    
+    // Mostrar dates en format europeu (a la BD es desen en format americà)
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public FinestraLlistarIncidenciesTipus(Frame parent) {
         super(parent, "Llistar Incidències per Tipus", true);
@@ -66,10 +74,6 @@ public class FinestraLlistarIncidenciesTipus extends JDialog {
             return;
         }
 
-        / // Definir noms de les columnes per la taula
-        String[] columnNames = {"ID", "Tipus", "Prioritat", "Descripció", "Email del creador", "Actiu1", "Actiu2", "Data Creació", "Estat", "Usuari creador", "Tècnic assignat"};
-        Object[][] data = new Object[incidencies.size()][11]; // Matriu per emmagatzemar les dades
-
         // Definir noms de les columnes per la taula
         String[] columnNames = {"ID", "Tipus", "Prioritat", "Descripció", "Email del creador", "Actiu1", "Actiu2", "Data Creació", "Estat", "Usuari creador", "Tècnic assignat"};
         Object[][] data = new Object[incidencies.size()][11]; // Matriu per emmagatzemar les dades
@@ -84,7 +88,7 @@ public class FinestraLlistarIncidenciesTipus extends JDialog {
             data[i][4] = incidencia.getEmailCreador();
             data[i][5] = incidencia.getActiu1();
             data[i][6] = incidencia.getActiu2();
-            data[i][7] = incidencia.getDataCreacio();
+            data[i][7] = dateFormat.format(incidencia.getDataCreacio()); // Data d'alta en format europeu
             data[i][8] = incidencia.getEstat();
             data[i][9] = incidencia.getEmailCreador();
             data[i][10] = incidencia.getTecnicAssignat();

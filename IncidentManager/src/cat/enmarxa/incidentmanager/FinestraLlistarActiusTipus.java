@@ -5,10 +5,17 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
+import java.text.SimpleDateFormat;
 
+/**
+ * La classe FinestraLlistarActiusTipus és l'encarregada de crear la finestra (interfície gràfica) quan l'usuari selecciona l'opció de "Llistar actius segons el seu tipus" des de la FinestraPrincipal de l'aplicació. Aquesta classe pertany a la part client de l'aplicació o 'Vista' dels del patró de disseny MVC.
+ */
 public class FinestraLlistarActiusTipus extends JDialog {
     private ServeiActiu serveiActiu; // Instància del servei d'actius
     private JComboBox<String> tipusField; // Selector de tipus d'actiu
+    
+    // Mostrar dates en format europeu (a la BD es desen en format americà)
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public FinestraLlistarActiusTipus(Frame parent) {
         super(parent, "Llistar Actius per Tipus", true);
@@ -71,7 +78,7 @@ public class FinestraLlistarActiusTipus extends JDialog {
             data[i][0] = actiu.getNom();
             data[i][1] = actiu.getTipus();
             data[i][2] = actiu.getMarca();
-            data[i][3] = actiu.getDataAlta();
+            data[i][3] = dateFormat.format(actiu.getDataAlta()); // Data d'alta en format europeu
             data[i][4] = actiu.getDescripcio();
         }
 

@@ -1,5 +1,8 @@
 package cat.enmarxa.incidentmanager;
 
+/**
+ * La classe Usuari representa un objecte de tipus 'Usuari' en l'aplicació de gestió d'incidències i es trucada des de FinestraPrincipal. Aquesta classe pertany a la capa 'Controlador' dins del patró MVC.
+ */
 public class Usuari {
     // Atributs de la classe Usuari
     private String email; // Correu electrònic de l'usuari
