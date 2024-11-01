@@ -21,6 +21,7 @@ public class Actiu {
     public Actiu() {
     }
 
+<<<<<<< HEAD
     /**
      * Constructor amb tots els camps per inicialitzar un nou objecte Actiu.
      *
@@ -32,6 +33,9 @@ public class Actiu {
      * @param dataAlta  la data d'alta de l'actiu
      * @param descripcio la descripció de l'actiu
      */
+=======
+    // Constructor amb tots els camps per inicialitzar un nou objecte Actiu
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     public Actiu(int id, String nom, String tipus, String area, String marca, Date dataAlta, String descripcio) {
         this.id = id;              // Assigna l'identificador únic
         this.nom = nom;            // Assigna el nom de l'actiu
@@ -100,11 +104,15 @@ public class Actiu {
         this.descripcio = descripcio; // Estableix la descripció de l'actiu
     }
 
+<<<<<<< HEAD
     /**
      * Mètode per a representar l'objecte Actiu com a cadena.
      *
      * @return una cadena que representa l'objecte Actiu
      */
+=======
+    // Mètode per a representar l'objecte Actiu com a cadena
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     @Override
     public String toString() {
         return "Actiu{" +

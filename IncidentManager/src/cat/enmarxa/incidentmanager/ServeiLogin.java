@@ -28,7 +28,11 @@ public class ServeiLogin {
     public int obtenirIntentsFallits(String email) {
         try {
             // Obtenir el nombre d'intents fallits per a un usuari
+<<<<<<< HEAD
             return usuariDAO.obtenirIntentsFallits(email); 
+=======
+            return usuariDAO.obtenirIntentsFallits(email);
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         } catch (SQLException e) {
             e.printStackTrace(); // Gestionem l'excepció en cas d'error
             return 0; // Retornar 0 en cas d'error
@@ -66,6 +70,7 @@ public class ServeiLogin {
     }
 
     // Mètode per tancar la connexió amb la base de dades
+<<<<<<< HEAD
     public void close() {
         try {
             // Tancar la connexió a la base de dades
@@ -73,5 +78,10 @@ public class ServeiLogin {
         } catch (SQLException e) {
             e.printStackTrace(); // Gestionem l'excepció en cas d'error
         }
+=======
+    public void close() throws SQLException {
+        // Tancar la connexió a la base de dades
+		usuariDAO.tancarConnexio();
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     }
 }

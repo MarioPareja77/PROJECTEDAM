@@ -22,13 +22,23 @@ public class ServeiActiu {
     }
 
     // Mètode per crear un nou actiu
+<<<<<<< HEAD
     public boolean crearActiu(String nom, String tipus, String area, String marca, String descripcio, Date dataAlta) {
+=======
+    public boolean crearActiu(String nom, String tipus, String area, String marca, java.util.Date dataAlta, String descripcio) {
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         try {
             // Deleguem l'operació al DAO
+<<<<<<< HEAD
             actiuDAO.crearActiu(nom, tipus, area, marca, descripcio, dataAlta); // Creem el nou actiu
             return true;
+=======
+            int id = -1; // Inicialitzem l'ID com a -1, potser es genera automàticament
+            actiuDAO.crearActiu(id, nom, tipus, area, marca, dataAlta, descripcio); // Creem el nou actiu
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         } catch (SQLException e) {
             e.printStackTrace(); // Gestionem l'excepció
+<<<<<<< HEAD
         }
         return false; // Retorna false si la creació de l'actiu ha donat cap error
     }
@@ -102,20 +112,77 @@ public class ServeiActiu {
             return true;
         } catch (SQLException e) {
             e.printStackTrace(); // Gestionem l'excepció
+=======
+            // Es pot afegir un missatge d'error personalitzat si és necessari
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         }
-        return false;
+        return false; // Es pot modificar el retorn depenent de la implementació
     }
 
+<<<<<<< HEAD
     // Mètode per eliminar un actiu basant-se en el seu nom
     public boolean eliminarActiu(String nom) {
+=======
+    // Mètode per obtenir el llistat de tots els actius
+    public List<Actiu> obtenirTotsElsActius() {
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         try {
+<<<<<<< HEAD
             // Deleguem l'operació al DAO per eliminar l'actiu de la base de dades
             actiuDAO.eliminarActiu(nom); // Eliminem l'actiu pel seu nom
             return true;
+=======
+            // Deleguem l'operació al DAO
+            return actiuDAO.obtenirTotsElsActius(); // Obtenim tots els actius de la base de dades
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gestionem l'excepció
+<<<<<<< HEAD
+=======
+            return new ArrayList<>(); // Retornem una llista buida en cas d'error
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
+        }
+<<<<<<< HEAD
+        return false;
+        
+=======
+    }
+
+    // Mètode per obtenir el llistat de tots els actius (només els noms)
+    public List<String> obtenirNomTotsElsActius() {
+        // Deleguem l'operació al DAO
+        return actiuDAO.obtenirNomTotsElsActius(); // Obtenim tots els noms dels actius de la base de dades
+    }
+
+    // Mètode per obtenir un actiu específic pel seu ID
+    public Actiu obtenirActiuPerId(int idActiu) {
+        try {
+            // Deleguem l'operació al DAO
+            return actiuDAO.obtenirActiuPerId(idActiu); // Obtenim l'actiu pel seu ID
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gestionem l'excepció
+            return null; // Retornem null en cas d'error
+        }
+    }
+
+    // Mètode per actualitzar un actiu
+    public void actualitzarActiu(int idActiu, String nom, String tipus, String area, String marca, Date dataAlta, String descripcio) {
+        try {
+            // Deleguem l'operació al DAO per actualitzar l'actiu amb els nous valors
+            actiuDAO.actualitzarActiu(idActiu, nom, tipus, area, marca, dataAlta, descripcio); // Actualitzem l'actiu
         } catch (SQLException e) {
             e.printStackTrace(); // Gestionem l'excepció
         }
-        return false;
-        
+    }
+
+    // Mètode per eliminar un actiu
+    public void eliminarActiu(int idActiu) {
+        try {
+            // Deleguem l'operació al DAO per eliminar l'actiu de la base de dades
+            actiuDAO.eliminarActiu(idActiu); // Eliminem l'actiu pel seu ID
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gestionem l'excepció
+        }
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     }
 }

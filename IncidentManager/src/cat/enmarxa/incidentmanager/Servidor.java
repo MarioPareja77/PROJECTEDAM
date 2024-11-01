@@ -1,14 +1,30 @@
 package cat.enmarxa.incidentmanager;
 
+<<<<<<< HEAD
 import java.security.GeneralSecurityException;
 import javax.net.ssl.*;
 import java.io.*;
 import java.net.*;
 import java.security.KeyStore;
+=======
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.BindException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 import java.util.Map;
 import java.util.UUID;
 
@@ -19,20 +35,45 @@ public class Servidor {
 
     // Mapa per emmagatzemar l'ID de la sessió i el correu electrònic de l'usuari
     private static Map<String, String> sessionsActives = new HashMap<>();
+<<<<<<< HEAD
     private static List<SSLSocket> socketsActius = new ArrayList<>(); // Llista de sockets actius per gestionar connexions múltiples
+=======
+	//private static Map<String, String> sessionsActives = new ConcurrentHashMap<>(); // Alternativa concurrent per gestió de múltiples accessos
+    private static List<Socket> socketsActius = new ArrayList<>(); // Llista de sockets actius per gestionar connexions múltiples
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
     public static void main(String[] args) {
         final int port = 12345; // Port on escoltarà el servidor
 
+<<<<<<< HEAD
         try {
             // Cargar el almacén de claves
             KeyStore keyStore = KeyStore.getInstance("JKS");
             keyStore.load(new FileInputStream("C:\\Program Files\\Java\\jdk-23\\bin\\miKeystore.jks"), "12345678".toCharArray());
+=======
+        try (FileWriter fw = new FileWriter("servidor.log", true);
+             PrintWriter logWriter = new PrintWriter(fw);
+             ServerSocket servidor = new ServerSocket(port)) {
 
+            System.out.println("Servidor escoltant en el port " + port);
+            logWriter.println("Servidor escoltant en el port " + port);
+            logWriter.flush(); // Assegurar que s'escrigui al fitxer
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
+
+<<<<<<< HEAD
             // Crear el gestor de claves
             KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
             keyManagerFactory.init(keyStore, "12345678".toCharArray());
+=======
+            while (true) {
+                // Acceptar connexions dels clients
+                Socket socket = servidor.accept();
+                System.out.println("Client connectat des de " + socket.getInetAddress());
+                logWriter.println("Client connectat des de " + socket.getInetAddress());
+                logWriter.flush();
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
+<<<<<<< HEAD
             // Crear el contexto SSL
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(keyManagerFactory.getKeyManagers(), null, null);
@@ -63,12 +104,21 @@ public class Servidor {
                     // Crear un fil per gestionar múltiples clients simultàniament
                     new Thread(new FilClient(socket, logWriter)).start();
                 }
+=======
+                // Crear un fil per gestionar múltiples clients simultàniament
+                new Thread(new FilClient(socket, logWriter)).start();
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
             }
         } catch (BindException e) {
             System.err.println("Error: El port " + port + " ja està en ús. Finalitzant programa.");
             System.exit(1); // Finalitza el programa amb un codi d'error
+<<<<<<< HEAD
         } catch (IOException | GeneralSecurityException e) {
             System.err.println("Error: " + e.getMessage());
+=======
+        } catch (IOException e) {
+            System.err.println("Error d'entrada/sortida: " + e.getMessage());
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
             e.printStackTrace();
         }
     }
@@ -95,16 +145,31 @@ public class Servidor {
         private SSLSocket socketClient;
         private PrintWriter logWriter;
         private ServeiLogin serveiLogin;
+<<<<<<< HEAD
 
         // Constructor del FilClient, inicialitza el socket del client i el servei de login
         public FilClient(SSLSocket socketClient, PrintWriter logWriter) {
+=======
+ 
+        // Constructor del FilClient, inicialitza el socket del client i el servei de login
+        public FilClient(Socket socketClient, PrintWriter logWriter) {
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
             this.socketClient = socketClient;
             this.logWriter = logWriter;
+<<<<<<< HEAD
 
+=======
+           
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
             // Inicialitzar el ServeiLogin per gestionar l'autenticació
             try {
+<<<<<<< HEAD
                 this.serveiLogin = new ServeiLogin();
             } catch (SQLException e) {
+=======
+                this.serveiLogin = new ServeiLogin();            
+            } catch (SQLException e) {           	
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
                 System.err.println("Error al inicialitzar ServeiLogin: " + e.getMessage());
                 e.printStackTrace();
             }
@@ -112,6 +177,14 @@ public class Servidor {
 
         @Override
         public void run() {
+<<<<<<< HEAD
+=======
+            // Afegir el socket a la llista de sockets actius
+            synchronized (socketsActius) {
+                socketsActius.add(socketClient);
+            }
+
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
             try (
                 DataInputStream entrada = new DataInputStream(socketClient.getInputStream());
                 DataOutputStream sortida = new DataOutputStream(socketClient.getOutputStream());
@@ -140,7 +213,11 @@ public class Servidor {
                         System.out.println("Sessions actives: " + sessionsActives);
                         sortida.writeUTF("Autenticació exitosa. ID de sessió: " + idSessio);
                         logWriter.println("Usuari autenticat: " + email + " | ID de sessió: " + idSessio);
+<<<<<<< HEAD
                         
+=======
+
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
                         // Reiniciar el comptador d'intents fallits després d'un login exitós
                         serveiLogin.restablirIntentsFallits(email);
                     }

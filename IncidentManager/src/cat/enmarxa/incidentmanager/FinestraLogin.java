@@ -1,5 +1,6 @@
 package cat.enmarxa.incidentmanager;
 
+<<<<<<< HEAD
 import javax.swing.*; // Importa les classes de Swing per crear interfícies gràfiques
 import java.awt.*; // Importa les classes d'AWT per gestionar la disposició i components gràfics
 import java.awt.event.KeyAdapter; // Importa KeyAdapter per gestionar esdeveniments de teclat
@@ -10,6 +11,33 @@ import java.net.SocketTimeoutException; // Importa SocketTimeoutException per ge
 import java.io.*; // Importa classes d'entrada/sortida per gestionar fluxos de dades
 import java.net.InetAddress; // Importa InetAddress per gestionar adreces IP
 import javax.net.ssl.*;
+=======
+// Importa les classes d'AWT per gestionar la disposició i components gràfics
+import java.awt.Dimension;
+import java.awt.event.KeyAdapter; // Importa KeyAdapter per gestionar esdeveniments de teclat
+import java.awt.event.KeyEvent; // Importa KeyEvent per gestionar esdeveniments de teclat
+// Importa classes d'entrada/sortida per gestionar fluxos de dades
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetAddress; // Importa InetAddress per gestionar adreces IP
+import java.net.InetSocketAddress; // Importa InetSocketAddress per gestionar adreces de socket
+import java.net.Socket; // Importa la classe Socket per gestionar connexions de xarxa
+import java.net.SocketTimeoutException; // Importa SocketTimeoutException per gestionar el temps d'espera
+
+// Importa les classes de Swing per crear interfícies gràfiques
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
 import java.security.KeyManagementException;
 import java.security.KeyStore;  // Para gestionar el truststore
@@ -29,17 +57,28 @@ public class FinestraLogin extends JFrame {
     private JTextField portField; // Camp de text per introduir el port del servidor
     private String idSessio; // Variable per emmagatzemar l'ID de sessió
 
+<<<<<<< HEAD
     private SSLSocket socket = null; // Socket per gestionar la connexió SSL
+=======
+    private Socket socket = null; // Socket per gestionar la connexió
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     private DataInputStream entrada = null; // Flux d'entrada per gestionar la lectura de dades
     private DataOutputStream sortida = null; // Flux de sortida per gestionar l'escriptura de dades
 
     // Constructor de la finestra de login
     public FinestraLogin() {
         // Configuració de la finestra
+<<<<<<< HEAD
         setTitle("ENMARXA Incident Manager v1.0 (novembre 2024)");
         setSize(500, 450); // Ajustar la mida de la finestra
         setResizable(false); // Desactivar la redimensionabilitat
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Tancar l'aplicació en tancar la finestra
+=======
+        setTitle("ENMARXA Incident Manager v1.0 (octubre 2024)");
+        setSize(450, 450); // Ajustar la mida de la finestra
+        setResizable(false); // Desactivar la redimensionabilitat
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); // Tancar l'aplicació en tancar la finestra
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         setLocationRelativeTo(null); // Centrar la finestra a la pantalla
 
         JPanel panel = new JPanel(); // Crear un panell per organitzar els components
@@ -62,10 +101,18 @@ public class FinestraLogin extends JFrame {
 
         // Crear els botons
         JButton loginButton = new JButton("Accedir"); // Botó d'accés
+<<<<<<< HEAD
+=======
+        JButton resetButton = new JButton("Resetejar contrasenya"); // Botó de reset
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         JButton altaButton = new JButton("Alta nou Usuari"); // Botó d'alta d'usuari
         JButton sortirButton = new JButton("Sortir"); // Botó de sortida
 
+<<<<<<< HEAD
         // Afegir els components al panel
+=======
+        // Afegir els components al panell
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         panel.add(emailLabel);
         panel.add(Box.createRigidArea(new Dimension(0, 10))); // Espai entre components
         panel.add(emailField);
@@ -87,11 +134,19 @@ public class FinestraLogin extends JFrame {
         panel.add(Box.createRigidArea(new Dimension(0, 10))); 
         panel.add(sortirButton);
 
+<<<<<<< HEAD
         add(panel); // Afegir el panel a la finestra
+=======
+        add(panel); // Afegir el panell a la finestra
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         setVisible(true); // Fer visible la finestra
 
         // Accions dels botons
         loginButton.addActionListener(e -> intentarLogin()); // Acció per al botó d'accés
+<<<<<<< HEAD
+=======
+        resetButton.addActionListener(e -> resetejarContrasenya()); // Acció per al botó de reset
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         altaButton.addActionListener(e -> demanarAltaUsuari()); // Acció per al botó d'alta
         sortirButton.addActionListener(e -> sortirAplicacio()); // Acció per al botó de sortida
 
@@ -100,7 +155,11 @@ public class FinestraLogin extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+<<<<<<< HEAD
                     intentarLogin(); // Cridar a intentarLogin al prémer Enter
+=======
+                    intentarLogin(); // Cridar a intentarLogin al pressionar Enter
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
                 }
             }
         };
@@ -131,6 +190,7 @@ public class FinestraLogin extends JFrame {
                 JOptionPane.showMessageDialog(this, "El port ha de ser un número entre el 0 i el 65535", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+<<<<<<< HEAD
             
             try {
             	// Definir la ruta y la contraseña del truststore
@@ -155,7 +215,10 @@ public class FinestraLogin extends JFrame {
                     SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory(); // Utilitzar el SSLContext personalitzat
                     socket = (SSLSocket) sslSocketFactory.createSocket(host, portNumber); // Crear el socket SSL amb el context configurat
                     socket.setSoTimeout(timeout); // Establir el timeout
+=======
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
+<<<<<<< HEAD
                     entrada = new DataInputStream(socket.getInputStream()); // Inicialitzar el flux d'entrada
                     sortida = new DataOutputStream(socket.getOutputStream()); // Inicialitzar el flux de sortida
 
@@ -167,6 +230,16 @@ public class FinestraLogin extends JFrame {
 
 
                // Obtenir usuari i contrasenya
+=======
+            try {
+                // Connexió al servidor
+                socket = new Socket(); // Crear un nou socket
+                socket.connect(new InetSocketAddress(host, portNumber), timeout); // Connectar al servidor
+                entrada = new DataInputStream(socket.getInputStream()); // Inicialitzar el flux d'entrada
+                sortida = new DataOutputStream(socket.getOutputStream()); // Inicialitzar el flux de sortida
+
+                // Obtenir usuari i contrasenya
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
                 String usuari = emailField.getText(); // Obtenir l'usuari
                 String contrasenya = new String(contrasenyaField.getPassword()); // Obtenir la contrasenya
                 int intents, intentsRestants;
@@ -177,7 +250,11 @@ public class FinestraLogin extends JFrame {
 
                 // Llegir la resposta del servidor
                 String resposta = entrada.readUTF(); // Llegir la resposta del servidor
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
                 if (resposta.contains("exitosa")) {
                     // Si la resposta indica que el login és exitós
                     idSessio = resposta.substring(resposta.indexOf(":") + 2); // Obtenir l'ID de sessió
@@ -195,7 +272,14 @@ public class FinestraLogin extends JFrame {
                         System.out.println(resposta);
                         System.out.println(intents);
                         intentsRestants = 5 - intents; // Calcular els intents restants
+<<<<<<< HEAD
                         if (intentsRestants < 0) intentsRestants = 0; // Assegurar que no sigui negatiu
+=======
+                        if (intentsRestants < 0)
+						 {
+							intentsRestants = 0; // Assegurar que no sigui negatiu
+						}
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
                         JOptionPane.showMessageDialog(this, "Usuari o contrasenya incorrectes. Torna-ho a provar. \n Et queden " + intentsRestants + " intents.");
                     }
                 }
@@ -225,9 +309,23 @@ public class FinestraLogin extends JFrame {
         }
     }
 
+<<<<<<< HEAD
+=======
+    // Mètode per resetejar la contrasenya
+    private void resetejarContrasenya() {
+        // Informar que la funcionalitat no està implementada
+        JOptionPane.showMessageDialog(this, "Funcionalitat de reset de contrasenya no implementada.");
+    }
+
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     // Mètode per demanar alta d'usuari
     private void demanarAltaUsuari() {
+<<<<<<< HEAD
         new FinestraDemanarAlta(this); // Crear una nueva instancia de FinestraDemanarAlta
+=======
+        // Informar que la funcionalitat no està implementada
+        JOptionPane.showMessageDialog(this, "Funcionalitat d'alta d'usuari no implementada.");
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     }
 
     // Mètode per sortir de l'aplicació
@@ -238,9 +336,24 @@ public class FinestraLogin extends JFrame {
     // Mètode per tancar recursos oberts
     private void closeResources() {
         try {
+<<<<<<< HEAD
             if (entrada != null) entrada.close(); // Tancar el flux d'entrada si no és null
             if (sortida != null) sortida.close(); // Tancar el flux de sortida si no és null
             if (socket != null) socket.close(); // Tancar el socket si no és null
+=======
+            if (entrada != null)
+			 {
+				entrada.close(); // Tancar el flux d'entrada si no és null
+			}
+            if (sortida != null)
+			 {
+				sortida.close(); // Tancar el flux de sortida si no és null
+			}
+            if (socket != null)
+			 {
+				socket.close(); // Tancar el socket si no és null
+			}
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         } catch (IOException ex) {
             ex.printStackTrace(); // Imprimir l'error a la consola
         }

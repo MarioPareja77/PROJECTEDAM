@@ -26,7 +26,11 @@ public class ServeiIncidencia {
     public boolean crearIncidencia(String tipus, String prioritat, String estat, String descripcio, String usuari, String actiu1, String actiu2) {
         try {
             // Delegar l'operació al DAO per crear la nova incidència
+<<<<<<< HEAD
             incidenciaDAO.crearIncidencia(tipus, prioritat, estat, descripcio, usuari, actiu1, actiu2);
+=======
+            incidenciaDAO.crearIncidencia(tipus, prioritat, descripcio, usuari);
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
             return true; // Retornem true si la creació és correcta
         } catch (SQLException e) {
             e.printStackTrace(); // Gestió de l'excepció en cas d'error
@@ -37,9 +41,15 @@ public class ServeiIncidencia {
     // Mètode per obtenir el llistat de totes les incidències en un estat determinat
     public List<Incidencia> obtenirIncidenciesEstat(String estat) {
         try {
+<<<<<<< HEAD
             // Delegar l'operació al DAO per obtenir les incidències de la base de dades
             return incidenciaDAO.obtenirIncidenciesEstat(estat); 
+=======
+            // Delegar l'operació al DAO per associar actius a la incidència
+            incidenciaDAO.associarActius(idIncidencia, actius);
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         } catch (SQLException e) {
+<<<<<<< HEAD
             e.printStackTrace(); // Gestionem l'excepció en cas d'error
             return new ArrayList<>(); // Retornar una llista buida en cas d'error
         }
@@ -64,6 +74,9 @@ public class ServeiIncidencia {
         } catch (SQLException e) {
             e.printStackTrace(); // Gestionem l'excepció en cas d'error
             return new ArrayList<>(); // Retornar una llista buida en cas d'error
+=======
+            e.printStackTrace(); // Gestió de l'excepció en cas d'error
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         }
     }
 
@@ -71,7 +84,11 @@ public class ServeiIncidencia {
     public List<Incidencia> obtenirIncidenciesUsuari(String email) {
         try {
             // Delegar l'operació al DAO per obtenir les incidències d'un usuari concret
+<<<<<<< HEAD
             return incidenciaDAO.obtenirIncidenciesUsuari(email);
+=======
+            return incidenciaDAO.obtenirIncidenciesPerUsuari(idUsuari);
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         } catch (SQLException e) {
             e.printStackTrace(); // Gestió de l'excepció en cas d'error
             return new ArrayList<>(); // Retornem una llista buida en cas d'error
@@ -109,6 +126,7 @@ public class ServeiIncidencia {
     }
     
 
+<<<<<<< HEAD
     
     // Mètode per eliminar una incidència existent basant-se en el seu id
     public boolean eliminarIncidencia(int id) {
@@ -120,6 +138,17 @@ public class ServeiIncidencia {
             e.printStackTrace(); // Gestionem l'excepció en cas d'error durant l'eliminació
         }
         return false; // Retornem false si es produeix un error
+=======
+    // Mètode per llistar totes les incidències creades de tots els usuaris
+    public List<Incidencia> listarIncidencies() {
+        // Aquest mètode no llença SQLException, així que no és necessari try-catch
+        try {
+			return incidenciaDAO.listarIncidencies();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     }
 }
-

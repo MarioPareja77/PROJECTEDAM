@@ -11,20 +11,34 @@ public class Usuari {
     private String cap; // Cap o responsable de l'usuari
     private String rol; // Rol de l'usuari (per exemple, administrador, usuari normal, etc.)
     private int intentsFallits; // Nombre d'intents fallits d'inici de sessió
+<<<<<<< HEAD
     private String comentaris; // Comentaris de l'usuari
+=======
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
     // Constructor de la classe Usuari
+<<<<<<< HEAD
     public Usuari (String email, String contrasenya, String area, String cap, String rol, int intentsFallits, String comentaris) {
+=======
+    public Usuari (String email, String contrasenya, String area, String cap, String rol, int intentsFallits) {
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         this.email = email;
         this.contrasenya = contrasenya;
         this.area = area;
         this.cap = cap;
         this.rol = rol;
         this.intentsFallits = intentsFallits; // Inicialitzar el nombre d'intents fallits
+<<<<<<< HEAD
         this.comentaris = comentaris;
+=======
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     }
+<<<<<<< HEAD
     
     
+=======
+
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     // Getters i setters per accedir i modificar els atributs de la classe
 
     public String getEmail() {

@@ -21,17 +21,26 @@ public class ServeiUsuari {
     }
 
     // Mètode per crear un nou usuari
+<<<<<<< HEAD
     public boolean crearUsuari(String email, String contrasenya, String intentsFallits, String area, String cap, String rol, String comentaris) {
+=======
+    public void crearUsuari(String email, String contrasenya, String area, String cap, String rol) {
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         try {
             // Delegar l'operació al DAO per crear un nou usuari
+<<<<<<< HEAD
             usuariDAO.crearUsuari(email, contrasenya, intentsFallits, area, cap, rol, comentaris);
             return true;
+=======
+            usuariDAO.crearUsuari(email, contrasenya, area, cap, rol);
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         } catch (SQLException e) {
             e.printStackTrace(); // Gestionem l'excepció en cas d'error durant la creació de l'usuari
         }
         return false; // Retornem false si es produeix un error
     }
 
+<<<<<<< HEAD
     // Mètode per modificar la contrasenya d'un usuari
     public boolean modificarContrasenya(String email, String novaContrasenya) {
         try {
@@ -44,16 +53,23 @@ public class ServeiUsuari {
         return false; // Retornem false si s'ha produït un error
     }
 
+=======
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     // Mètode per obtenir el llistat de tots els usuaris
     public List<Usuari> obtenirTotsElsUsuaris() {
         try {
             // Delegar l'operació al DAO per obtenir tots els usuaris de la base de dades
+<<<<<<< HEAD
             return usuariDAO.obtenirTotsElsUsuaris(); 
+=======
+            return usuariDAO.obtenirTotsElsUsuaris();
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         } catch (SQLException e) {
             e.printStackTrace(); // Gestionem l'excepció en cas d'error
             return new ArrayList<>(); // Retornar una llista buida en cas d'error
         }
     }
+<<<<<<< HEAD
     
     // Mètode per obtenir el llistat de tots els usuaris (unicament l'email)
     public List<String> getLlistatEmailUsuaris() {
@@ -100,17 +116,63 @@ public class ServeiUsuari {
         } catch (SQLException e) {
             e.printStackTrace(); // Gestionem l'excepció en cas d'error
             return null; // Retornar null en cas d'error
+=======
+
+    // Mètode per obtenir un usuari específic mitjançant el seu correu electrònic
+    public Usuari obtenirUsuariPerEmail(String email) {
+        try {
+            // Delegar l'operació al DAO per obtenir l'usuari per email
+            return usuariDAO.obtenirUsuariPerEmail(email);
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error
+            return null; // Retornar null en cas d'error
         }
     }
 
+    // Mètode per actualitzar un usuari existent
+    public void actualitzarUsuari(String email, String contrasenya, String area, String cap, String rol) {
+        try {
+            // Delegar l'operació al DAO per actualitzar l'usuari
+            usuariDAO.actualitzarUsuari(email, contrasenya, area, cap, rol);
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error durant l'actualització
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
+        }
+    }
+
+<<<<<<< HEAD
     // Mètode per modificar un usuari existent
     public boolean modificarUsuari(String email, String contrasenya, String area, String cap, String rol, String comentaris, int intentsFallits) {
+=======
+    // Mètode per obtenir el rol d'un usuari específic mitjançant el seu correu electrònic
+    public String obtenirRolUsuari(String email) {
         try {
+            // Delegar l'operació al DAO per obtenir el rol de l'usuari
+            return usuariDAO.obtenirRolUsuari(email);
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error
+            return null; // Retornar null en cas d'error
+        }
+    }
+
+    // Mètode per eliminar un usuari existent
+    public void eliminarUsuari(String email) {
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
+        try {
+<<<<<<< HEAD
             // Delegar l'operació al DAO per actualitzar l'usuari
             usuariDAO.modificarUsuari(email, contrasenya, area, cap, rol, comentaris, intentsFallits);
             return true;
+=======
+            // Delegar l'operació al DAO per eliminar l'usuari de la base de dades
+            usuariDAO.eliminarUsuari(email);
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         } catch (SQLException e) {
+<<<<<<< HEAD
             e.printStackTrace(); // Gestionem l'excepció en cas d'error durant l'actualització
+=======
+            e.printStackTrace(); // Gestionem l'excepció en cas d'error durant l'eliminació
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         }
         return false;
     }

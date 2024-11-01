@@ -1112,6 +1112,7 @@ Cliente conectado desde /127.0.0.1
 Autenticación fallida. Usuario o contraseña incorrectos para: mario@acme.cat
 Cliente conectado desde /127.0.0.1
 Servidor escoltant en el port 12345
+<<<<<<< HEAD
 Servidor escoltant en el port 12345
 Client connectat des de /127.0.0.1
 Client connectat des de /127.0.0.1
@@ -1717,3 +1718,5 @@ Client connectat des de /127.0.0.1
 Usuari autenticat: mario@acme.cat | ID de sessió: eb3c9fbe-b0e9-466e-a2ca-cfe940f6af45
 Client connectat des de /127.0.0.1
 Servidor SSL escoltant pel port 12345
+=======
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM

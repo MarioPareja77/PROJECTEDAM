@@ -11,11 +11,15 @@ public class Incidencia {
     private String tipus;         // Tipus d'incidència
     private String prioritat;     // Prioritat de l'incidència
     private String descripcio;    // Descripció de l'incidència
+<<<<<<< HEAD
     private String estat;		// Estat de l'incidència
     private String actiu1;    // Actiu1 associat a l'incidència
     private String actiu2;    // Actiu2 associat a l'incidència
     private String emailCreador;  // Correu electrònic del creador de l'incidència
     private String tecnicAssignat;  //Tècnic assignat a l'incidència
+=======
+    private String emailCreador;  // Correu electrònic del creador de l'incidència
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     private Date dataCreacio;     // Data de creació de l'incidència
 
     // Constructor per defecte
@@ -23,6 +27,7 @@ public class Incidencia {
     }
 
     // Constructor amb tots els camps
+<<<<<<< HEAD
     public Incidencia(int id, String tipus, String prioritat, String estat, String descripcio, String emailCreador, Date dataCreacio, String actiu1, String actiu2, String tecnicAssignat) {
         this.id = id;                // Inicialitzar l'ID de l'incidència
         this.tipus = tipus;          // Inicialitzar el tipus d'incidència
@@ -34,10 +39,23 @@ public class Incidencia {
         this.actiu2 = actiu2; // Inicialitzar l'actiu1 relacionat amb la incidencia
         this.dataCreacio = dataCreacio; // Inicialitzar la data de creació
         this.tecnicAssignat = tecnicAssignat; // Inicialitzar el tècnic assignat;
+=======
+    public Incidencia(int id, String tipus, String prioritat, String descripcio, String emailCreador, Date dataCreacio) {
+        this.id = id;                // Inicialitzar l'ID de l'incidència
+        this.tipus = tipus;          // Inicialitzar el tipus d'incidència
+        this.prioritat = prioritat;  // Inicialitzar la prioritat de l'incidència
+        this.descripcio = descripcio; // Inicialitzar la descripció de l'incidència
+        this.emailCreador = emailCreador; // Inicialitzar el correu del creador
+        this.dataCreacio = dataCreacio; // Inicialitzar la data de creació
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     }
 
     // Getters i setters per a cada atribut
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     public int getId() {
         return id; // Retornar l'ID de l'incidència
     }
@@ -45,7 +63,7 @@ public class Incidencia {
     public void setId(int id) {
         this.id = id; // Assignar un nou ID a l'incidència
     }
-    
+
     public String getTipus() {
         return tipus; // Retornar el tipus d'incidència
     }
@@ -60,6 +78,7 @@ public class Incidencia {
 
     public void setPrioritat(String prioritat) {
         this.prioritat = prioritat; // Assignar una nova prioritat a l'incidència
+<<<<<<< HEAD
     }
     
     public String getEstat() {
@@ -68,6 +87,8 @@ public class Incidencia {
 
     public void setEstat(String estat) {
         this.estat = estat; // Assignar un nou estat a l'incidència
+=======
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     }
 
     public String getDescripcio() {
@@ -92,6 +113,7 @@ public class Incidencia {
 
     public void setDataCreacio(Date dataCreacio) {
         this.dataCreacio = dataCreacio; // Assignar una nova data de creació a l'incidència
+<<<<<<< HEAD
     }
     
     public String getActiu1() {
@@ -116,6 +138,8 @@ public class Incidencia {
 
     public void setTecnicAssignat(String tecnicAssignat) {
         this.tecnicAssignat = tecnicAssignat; // Assignar un tècnic assignat a l'incidència
+=======
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     }
 
     @Override

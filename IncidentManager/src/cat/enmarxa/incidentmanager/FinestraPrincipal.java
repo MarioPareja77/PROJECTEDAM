@@ -1,5 +1,6 @@
 package cat.enmarxa.incidentmanager;
 
+<<<<<<< HEAD
 import javax.swing.*; // Importa les classes de Swing per a la interfície gràfica
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel; // Importa la classe per Modificar models de taula
@@ -14,6 +15,27 @@ import java.util.Locale;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+=======
+// Importa classes d'AWT per a la gestió de la disposició
+import java.awt.Dimension;
+// Importa classes per gestionar esdeveniments
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.HashMap; // Importa HashMap per a la gestió de mapes clau-valor
+import java.util.List; // Importa la interfície List per gestionar llistes
+import java.util.Map; // Importa la interfície Map per a mapes
+
+// Importa les classes de Swing per a la interfície gràfica
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableModel; // Importa la classe per gestionar models de taula
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
 import javax.imageio.ImageIO;
 import java.net.URI;
@@ -26,6 +48,7 @@ public class FinestraPrincipal extends JFrame {
 
     // Declarem els components de la interfície
     private JMenuBar barraMenu; // Barra de menú principal
+<<<<<<< HEAD
     private JMenu menuIncidencies, menuActius, menuUsuaris, menuMissatges, menuSessions, menuLogout, menuAjuda, menuContrasenya; // Menús
     private ServeiIncidencia serveiIncidencia; // Servei per Modificar incidències
     private ServeiUsuari serveiUsuari; 
@@ -37,13 +60,26 @@ public class FinestraPrincipal extends JFrame {
     private PanelFons panelFons;
    
     
+=======
+    private JMenu menuIncidencies, menuActius, menuUsuaris, menuSessions, menuLogout, menuAjuda; // Menús
+    private ServeiIncidencia serveiIncidencia; // Servei per gestionar incidències
+    private ServeiUsuari serveiUsuari; // Servei per gestionar usuaris
+    private ServeiActiu serveiActiu; // Servei per gestionar actius
+    private String usuari; // Nom d'usuari
+    private Servidor servidor; // Instància del servidor
+
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     // Mapa per emmagatzemar sessions actives
     private static Map<String, String> sessionsActives = new HashMap<>();
+<<<<<<< HEAD
     
     // Mostrar dates en format europeu (a la BD es desen en format americà)
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     
   
+=======
+
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     // Constructor que inicialitza el servidor
     public FinestraPrincipal(Servidor servidor) {
         this.servidor = servidor; // Inicialitza el servidor
@@ -51,11 +87,19 @@ public class FinestraPrincipal extends JFrame {
 
     // Constructor privat per inicialitzar la finestra principal
     private FinestraPrincipal(String usuari, String rol, String idSessio) {
+<<<<<<< HEAD
         setTitle("ENMARXA Incident Manager v1.0 (novembre 2024)"); // Títol de la finestra
         setSize(600, 400); // Mida de la finestra
         setResizable(false); // No permetre redimensionament
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // No tancar al fer clic a la X
+=======
+        setTitle("ENMARXA Incident Manager v1.0 (octubre 2024)"); // Títol de la finestra
+        setSize(600, 400); // Mida de la finestra
+        setResizable(false); // No permetre redimensionament
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); // No tancar al fer clic a la X
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         setLocationRelativeTo(null); // Centrar la finestra
+<<<<<<< HEAD
         
         Locale.setDefault(Locale.of("ca", "ES"));
         
@@ -76,12 +120,23 @@ public class FinestraPrincipal extends JFrame {
         servidor = new Servidor(); // Inicialitzar servidor
         
         panelFons = new PanelFons(fonsPantalla);
+=======
+
+        this.usuari = usuari; // Guardar el nom d'usuari
+
+        // Inicialització dels serveis
+        serveiIncidencia = new ServeiIncidencia(); // Inicialitzar servei d'incidència
+        serveiUsuari = new ServeiUsuari(); // Inicialitzar servei d'usuari
+        serveiActiu = new ServeiActiu(); // Inicialitzar servei d'actiu
+        servidor = new Servidor(); // Inicialitzar servidor
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
         // Inicialització de la barra de menú
         barraMenu = new JMenuBar();
 
         // Menú Incidències
         menuIncidencies = new JMenu("Incidències"); // Crear menú d'incidències
+<<<<<<< HEAD
         JMenuItem crearIncidencia = new JMenuItem("Crear incidència"); // Opció per crear una incidència
         JMenuItem modificarIncidencia = new JMenuItem("Modificar incidència existent"); // Nova opció per Modificar una incidència existent
         JMenuItem llistarIncidencies = new JMenuItem("Llistat de totes les incidències"); // Opció per llistar incidències
@@ -98,14 +153,27 @@ public class FinestraPrincipal extends JFrame {
         menuIncidencies.add(llistarIncidenciesPrioritat); 
         menuIncidencies.add(llistarIncidenciesTipus); 
         menuIncidencies.add(eliminarIncidencia); 
+=======
+        JMenuItem crearIncidencia = new JMenuItem("Crear Incidència"); // Opció per crear una incidència
+        JMenuItem llistarIncidencies = new JMenuItem("Llistat de totes les Incidències"); // Opció per llistar incidències
+        menuIncidencies.add(crearIncidencia); // Afegir opció al menú
+        menuIncidencies.add(llistarIncidencies); // Afegir opció al menú
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
         // Acció per crear incidència
         crearIncidencia.addActionListener(e -> {
+<<<<<<< HEAD
         crearIncidencia(usuari);
         carregarFons();
+=======
+            // Obrir finestra per crear una nova incidència
+            FinestraCrearIncidencia finestraCrearIncidencia = new FinestraCrearIncidencia(this, usuari);
+            finestraCrearIncidencia.setVisible(true);
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         });
 
         // Acció per mostrar el llistat d'incidències
+<<<<<<< HEAD
         llistarIncidencies.addActionListener(e -> {
         mostrarLlistatIncidencies();
         carregarFons();
@@ -146,8 +214,12 @@ public class FinestraPrincipal extends JFrame {
         eliminarIncidencia();
         carregarFons();
         });
+=======
+        llistarIncidencies.addActionListener(e -> mostrarLlistatIncidencies());
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
         // Menú Actius (només si no és 'Usuari')
+<<<<<<< HEAD
         if (!rol.equals("Usuari")) {
         	menuActius = new JMenu("Actius"); // Crear menú d'actius
             JMenuItem crearActiu = new JMenuItem("Crear actiu"); // Opció per crear un actiu
@@ -164,12 +236,27 @@ public class FinestraPrincipal extends JFrame {
             menuActius.add(llistarActiusMarca);
             menuActius.add(llistarActiusTipus); 
             menuActius.add(eliminarActiu); 
+=======
+        if (!rol.equals("usuari")) {
+            menuActius = new JMenu("Actius"); // Crear menú d'actius
+            JMenuItem crearActiu = new JMenuItem("Crear Actiu"); // Opció per crear un actiu
+            JMenuItem llistarActius = new JMenuItem("Llistat de tots els Actius"); // Opció per llistar actius
+            menuActius.add(crearActiu); // Afegir opció al menú
+            menuActius.add(llistarActius); // Afegir opció al menú
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
             // Acció per crear actiu
             crearActiu.addActionListener(e -> {
+<<<<<<< HEAD
             crearActiu();
             carregarFons();
+=======
+                // Obrir finestra per crear un nou actiu
+                FinestraCrearActiu finestraCrearActiu = new FinestraCrearActiu(this);
+                finestraCrearActiu.setVisible(true);
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
             });
+<<<<<<< HEAD
            
             // Acció per llistar actiu
             llistarActius.addActionListener(e -> {
@@ -208,10 +295,14 @@ public class FinestraPrincipal extends JFrame {
             });
             
             
+=======
+            llistarActius.addActionListener(e -> mostrarLlistatActius()); // Acció per mostrar el llistat d'actius
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
             barraMenu.add(menuActius); // Afegir menú d'actius a la barra
         }
-        
+
         // Menú Usuaris (només si és 'Gestor' o 'Administrador')
+<<<<<<< HEAD
         if (rol.equals("Gestor") || rol.equals("Administrador")) {
             menuUsuaris = new JMenu("Usuaris"); // Crear menú d'usuaris
             JMenuItem crearUsuari = new JMenuItem("Crear usuari"); // Nova opció per crear usuari
@@ -226,7 +317,14 @@ public class FinestraPrincipal extends JFrame {
             menuUsuaris.add(llistarUsuarisArea); 
             menuUsuaris.add(llistarUsuarisRol); 
             menuUsuaris.add(eliminarUsuari); 
+=======
+        if (rol.equals("gestor") || rol.equals("administrador")) {
+            menuUsuaris = new JMenu("Usuaris"); // Crear menú d'usuaris
+            JMenuItem llistarUsuaris = new JMenuItem("Llistat de tots els Usuaris"); // Opció per llistar usuaris
+            menuUsuaris.add(llistarUsuaris); // Afegir opció al menú
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
+<<<<<<< HEAD
             // Acció per crear usuari
             crearUsuari.addActionListener(e -> crearUsuari());
             
@@ -259,8 +357,13 @@ public class FinestraPrincipal extends JFrame {
             carregarFons();
             });
             
+=======
+            // Acció del menú Usuaris
+            llistarUsuaris.addActionListener(e -> mostrarLlistatUsuaris()); // Acció per mostrar el llistat d'usuaris
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
             barraMenu.add(menuUsuaris); // Afegir menú d'usuaris a la barra
         }
+<<<<<<< HEAD
         
         // Menú Missatges
         JMenu menuMissatges = new JMenu("Missatgeria");
@@ -270,6 +373,8 @@ public class FinestraPrincipal extends JFrame {
         veureMissatgesRebuts.addActionListener(e -> obtenirMissatgesEmailDe());
         menuMissatges.add(veureMissatgesRebuts);
         carregarFons();
+=======
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
         // Submenú "Veure missatges enviats" per a tots els perfils
         JMenuItem veureMissatgesEnviats = new JMenuItem("Veure missatges enviats");
@@ -317,6 +422,7 @@ public class FinestraPrincipal extends JFrame {
         menuLogout = new JMenu("Logout"); // Crear menú de logout
         JMenuItem confirmarLogout = new JMenuItem("Tancar Sessió"); // Opció per tancar sessió
         menuLogout.add(confirmarLogout); // Afegir opció al menú
+<<<<<<< HEAD
         
         // Acció per confirmar el canvi de contrasenya
         confirmarCanviContrasenya.addActionListener(e -> {
@@ -324,6 +430,9 @@ public class FinestraPrincipal extends JFrame {
         carregarFons();
         });
         
+=======
+
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         // Acció per confirmar el logout
         confirmarLogout.addActionListener(e -> {
         confirmarSortida();
@@ -331,10 +440,16 @@ public class FinestraPrincipal extends JFrame {
         });
         
 
+<<<<<<< HEAD
         barraMenu.add(menuIncidencies); // Afegim el menú d'Incidències a la barra de menú principal
         
         barraMenu.add(menuMissatges); // Afegir el menú de Missatges a la barra de menú principal
         
+=======
+        // Afegir els menús a la barra segons el rol
+        barraMenu.add(menuIncidencies); // Afegir menú d'incidències a la barra
+
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         // Menú Sessions (només si és 'Administrador')
         if (rol.equals("administrador")) {
             menuSessions = new JMenu("Sessions"); // Crear menú de sessions
@@ -342,11 +457,19 @@ public class FinestraPrincipal extends JFrame {
             menuSessions.add(llistarSessions); // Afegir opció al menú
 
             // Acció del menú Sessions
+<<<<<<< HEAD
             // llistarSessions.addActionListener(e -> mostrarLlistatSessions()); // Acció per mostrar el llistat de sessions
             // barraMenu.add(menuSessions); // Afegir menú de sessions a la barra
+=======
+            llistarSessions.addActionListener(e -> mostrarLlistatSessions()); // Acció per mostrar el llistat de sessions
+            barraMenu.add(menuSessions); // Afegir menú de sessions a la barra
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         }
         barraMenu.add(menuAjuda); // Afegir menú d'ajuda a la barra
+<<<<<<< HEAD
         barraMenu.add(menuContrasenya); // Afegir menú d'ajuda a la barra
+=======
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         barraMenu.add(menuLogout); // Afegir menú de logout a la barra
 
         // Afegir la barra de menú a la finestra
@@ -379,8 +502,13 @@ public class FinestraPrincipal extends JFrame {
         }
 
         // Crear un JTable per mostrar les incidències
+<<<<<<< HEAD
         String[] columnNames = {"ID", "Tipus", "Prioritat", "Estat", "Actiu #1", "Actiu #2", "Descripció", "Data de creació", "Usuari creador", "Tècnic assignat"}; // Noms de les columnes
         Object[][] data = new Object[incidencies.size()][10]; // Matriu per emmagatzemar les dades
+=======
+        String[] columnNames = {"ID", "Descripció", "Tipus", "Prioritat", "Data de Creació"}; // Noms de les columnes
+        Object[][] data = new Object[incidencies.size()][5]; // Matriu per emmagatzemar les dades
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
         // Iterar a través de les incidències per omplir la matriu de dades
         for (int i = 0; i < incidencies.size(); i++) {
@@ -396,6 +524,7 @@ public class FinestraPrincipal extends JFrame {
             data[i][8] = incidencia.getEmailCreador(); // Descripció de la incidència
             data[i][9] = incidencia.getTecnicAssignat(); // Descripció de la incidència
         }
+<<<<<<< HEAD
         
         // Crear taula i mostrar dades
         JTable table = new JTable(data, columnNames); // Crear taula amb dades
@@ -409,6 +538,13 @@ public class FinestraPrincipal extends JFrame {
         for (int i = 0; i < table.getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
+=======
+
+        // Crear taula i mostrar dades
+        JTable table = new JTable(data, columnNames); // Crear taula amb dades
+        JScrollPane scrollPane = new JScrollPane(table); // Crear un JScrollPane per la taula
+        scrollPane.setPreferredSize(new Dimension(800, 500)); // Ajustar la mida de la taula
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
         // Mostrar la taula en un quadre de diàleg
         JOptionPane.showMessageDialog(this, scrollPane, "Llistat d'Incidències", JOptionPane.INFORMATION_MESSAGE);
@@ -418,7 +554,7 @@ public class FinestraPrincipal extends JFrame {
     public void mostrarSessions() {
         System.out.println(servidor.obtenirSessionsActives()); // Imprimir les sessions actives
     }
-    
+
     // Mètode per mostrar el llistat d'usuaris
     private void mostrarLlistatUsuaris() {
         // Usamos el servei per obtenir els usuaris
@@ -431,23 +567,36 @@ public class FinestraPrincipal extends JFrame {
         }
 
         // Crear un JTable per mostrar els usuaris
+<<<<<<< HEAD
         String[] columnNames = {"E-mail","Àrea", "Cap", "Rol", "Intents Fallits", "Comentaris"}; // Noms de les columnes
         Object[][] data = new Object[usuaris.size()][6]; // Matriu per emmagatzemar les dades
+=======
+        String[] columnNames = {"E-mail", "Contrasenya", "Àrea", "Cap", "Rol"}; // Noms de les columnes
+        Object[][] data = new Object[usuaris.size()][5]; // Matriu per emmagatzemar les dades
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
         // Iterar a través dels usuaris per omplir la matriu de dades
         for (int i = 0; i < usuaris.size(); i++) {
             Usuari usuari = usuaris.get(i);
             data[i][0] = usuari.getEmail(); // E-mail de l'usuari
+<<<<<<< HEAD
             data[i][1] = usuari.getArea(); // Àrea de l'usuari
             data[i][2] = usuari.getCap(); // Cap de l'usuari
             data[i][3] = usuari.getRol(); // Rol de l'usuari
             data[i][4] = usuari.getIntentsFallits(); // Rol de l'usuari
             data[i][5] = usuari.getComentaris(); // Rol de l'usuari
+=======
+            data[i][1] = usuari.getContrasenya(); // Contrasenya de l'usuari
+            data[i][2] = usuari.getArea(); // Àrea de l'usuari
+            data[i][3] = usuari.getCap(); // Cap de l'usuari
+            data[i][4] = usuari.getRol(); // Rol de l'usuari
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         }
 
         // Crear taula i mostrar dades
         JTable table = new JTable(data, columnNames); // Crear taula amb dades
         JScrollPane scrollPane = new JScrollPane(table); // Crear un JScrollPane per la taula
+<<<<<<< HEAD
         scrollPane.setPreferredSize(new Dimension(1500, 500)); // Ajustar la mida de la taula
         
         // Centrar el contingut de les cel·les de les taules
@@ -457,15 +606,21 @@ public class FinestraPrincipal extends JFrame {
         for (int i = 0; i < table.getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
+=======
+        scrollPane.setPreferredSize(new Dimension(800, 500)); // Ajustar la mida de la taula
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
         // Mostrar la taula en un quadre de diàleg
         JOptionPane.showMessageDialog(this, scrollPane, "Llistat d'Usuaris", JOptionPane.INFORMATION_MESSAGE);
     }
+<<<<<<< HEAD
     
  // Mètode per mostrar el llistat de missatges
     private void mostrarLlistatMissatges() {
         // Fem  el servei per obtenir els missatges
         List<Missatge> missatges = serveiMissatge.llistarMissatges(); // Obtenir tots els usuaris
+=======
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
         // Verificar si s'han trobat usuaris
         if (missatges.isEmpty()) {
@@ -512,7 +667,11 @@ public class FinestraPrincipal extends JFrame {
         DefaultTableModel modelTaula = new DefaultTableModel();
         modelTaula.addColumn("ID de sessió"); // Afegir columna per ID de sessió
         modelTaula.addColumn("Usuari (e-mail)"); // Afegir columna per e-mail de l'usuari
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         // Crear la taula amb el model
         JTable taulaSessions = new JTable(modelTaula);
         JScrollPane scrollPane = new JScrollPane(taulaSessions); // Crear un JScrollPane per la taula
@@ -532,11 +691,15 @@ public class FinestraPrincipal extends JFrame {
     public String getUsuari() {
         return usuari; // Retornar el nom d'usuari
     }
-    
+
     // Mètode per mostrar el llistat d'actius
     private void llistarActius() {
         // Usamos el servei per obtenir els actius
+<<<<<<< HEAD
         List<Actiu> actius = serveiActiu.llistarActius(); // Obtenir tots els actius
+=======
+        List<Actiu> actius = serveiActiu.obtenirTotsElsActius(); // Obtenir tots els actius
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
         // Verificar si s'han trobat actius
         if (actius.isEmpty()) {
@@ -555,13 +718,18 @@ public class FinestraPrincipal extends JFrame {
             data[i][1] = actiu.getTipus(); // Tipus de l'actiu
             data[i][2] = actiu.getArea(); // Àrea de l'actiu
             data[i][3] = actiu.getMarca(); // Marca de l'actiu
+<<<<<<< HEAD
             data[i][4] = dateFormat.format(actiu.getDataAlta()); // Data d'alta en format europeu
+=======
+            data[i][4] = actiu.getDataAlta(); // Data d'alta de l'actiu
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
             data[i][5] = actiu.getDescripcio(); // Descripció de l'actiu
         }
 
         // Crear taula i mostrar dades
         JTable table = new JTable(data, columnNames); // Crear taula amb dades
         JScrollPane scrollPane = new JScrollPane(table); // Crear un JScrollPane per la taula
+<<<<<<< HEAD
         scrollPane.setPreferredSize(new Dimension(1500, 500)); // Ajustar la mida de la taula
         
         // Centrar el contingut de les cel·les de les taules
@@ -571,6 +739,9 @@ public class FinestraPrincipal extends JFrame {
         for (int i = 0; i < table.getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
+=======
+        scrollPane.setPreferredSize(new Dimension(1000, 500)); // Ajustar la mida de la taula
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 
         // Mostrar la taula en un quadre de diàleg
         JOptionPane.showMessageDialog(this, scrollPane, "Llistat d'Actius", JOptionPane.INFORMATION_MESSAGE);
@@ -604,6 +775,7 @@ public class FinestraPrincipal extends JFrame {
     public static void iniciarFinestra(String usuari, String rol, String idSessio) {
         FinestraPrincipal finestra = new FinestraPrincipal(usuari, rol, idSessio); // Crear nova instància de la finestra
         finestra.setVisible(true); // Fer visible la finestra
+<<<<<<< HEAD
     }
 
     //Metode per crear una incidència
@@ -837,8 +1009,11 @@ private void carregarFons() {
         panelFons.repaint(); // Repaint para mostrar la nueva imagen
     } catch (IOException | URISyntaxException e) {
         e.printStackTrace();
+=======
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     }
 }
+<<<<<<< HEAD
 
 
 // Clase interna para el panel con imagen de fondo
@@ -869,3 +1044,5 @@ public void paint(Graphics g) {
 }
 
 }
+=======
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM

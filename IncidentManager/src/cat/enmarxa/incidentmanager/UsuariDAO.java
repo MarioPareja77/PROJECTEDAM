@@ -1,7 +1,6 @@
 package cat.enmarxa.incidentmanager;
 
 import java.sql.Connection;
-import org.mindrot.jbcrypt.BCrypt;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,9 +9,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
 /**
  * La classe UsuariDAO és un DAO (Data Access Object) encarregat de contactar directament amb la taula 'usuaris' de la BD (MySQL) i es trucada des de ServeiUsuari. Aquesta classe pertany a la capa de persistència o 'Model' dins del patró MVC.
  */
+=======
+import org.mindrot.jbcrypt.BCrypt;
+
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
 public class UsuariDAO {
     private Connection connexio; // Objecte per gestionar la connexió a la base de dades
     int intentsFallits; // Variable per comptar els intents fallits de login
@@ -25,8 +29,8 @@ public class UsuariDAO {
 
             // Establir la connexió amb la base de dades
             String url = "jdbc:mysql://localhost:3306/gestio_incidencies";
-            String user = "root"; 
-            String password = "enmarxa"; 
+            String user = "root";
+            String password = "enmarxa";
             this.connexio = DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -80,6 +84,7 @@ public class UsuariDAO {
             stmt.executeUpdate(); // Actualitza el comptador a la base de dades
         }
     }
+<<<<<<< HEAD
     
     // Mètode per canviar la contrasenya
     public void modificarContrasenya(String email, String novaContrasenya) throws SQLException {
@@ -90,9 +95,36 @@ public class UsuariDAO {
             stmt.setString(1, contrasenyaHasheada);
             stmt.setString(2, email);
             stmt.executeUpdate(); // Actualitza el password de l'usuari
+=======
+
+    // Mètode per restablir els intents fallits de l'usuari a 0
+    public void restablirIntentsFallits(String email) throws SQLException {
+        intentsFallits = 0;
+        String query = "UPDATE Usuaris SET intents_fallits = ? WHERE email = ?";
+        try (PreparedStatement stmt = connexio.prepareStatement(query)) {
+            stmt.setInt(1, intentsFallits);
+            stmt.setString(2, email);
+            stmt.executeUpdate(); // Actualitza els intents fallits a 0
         }
     }
 
+    // Mètode per crear un nou usuari
+    public void crearUsuari(String email, String contrasenya, String area, String cap, String rol) throws SQLException {
+        // Hashear la contrasenya i afegir el salt
+        String contrasenyaHasheada = BCrypt.hashpw(contrasenya, BCrypt.gensalt());
+        String consulta = "INSERT INTO usuaris (email, contrasenya, area, cap, rol) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement sentencia = connexio.prepareStatement(consulta)) {
+            sentencia.setString(1, email);
+            sentencia.setString(2, contrasenyaHasheada);
+            sentencia.setString(3, area);
+            sentencia.setString(4, cap);
+            sentencia.setString(5, rol);
+            sentencia.executeUpdate(); // Executar la inserció de l'usuari
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
+        }
+    }
+
+<<<<<<< HEAD
     // Mètode per restablir els intents fallits de l'usuari a 0
     public void restablirIntentsFallits(String email) throws SQLException {
         intentsFallits = 0;
@@ -122,6 +154,8 @@ public class UsuariDAO {
         }
     }
 
+=======
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     // Mètode per obtenir tots els usuaris de la base de dades
     public List<Usuari> obtenirTotsElsUsuaris() throws SQLException {
         List<Usuari> usuaris = new ArrayList<>();
@@ -135,12 +169,17 @@ public class UsuariDAO {
                 String cap = resultats.getString("cap");
                 String rol = resultats.getString("rol");
                 int intentsFallits = resultats.getInt("intents_fallits");
+<<<<<<< HEAD
                 String comentaris = resultats.getString("comentaris");
                 usuaris.add(new Usuari(email, contrasenya, area, cap, rol, intentsFallits, comentaris));
+=======
+                usuaris.add(new Usuari(email, contrasenya, area, cap, rol, intentsFallits));
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
             }
         }
         return usuaris; // Retorna la llista d'usuaris
     }
+<<<<<<< HEAD
     
     // Mètode per obtenir tots usuaris amb un rol específic
     public List<Usuari> obtenirUsuarisRol(String rol) throws SQLException {
@@ -192,19 +231,33 @@ public class UsuariDAO {
     
     
     
+=======
+
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     // Mètode per obtenir el rol d'un usuari donat el seu email
     public String obtenirRolUsuari(String email) throws SQLException {
         String consulta = "SELECT rol FROM usuaris WHERE email = ?";
+<<<<<<< HEAD
         
+=======
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         try (PreparedStatement sentencia = connexio.prepareStatement(consulta)) {
             sentencia.setString(1, email);
             try (ResultSet resultats = sentencia.executeQuery()) {
                 if (resultats.next()) {
+<<<<<<< HEAD
                     return resultats.getString("rol"); // Retorna el rol de l'usuari escollit
+=======
+                    return resultats.getString("rol"); // Retorna el rol de l'usuari
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
                 }
             }
         }
+<<<<<<< HEAD
         return null; // Retorna null si no es troba cap usuari
+=======
+        return null; // Retorna null si no es troba el rol
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     }
     
     // Mètode per obtenir el mail de tots els usuaris
@@ -213,6 +266,7 @@ public class UsuariDAO {
         
         List<String> usuaris = new ArrayList<>(); // Inicialitzar la llista per emmagatzemar l'email dels usuaris
 
+<<<<<<< HEAD
         try (PreparedStatement sentencia = connexio.prepareStatement(consulta);
              ResultSet resultats = sentencia.executeQuery()) {
 
@@ -251,6 +305,8 @@ public class UsuariDAO {
     }
     
 
+=======
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     // Mètode per obtenir un usuari a partir del seu email
     public Usuari obtenirUsuariPerEmail(String email) throws SQLException {
         String consulta = "SELECT contrasenya, area, cap, rol, intents_fallits, comentaris FROM usuaris WHERE email = ?";
@@ -264,8 +320,12 @@ public class UsuariDAO {
                     String cap = resultats.getString("cap");
                     String rol = resultats.getString("rol");
                     int intentsFallits = resultats.getInt("intents_fallits");
+<<<<<<< HEAD
                     String comentaris = resultats.getString("comentaris");
                     return new Usuari(email, contrasenya, area, cap, rol, intentsFallits, comentaris);
+=======
+                    return new Usuari(email, contrasenya, area, cap, rol, intentsFallits);
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
                 }
             }
         }
@@ -274,27 +334,44 @@ public class UsuariDAO {
     
     
 
+<<<<<<< HEAD
     // Mètode per modificar un usuari existent
     public void modificarUsuari(String email, String contrasenya, String area, String cap, String rol, String comentaris, int intentsFallits) throws SQLException {
     	 // Hashear la contrasenya i afegir el salt
         String contrasenyaHasheada = BCrypt.hashpw(contrasenya, BCrypt.gensalt());
         String consulta = "UPDATE usuaris SET intents_fallits = ?, area = ?, cap = ?, rol = ?, comentaris = ?, contrasenya = ? WHERE email = ?";
+=======
+    // Mètode per actualitzar un usuari
+    public void actualitzarUsuari(String email, String contrasenya, String area, String cap, String rol) throws SQLException {
+        // Hashear la nova contrasenya
+        String contrasenyaHasheada = BCrypt.hashpw(contrasenya, BCrypt.gensalt());
+        String consulta = "UPDATE usuaris SET contrasenya = ?, area = ?, cap = ?, rol = ? WHERE email = ?";
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         try (PreparedStatement sentencia = connexio.prepareStatement(consulta)) {
             sentencia.setInt(1, intentsFallits);
             sentencia.setString(2, area);
             sentencia.setString(3, cap);
             sentencia.setString(4, rol);
+<<<<<<< HEAD
             sentencia.setString(5, comentaris);
             sentencia.setString(6, contrasenyaHasheada);
             sentencia.setString(7, email);
             sentencia.executeUpdate(); // Executar l'actualització de l'usuari
+=======
+            sentencia.setString(5, email);
+            sentencia.executeUpdate(); // Executar l'actualització
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
         }
     }
     
     
 
+<<<<<<< HEAD
 
     // Mètode per eliminar un usuari de la base de dades basant-se en el seu email
+=======
+    // Mètode per eliminar un usuari de la base de dades
+>>>>>>> branch 'main' of https://github.com/MarioPareja77/PROJECTEDAM
     public void eliminarUsuari(String email) throws SQLException {
         String consulta = "DELETE FROM usuaris WHERE email = ?";
         try (PreparedStatement sentencia = connexio.prepareStatement(consulta)) {
