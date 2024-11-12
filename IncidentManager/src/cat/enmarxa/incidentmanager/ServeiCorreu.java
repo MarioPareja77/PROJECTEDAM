@@ -1,5 +1,15 @@
 package cat.enmarxa.incidentmanager;
 
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 //import java.util.Properties;
 //import javax.mail.Message;
 //import javax.mail.MessagingException;
@@ -51,7 +61,7 @@ public class ServeiCorreu {
 
         try {
             // Creació del missatge de correu electrònic
-            Message missatgeCorreu = new MimeMessage(sessio);
+            MimeMessage missatgeCorreu = new MimeMessage(sessio);
             missatgeCorreu.setFrom(new InternetAddress(usuari));  // Adreça del remitent
             missatgeCorreu.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatari));  // Destinataris del correu
             missatgeCorreu.setSubject(assumpte);  // Assumpte del correu

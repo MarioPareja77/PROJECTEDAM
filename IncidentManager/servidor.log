@@ -1654,3 +1654,79 @@ Error durant la connexió amb el client: (certificate_unknown) Received fatal al
 Client connectat des de /127.0.0.1
 Error durant la connexió amb el client: (certificate_unknown) Received fatal alert: certificate_unknown
 Client connectat des de /127.0.0.1
+Servidor SSL escoltant pel port 12345
+Client connectat des de /127.0.0.1
+Servidor SSL escoltant pel port 12345
+Servidor SSL escoltant pel port 12345
+Servidor SSL escoltant pel port 12345
+Client connectat des de /127.0.0.1
+Servidor SSL escoltant pel port 12345
+Client connectat des de /127.0.0.1
+Autenticació fallida. Usuari o contrasenya incorrectes per: mario@acme,cat
+Client connectat des de /127.0.0.1
+Servidor SSL escoltant pel port 12345
+Client connectat des de /127.0.0.1
+Servidor SSL escoltant pel port 12345
+Client connectat des de /127.0.0.1
+Autenticació fallida. Usuari o contrasenya incorrectes per: tomas@acme.cat
+Client connectat des de /127.0.0.1
+Client connectat des de /127.0.0.1
+Servidor SSL escoltant pel port 12345
+Client connectat des de /127.0.0.1
+Autenticació fallida. Usuari o contrasenya incorrectes per: tomas@acme.cat
+Client connectat des de /127.0.0.1
+Client connectat des de /127.0.0.1
+Servidor SSL escoltant pel port 12345
+Client connectat des de /127.0.0.1
+Autenticació fallida. Usuari o contrasenya incorrectes per: tomas@acme.cat
+Client connectat des de /127.0.0.1
+Usuari autenticat: mario@acme.cat | ID de sessió: 6eeab406-88af-4dcc-987f-3bc5289942d3
+Client connectat des de /127.0.0.1
+Usuari autenticat: mario@acme.cat | ID de sessió: d26acab5-3a07-4cd1-8bd4-0eead058a912
+Client connectat des de /127.0.0.1
+Autenticació fallida. Usuari o contrasenya incorrectes per: tomas@acme.cat
+Client connectat des de /127.0.0.1
+Autenticació fallida. Usuari o contrasenya incorrectes per: mario@acme.cat
+Client connectat des de /127.0.0.1
+Servidor SSL escoltant pel port 12345
+Client connectat des de /127.0.0.1
+Autenticació fallida. Usuari o contrasenya incorrectes per: tomas@acme.cat
+Client connectat des de /127.0.0.1
+Autenticació fallida. Usuari o contrasenya incorrectes per: mario@acme.cat
+Client connectat des de /127.0.0.1
+Servidor SSL escoltant pel port 12345
+Client connectat des de /127.0.0.1
+Autenticació fallida. Usuari o contrasenya incorrectes per: tomas@acme.cat
+Client connectat des de /127.0.0.1
+Autenticació fallida. Usuari o contrasenya incorrectes per: mario@acme.cat
+Client connectat des de /127.0.0.1
+Servidor SSL escoltant pel port 12345
+Client connectat des de /127.0.0.1
+Autenticació fallida. Usuari o contrasenya incorrectes per: tomas@acme.cat
+Client connectat des de /127.0.0.1
+Autenticació fallida. Usuari o contrasenya incorrectes per: mario@acme.cat
+Client connectat des de /127.0.0.1
+Servidor SSL escoltant pel port 12345
+Client connectat des de /127.0.0.1
+Servidor SSL escoltant pel port 12345
+Client connectat des de /127.0.0.1
+Usuari autenticat: enric@acme.cat | ID de sessió: 00c8a935-3f67-4988-bb32-eb50e1d7650f
+Client connectat des de /127.0.0.1
+Usuari autenticat: mario@acme.cat | ID de sessió: 2410b4dc-a7fe-49c5-9a58-e504ad24b549
+Client connectat des de /127.0.0.1
+Servidor SSL escoltant pel port 12345
+Client connectat des de /127.0.0.1
+Usuari autenticat: enric@acme.cat | ID de sessió: 234f5492-c8b8-4294-a824-91fda8636d26
+Client connectat des de /127.0.0.1
+Usuari autenticat: mario@acme.cat | ID de sessió: 2ceebfac-85da-461c-b955-4d69b73f65e4
+Client connectat des de /127.0.0.1
+Usuari autenticat: xavier@acme.cat | ID de sessió: c8d04425-7e54-4569-9b6e-25728cc89e4d
+Client connectat des de /127.0.0.1
+Servidor SSL escoltant pel port 12345
+Client connectat des de /127.0.0.1
+Servidor SSL escoltant pel port 12345
+Client connectat des de /127.0.0.1
+Usuari autenticat: mario@acme.cat | ID de sessió: ad22d0aa-b436-4121-85c0-2d8826cfcaa6
+Client connectat des de /127.0.0.1
+Usuari autenticat: enric@acme.cat | ID de sessió: f4ee40a2-01fa-4d35-ac02-0e75cfd274d8
+Client connectat des de /127.0.0.1
